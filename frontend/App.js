@@ -62,7 +62,11 @@ const PatientTabNavigator = () => {
 // Therapist tabs
 const TherapistTabNavigator = () => {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+      })}
+    >
       <Tab.Screen name="Accueil" component={TherapistHomeScreen} />
       <Tab.Screen name="Profil" component={TherapistProfileScreen} />
     </Tab.Navigator>
@@ -78,6 +82,14 @@ export default function App() {
             <Stack.Screen name="Landing" component={LandingScreen} />
             <Stack.Screen name="Signin" component={Signin} />
             <Stack.Screen name="Signup" component={Signup} />
+            <Stack.Screen
+              name="PatientTabNavigator"
+              component={PatientTabNavigator}
+            />
+            <Stack.Screen
+              name="TherapistTabNavigator"
+              component={TherapistTabNavigator}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
