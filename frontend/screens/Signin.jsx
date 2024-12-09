@@ -1,13 +1,36 @@
-import { Text, View } from "react-native"
+import { Text, View, SafeAreaView, StyleSheet } from "react-native"
+import ButtonRegular from "../components/buttons/Button-regular"
 
-function SigninScreen() {
+export default function SigninScreen({navigation}) {
+
+    const navigateToSignup = () => {
+        return navigation.navigate('Signup')
+    }
+
+
+
     return (
-        <View>
+        <SafeAreaView style={styles.container}>
             <Text>
                 SigninScreen
             </Text>
-        </View>
+            <View>
+                <Text>Inputs + bouton connexion</Text>
+            </View>
+
+            <View>
+                {ButtonRegular('Créer mon compte', navigateToSignup)}
+            </View>
+
+
+        </SafeAreaView>
     )
 }
 
-export default SigninScreen
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})
