@@ -20,7 +20,7 @@ export default function LandingScreen({navigation}) {
                 {ButtonRegular('patient', navigateToPatient, 'buttonStroke')}
             </View>            
             <View>
-                {ButtonRegular('psy')}
+                {ButtonRegular('Psychologue')}
             </View>
 
         </SafeAreaView>
