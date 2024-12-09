@@ -1,11 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native-ve";
+import { StyleSheet, Text, View } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 //redux imports
 import { Provider } from "react-redux";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import nomdureducer from "../reducers/nomdufichierreducer";
+import user from "./reducers/user";
 
 //redux persist imports
 import { persistStore, persistReducer } from "redux-persist";
@@ -18,13 +18,18 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 // Global screens
 import LandingScreen from "./screens/Landing";
+import Signin from "./screens/Signin";
+import Signup from "./screens/Signup";
 // Patient screens
 import PatientHomeScreen from "./screens/patient/Home";
+import PatientExchangesScreen from "./screens/patient/Exchanges";
+import PatientProfileScreen from "./screens/patient/Profile";
 // Therapist screens
 import TherapistHomeScreen from "./screens/patient/Home";
+import TherapistProfileScreen from "./screens/patient/Profile";
 
 //Permet d'enregistrer les reducers
-const reducers = combineReducers({ nomdureducer });
+const reducers = combineReducers({ user });
 
 //Clé de stockage pour définir un nom au store à l'intérieur du local storage
 const persistConfig = { key: "Lucem", storage: AsyncStorage };
@@ -43,11 +48,27 @@ const persistor = persistStore(store);
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Patient tab
+// Patient tabs
 const PatientTabNavigator = () => {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
-      <Tab.Screen name="Home" component={PatientHomeScreen} />
+      <Tab.Screen name="Accueil" component={PatientHomeScreen} />
+      <Tab.Screen name="Échanges" component={PatientExchangesScreen} />
+      <Tab.Screen name="Profil" component={PatientProfileScreen} />
+    </Tab.Navigator>
+  );
+};
+
+// Therapist tabs
+const TherapistTabNavigator = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+      })}
+    >
+      <Tab.Screen name="Accueil" component={TherapistHomeScreen} />
+      <Tab.Screen name="Profil" component={TherapistProfileScreen} />
     </Tab.Navigator>
   );
 };
@@ -59,6 +80,16 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Landing" component={LandingScreen} />
+            <Stack.Screen name="Signin" component={Signin} />
+            <Stack.Screen name="Signup" component={Signup} />
+            <Stack.Screen
+              name="PatientTabNavigator"
+              component={PatientTabNavigator}
+            />
+            <Stack.Screen
+              name="TherapistTabNavigator"
+              component={TherapistTabNavigator}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

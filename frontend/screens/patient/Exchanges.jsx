@@ -1,13 +1,13 @@
 import { Text, View } from "react-native"
 
-function HomeScreen() {
+function ExchangesScreen() {
     return (
         <View>
             <Text>
-                HomeScreen
+                ExchangesScreen
             </Text>
         </View>
     )
 }
 
-export default HomeScreen
+export default ExchangesScreen
