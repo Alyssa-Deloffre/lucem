@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const uid2 = require("uid2");
 const bcrypt = require("bcrypt");
-
+const {checkBody} = require("../modules/checkBody");
 require("../models/connection");
 const Patient = require("../models/patient");
 
@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 
 //SIGN UP
 router.post("/signup", (req, res) => {
-    if (!checkBody(req.body, [ "name", "firstname", "password", "email", "phone", "therapist", "birthdate", "firstmeeting", "drugs", "notifications", "avatar"])) {
+    if (!checkBody(req.body, [ "name", "firstname", "password", "email"])) {
       res.json({ result: false, error: "Missing or empty fields" });
       return;
     }
@@ -22,7 +22,7 @@ router.post("/signup", (req, res) => {
       if (data === null) {
         const hash = bcrypt.hashSync(req.body.password, 10);
 
-        const newPatient = new User({
+        const newPatient = new Patient({
           firstname : req.body.firstname,
           name : req.body.name,
           email : req.body.email,
@@ -46,8 +46,9 @@ router.post("/signin", (req, res) => {
       res.json({ result: false, error: "Missing or empty fields" });
       return;
     }
-    Patient.findOne({ patientname: req.body.email }).then((data) => {
+    Patient.findOne({ email: req.body.email }).then((data) => {
       const password = req.body.password;
+
       if (data && bcrypt.compareSync(password, data.password)) {
         res.json({ result: true, token: data.token });
       } else {

@@ -9,6 +9,7 @@ const therapistSchema = mongoose.Schema({
     phone : Number,
     notifications : {type : Array, default : []},
     avatar : { type :String, default : ''},
+    patients: {type: [mongoose.Schema.Types.ObjectId], ref: "patients", default: []}
 })
 
 const Therapist = mongoose.model('therapists', therapistSchema);
