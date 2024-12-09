@@ -64,6 +64,17 @@ const TherapistTabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
+          let iconName = "";
+
+          if (route.name === "Accueil") {
+            iconName = "home";
+          } else if (route.name === "Profil") {
+            iconName = "user";
+          }
+
+          return <FontAwesome name={iconName} size={size} color={color} />;
+        },
         headerShown: false,
       })}
     >
