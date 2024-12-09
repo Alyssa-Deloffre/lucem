@@ -1,19 +1,23 @@
-import { Text, View, SafeAreaView } from "react-native"
+import { Text, View, SafeAreaView, StyleSheet } from "react-native"
 import ButtonRegular from "../components/buttons/Button-regular"
 
-function LandingScreen({navigation}) {
+export default function LandingScreen({navigation}) {
+
+    const navigateToPatient = () => {
+        return navigation.navigate('Signin')
+    }
 
     
 
     return (
-        <SafeAreaView style={{flex : 1}}>
+        <SafeAreaView style={styles.container}>
             <View>
             <Text>
                 Logo
             </Text>
             </View>
             <View>
-                {ButtonRegular('patient')}
+                {ButtonRegular('patient', navigateToPatient, 'buttonStroke')}
             </View>            
             <View>
                 {ButtonRegular('psy')}
@@ -23,4 +27,10 @@ function LandingScreen({navigation}) {
     )
 }
 
-export default LandingScreen
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'space-evenly',
+        alignItems: 'center'
+    }
+})

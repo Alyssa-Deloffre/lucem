@@ -1,19 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
- value: [],
+  token: null,
+  type: null,
 };
 
 export const userSlice = createSlice({
- name: 'user',
-
+  name: "user",
   initialState,
- reducers: {
-   nomdelafonction: (state, action) => {
-		//trucs qu'on veut faire avec la fonction
-   },
- },
+  reducers: {
+    addUserToken: (state, action) => {
+      state.token = action.payload;
+    },
+    addUserType: (state, action) => {
+      state.type = action.payload;
+    },
+    disconnectUser: (state, action) => {
+      state.token = null;
+      state.type = null;
+    },
+  },
 });
 
-export const { nomdelafonction } = userSlice.actions;
+export const { addUserToken, addUserType, disconnectUser } = userSlice.actions;
 export default userSlice.reducer;
