@@ -18,10 +18,15 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 // Global screens
 import LandingScreen from "./screens/Landing";
+import Signin from "./screens/Signin";
+import Signup from "./screens/Signup";
 // Patient screens
 import PatientHomeScreen from "./screens/patient/Home";
+import PatientExchangesScreen from "./screens/patient/Exchanges";
+import PatientProfileScreen from "./screens/patient/Profile";
 // Therapist screens
 import TherapistHomeScreen from "./screens/patient/Home";
+import TherapistProfileScreen from "./screens/patient/Profile";
 
 //Permet d'enregistrer les reducers
 const reducers = combineReducers({ nomdureducer });
@@ -43,11 +48,23 @@ const persistor = persistStore(store);
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Patient tab
+// Patient tabs
 const PatientTabNavigator = () => {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
-      <Tab.Screen name="Home" component={PatientHomeScreen} />
+      <Tab.Screen name="Accueil" component={PatientHomeScreen} />
+      <Tab.Screen name="Échanges" component={PatientExchangesScreen} />
+      <Tab.Screen name="Profil" component={PatientProfileScreen} />
+    </Tab.Navigator>
+  );
+};
+
+// Therapist tabs
+const TherapistTabNavigator = () => {
+  return (
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Screen name="Accueil" component={TherapistHomeScreen} />
+      <Tab.Screen name="Profil" component={TherapistProfileScreen} />
     </Tab.Navigator>
   );
 };
@@ -59,6 +76,8 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Landing" component={LandingScreen} />
+            <Stack.Screen name="Signin" component={Signin} />
+            <Stack.Screen name="Signup" component={Signup} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
