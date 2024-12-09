@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import {SafeAreaViewView, Text, TouchableOpacity, KeyboardAvoidingView, StyleSheet, TextInput, View} from 'react-native'
 import { checkEmail, isMissingInputSignup } from "../modules/checkConnectionInputs";
-
+import ButtonRegular from "./buttons/Button-regular";
+import Style from "../style/Style";
 export default function SignupPatient () {
 
 
@@ -21,7 +22,7 @@ export default function SignupPatient () {
                 <Text>Inputs</Text>
             </View>
             <View>
-                <Text>Bouton validation</Text>
+                {ButtonRegular('test', 'suivant')}
             </View>
         </SafeAreaViewView>
     )

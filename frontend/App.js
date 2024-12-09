@@ -1,11 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native-ve";
+import { StyleSheet, Text, View } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 //redux imports
 import { Provider } from "react-redux";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import nomdureducer from "../reducers/nomdufichierreducer";
+import user from "./reducers/user";
 
 //redux persist imports
 import { persistStore, persistReducer } from "redux-persist";
@@ -29,7 +29,7 @@ import TherapistHomeScreen from "./screens/patient/Home";
 import TherapistProfileScreen from "./screens/patient/Profile";
 
 //Permet d'enregistrer les reducers
-const reducers = combineReducers({ nomdureducer });
+const reducers = combineReducers({ user });
 
 //Clé de stockage pour définir un nom au store à l'intérieur du local storage
 const persistConfig = { key: "Lucem", storage: AsyncStorage };
