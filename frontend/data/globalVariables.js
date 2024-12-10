@@ -1,3 +1,3 @@
-const URL = 'http://10.9.0.229:3000'
+const URL = 'http://192.168.1.135:3000'
 
 export {URL}; 
