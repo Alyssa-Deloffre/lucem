@@ -1,7 +1,7 @@
 import { Text, View, SafeAreaView, StyleSheet } from "react-native"
 import ButtonRegular from "../components/buttons/ButtonRegular"
-import Input from "../components/inputs/input"
 import { useState } from "react"
+import InputField from "../components/inputs/InputField"
 
 export default function LandingScreen({ navigation }) {
 
@@ -21,7 +21,7 @@ export default function LandingScreen({ navigation }) {
                 </Text>
             </View>
             <View>
-                <Input label="Test" value={testInput} onChangeText={(value) => setTestInput(value)} inputMode="email" />
+                <InputField label="Test" value={testInput} onChangeText={(value) => setTestInput(value)} inputMode="tel" />
             </View>
             <View>
                 <ButtonRegular text='patient' onPress={navigateToPatient} type='buttonRegular' />
