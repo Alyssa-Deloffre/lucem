@@ -54,6 +54,25 @@ const PatientTabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        // Personnalisation de la tabBar
+        tabBarStyle: {
+          backgroundColor: "red",
+          borderTopLeftRadius: 16,
+          borderTopRightRadius: 16,
+          height: 104,
+        },
+        // Personnalisation des onglets
+        tabBarItemStyle: {
+          margin: 8,
+          padding: 8,
+          borderRadius: 8,
+          height: "auto",
+          borderColor: "white",
+          borderWidth: 1,
+        },
+        tabBarActiveBackgroundColor: COLOR_GREEN[200],
+
+        // Personnalisation des icones
         tabBarIcon: ({ color, size }) => {
           let iconName = "";
 
@@ -68,7 +87,6 @@ const PatientTabNavigator = () => {
           return <FontAwesome name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: COLOR_GREEN[1000],
-        tabBarActiveBackgroundColor: COLOR_GREEN[200],
         tabBarInactiveTintColor: COLOR_PURPLE[1000],
         headerShown: false,
       })}
@@ -85,6 +103,9 @@ const TherapistTabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        // Personnalisation de la tabBar
+
+        // Personnalisation des icones
         tabBarIcon: ({ color, size }) => {
           let iconName = "";
 
@@ -97,8 +118,9 @@ const TherapistTabNavigator = () => {
           return <FontAwesome name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: COLOR_GREEN[1000],
-        tabBarActiveBackgroundColor: COLOR_GREEN[200],
         tabBarInactiveTintColor: COLOR_PURPLE[1000],
+
+        tabBarActiveBackgroundColor: COLOR_GREEN[200],
         headerShown: false,
       })}
     >
@@ -131,12 +153,3 @@ export default function App() {
     </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
