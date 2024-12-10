@@ -3,6 +3,7 @@ import ButtonRegular from "../components/buttons/ButtonRegular"
 import { useState } from "react"
 import InputField from "../components/inputs/InputField"
 
+
 export default function LandingScreen({ navigation }) {
 
     const [testInput, setTestInput] = useState("")
@@ -11,8 +12,6 @@ export default function LandingScreen({ navigation }) {
         return navigation.navigate('Signin')
     }
 
-
-
     return (
         <SafeAreaView style={styles.container}>
             <View>
@@ -20,9 +19,7 @@ export default function LandingScreen({ navigation }) {
                     Logo
                 </Text>
             </View>
-            <View>
-                <InputField label="Test" value={testInput} onChangeText={(value) => setTestInput(value)} inputMode="tel" />
-            </View>
+            <InputField label="Test" placeholder="test" value={testInput} onChangeText={(value) => setTestInput(value)} secureTextEntry={true} errorMessage="Merci de compléter le mot de passe" error={true} />
             <View>
                 <ButtonRegular text='patient' onPress={navigateToPatient} type='buttonRegular' />
             </View>
@@ -43,6 +40,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'space-evenly',
-        alignItems: 'center'
+        alignItems: 'center',
     }
 })

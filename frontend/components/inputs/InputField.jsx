@@ -1,63 +1,67 @@
 import React, { useEffect, useState } from "react";
 import { TextInput, View, Text, StyleSheet } from 'react-native'
+import { COLOR_GREEN, COLOR_PURPLE, COLOR_RED } from "../../data/styleGlobal";
 
 export default function InputField({
     label,
     placeholder,
     errorMessage = "Merci de compléter ce champ.",
+    error = false,
     value,
     onChangeText,
     defaultValue = "",
     inputMode = "text",
-    require = true
+    secureTextEntry = false,
+    autoComplete,
 }) {
 
-    const [error, setError] = useState(false)
-    const [firstComplete, setFirstComplete] = useState(true)
-
-    useEffect(() => {
-        if (require && !firstComplete && value === "") {
-            setError(true)
-        }
-    }, [value])
-
     const handleOnChangeText = (value) => {
-        if (firstComplete) {
-            setFirstComplete(false)
-        }
         onChangeText(value)
     }
 
     return (
-        <View>
-            <Text style={styles.textTop} >{label}</Text>
+        <View style={styles.inputContainer}>
+            <Text style={styles.label} >{label}</Text>
             <TextInput
+                style={styles.inputNotFocused}
                 placeholder={placeholder}
-                onChangeText={(value) => handleOnChangeText(value)}
                 value={value}
+                onChangeText={(value) => handleOnChangeText(value)}
                 defaultValue={defaultValue}
                 inputMode={inputMode}
-                style={styles.input}
+                secureTextEntry={secureTextEntry}
+                autoComplete={autoComplete}
             />
-            {error && <Text style={styles.textBottom}>{errorMessage}</Text>}
+            {error && errorMessage !== "" && <Text style={styles.errorMessage}>{errorMessage}</Text>}
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    inputContainer: {
+        gap: 4,
+        width: "100%",
+    },
+    label: {
+        fontSize: 14,
+        fontWeight: 600
+    },
     input: {
-        borderColor: "black",
+        fontSize: 18,
+        color: COLOR_PURPLE[1000],
         borderWidth: 1,
         borderRadius: 8,
-        width: 350,
-        height: 45,
-        fontSize: 18,
+        width: "100%",
         padding: 12,
     },
-    textTop: {
-        fontSize: 14,
+    inputNotFocused: {
+        borderColor: COLOR_PURPLE[1000],
     },
-    textBottom: {
+    inputFocused: {
+        borderColor: COLOR_GREEN[600],
+    },
+    errorMessage: {
         fontSize: 12,
+        color: COLOR_RED[600]
     }
 })
