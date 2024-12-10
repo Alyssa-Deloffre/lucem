@@ -3,12 +3,17 @@ import ButtonRegular from "../components/buttons/ButtonRegular"
 import { useState } from "react"
 import InputField from "../components/inputs/InputField"
 
+
 export default function LandingScreen({ navigation }) {
 
     const [testInput, setTestInput] = useState("")
 
     const navigateToPatient = () => {
         return navigation.navigate('Signin')
+    }
+
+    const navigateToSignup = () => {
+        return navigation.navigate('Signup')
     }
 
 
@@ -19,9 +24,6 @@ export default function LandingScreen({ navigation }) {
                 <Text>
                     Logo
                 </Text>
-            </View>
-            <View>
-                <InputField label="Test" value={testInput} onChangeText={(value) => setTestInput(value)} inputMode="tel" />
             </View>
             <View>
                 <ButtonRegular text='patient' onPress={navigateToPatient} type='buttonRegular' />
@@ -35,6 +37,11 @@ export default function LandingScreen({ navigation }) {
             <View>
                 <ButtonRegular text='Test patient' onPress={() => navigation.navigate("PatientTabNavigator")} type='buttonStroke' />
             </View>
+
+            <View>
+            <ButtonRegular text='Créer mon compte' onPress={() => navigateToSignup()}/>
+
+            </View>
         </SafeAreaView>
     )
 }
@@ -43,6 +50,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'space-evenly',
-        alignItems: 'center'
+        alignItems: 'center',
     }
 })
