@@ -11,6 +11,10 @@ export default function LandingScreen({ navigation }) {
         return navigation.navigate('Signin')
     }
 
+    const navigateToSignup = () => {
+        return navigation.navigate('Signup')
+    }
+
 
 
     return (
@@ -34,6 +38,11 @@ export default function LandingScreen({ navigation }) {
             </View>
             <View>
                 <ButtonRegular text='Test patient' onPress={() => navigation.navigate("PatientTabNavigator")} type='buttonStroke' />
+            </View>
+
+            <View>
+            <ButtonRegular text='Créer mon compte' onPress={() => navigateToSignup()}/>
+
             </View>
         </SafeAreaView>
     )
