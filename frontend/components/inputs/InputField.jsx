@@ -6,7 +6,6 @@ export default function InputField({
     label,
     placeholder,
     errorMessage = "Merci de compléter ce champ.",
-    error = false,
     value,
     onChangeText,
     defaultValue = "",
@@ -17,7 +16,18 @@ export default function InputField({
 
     const [isFocused, setIsFocused] = useState(false)
 
+    const [firstComplete, setFirstComplete] = useState(true)
+    const [error, setError] = useState(false)
+
+    // useEffect(() => {
+    //     if (!firstComplete) {
+
+    //     }
+
+    // }, [value])
+
     const handleOnChangeText = (value) => {
+        setFirstComplete(false)
         onChangeText(value)
     }
 
