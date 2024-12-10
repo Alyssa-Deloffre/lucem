@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TextInput, View, Text, StyleSheet } from 'react-native'
 
-export default function Input({
+export default function InputField({
     label,
     placeholder,
     errorMessage = "Merci de compléter ce champ.",
