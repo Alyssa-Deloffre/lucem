@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { SafeAreaView, Text, TouchableOpacity, KeyboardAvoidingView, StyleSheet, TextInput, View } from 'react-native'
 import { checkEmail, isMissingInputSignup } from "../modules/checkConnectionInputs";
 import ButtonRegular from "./buttons/ButtonRegular"
-import Input from "./inputs/input";
+import InputField from "./inputs/InputField";
 import { current } from "@reduxjs/toolkit";
 
 
@@ -16,16 +16,34 @@ export default function SignupPatient() {
     const [firstname, setFirstname] = useState('')
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
-
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
-    const [passwordValidated, setPasswordValidate] = useState(false)
+
+    const [passwordValidate, setPasswordValidate] = useState(false)
+    const [errorInput, setErrorInput] = useState({ firstname: false, name: false, email: false, password: false })
+    const [emailError, setEmailError] = useState('Merci de compléter ce champ')
+    const [passwordError, setPasswordError] = useState('Merci de compléter ce champ')
+
 
     const handleMandatory = () => {
-        handlePassword()
-        if (firstname, name, email, passwordValidated) {
-            setCurrentScreen(currentScreen + 1)
+        console.log('firstname: ', firstname, '/name : ', name, '/email: ', email, '/password: ', password, '/validate: ', passwordValidate)
+        const EMAIL_REGEX =
+            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        if (!EMAIL_REGEX.test("Cet email est invalide.")) {
+            setEmailError(error)
         }
+
+        if (password === passwordConfirmation) {
+            setPasswordValidate(true)
+            if (firstname !== '' && name !== '' && email !== '' && passwordValidate) {
+                setCurrentScreen(currentScreen + 1)
+            }
+        } else {
+            setErrorInput(errorInput.password = true)
+            setPasswordError('Les deux mots de passe sont différents.')
+        }
+
 
     }
 
@@ -33,16 +51,10 @@ export default function SignupPatient() {
 
     }
 
-    const handlePassword = () => {
-        if (password === passwordConfirmation) {
-            setPasswordValidate(true)
-        }
 
-    }
 
     const handleReturn = () => {
         if (currentScreen > 1) {
-
             setCurrentScreen(currentScreen - 1)
         }
     }
@@ -61,34 +73,33 @@ export default function SignupPatient() {
                 </View>
 
                 <View>
-        {currentScreen === 1 && <><Input label='Prénom' placeholder='Prénom' />
-        <Input label='Nom' placeholder='Nom' />
-        <Input label='Adresse email' placeholder='exemple@exemple.com' />
-        <Input label='Mot de passe' placeholder='Votre mot de passe' />
-        <Input placeholder='Confirmez votre mot de passe' />
+                    {currentScreen === 1 && <><InputField label='Prénom' placeholder='Prénom' onChangeText={(value) => setFirstname(value)} value={firstname} error={errorInput.firstname} />
+                        <InputField label='Nom' placeholder='Nom' onChangeText={(value) => setName(value)} value={name} error={errorInput.name} />
+                        <InputField label='Adresse email' placeholder='exemple@exemple.com' onChangeText={(value) => setEmail(value)} value={email} error={errorInput.email} errorMessage={emailError}/>
+                        <InputField label='Mot de passe' placeholder='Votre mot de passe' onChangeText={(value) => setPassword(value)} value={password} />
+                        <InputField placeholder='Confirmez votre mot de passe' onChangeText={(value) => setPasswordConfirmation(value)} value={passwordConfirmation} error={errorInput.password} errorMessage={passwordError}/>
 
-        <ButtonRegular text='Suivant' onPress={() => handleMandatory()}/></>}
-        </View>
-
-
-        {currentScreen === 2 && <><Input label='Téléphone' placeholder='Téléphone' />
-            <Input label='Date de naissance' placeholder='Date de naissance' />
-            <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleRegular'/>
-            <ButtonRegular text='Passer' onPress={() => (setCurrentScreen(currentScreen + 1))} type='buttonLittleRegular'/>
-
-            <ButtonRegular text='Suivant' onPress={() => (setCurrentScreen(currentScreen + 1))}/></>
-        }
-
-        {currentScreen === 3 && <>
-            <Input label='Votre psychologue' placeholder='Cherchez le nom de votre psychologue' />
-            <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleRegular'/>
-
-            <ButtonRegular text='Valider' onPress={() => (setCurrentScreen(currentScreen + 1))}/>
+                        <ButtonRegular text='Suivant' onPress={() => handleMandatory()} /></>}
+                </View>
 
 
-        </>}    
+                {currentScreen === 2 && <><InputField label='Téléphone' placeholder='Téléphone' />
+                    <InputField label='Date de naissance' placeholder='Date de naissance' />
+                    <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleRegular' />
+                    <ButtonRegular text='Passer' onPress={() => (setCurrentScreen(currentScreen + 1))} type='buttonLittleRegular' />
 
-                <ButtonRegular text='Créer mon compte patient' onPress={console.log('click')} type='buttonRegular' />
+                    <ButtonRegular text='Suivant' onPress={() => (setCurrentScreen(currentScreen + 1))} /></>
+                }
+
+                {currentScreen === 3 && <>
+                    <InputField label='Votre psychologue' placeholder='Cherchez le nom de votre psychologue' />
+                    <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleRegular' />
+
+                    <ButtonRegular text='Valider' onPress={() => (setCurrentScreen(currentScreen + 1))} />
+
+
+                </>}
+
 
             </View>
         </SafeAreaView>
