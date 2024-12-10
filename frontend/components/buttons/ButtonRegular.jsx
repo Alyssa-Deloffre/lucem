@@ -1,40 +1,67 @@
 import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { COLOR_GREEN, COLOR_PURPLE } from "../../data/styleGlobal";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+
 
 
 
 export default function ButtonRegular({ text, onPress, type = 'buttonRegular' }) {
 
+    let textType = ''
+    if (type === 'buttonRegular' || type === 'buttonStroke') {
+        textType = 'regular'
+    } else if (type === 'buttonLittleRegular' || type === 'buttonLittleStroke') {
+        textType = 'little'
+    }
 
     return (
-        <TouchableOpacity onPress={onPress} style={styles[type]}>
-            <Text style={styles.buttonText}>{text}</Text>
+        <TouchableOpacity onPress={onPress} style={[styles[type], styles.button]}>
+            <Text style={styles[textType]}>{text}</Text>
+            <FontAwesome name='chevron-right'/>
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
+    button: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 100,
+        gap : 16
+    },
     buttonRegular: {
-        borderColor: COLOR_GREEN[600],
-        borderWidth: 1,
-        paddingVertical : 12,
-        paddingHorizontal : 32,
-    },
-    buttonStroke: {
-        borderColor: 'red',
-        borderWidth: 1,
-        paddingVertical : 12,
-        paddingHorizontal : 32
-    },
-    buttonText : {
-        fontFamily: 'Quicksand',
+        backgroundColor: COLOR_GREEN[600],
+        paddingVertical: 12,
+        paddingHorizontal: 32,
 
     },
-    buttonLittleRegular : {
-        borderColor: 'purple',
+    buttonStroke: {
+        borderColor: COLOR_PURPLE[1000],
         borderWidth: 1,
-        paddingVertical : 6,
-        paddingHorizontal : 16
+        paddingVertical: 12,
+        paddingHorizontal: 32
+    },
+    buttonLittleRegular: {
+        backgroundColor: COLOR_GREEN[600],
+        paddingVertical: 6,
+        paddingHorizontal: 16
+    },
+    buttonLittleStroke : {
+        borderColor: COLOR_PURPLE[1000],
+        borderWidth: 1,
+        paddingVertical: 6,
+        paddingHorizontal: 16
+    },
+    regular : {
+        fontFamily: 'Quicksand',
+
+        fontSize : 16
+    },
+    little : {
+        fontFamily: 'Quicksand',
+
+        fontSize : 14,
     }
 })

@@ -218,8 +218,8 @@ export default function SignupPatient() {
                             initialDate={birthdate}
                             onDateChange={(date) => setBirthdate(date)}
                         />
-                        <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleRegular' />
-                        <ButtonRegular text='Passer' onPress={() => (setCurrentScreen(currentScreen + 1))} type='buttonLittleRegular' />
+                        <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleStroke' />
+                        <ButtonRegular text='Passer' onPress={() => (setCurrentScreen(currentScreen + 1))} type='buttonLittleStroke' />
                         <ButtonRegular text='Suivant' onPress={() => (setCurrentScreen(currentScreen + 1))} /></>
                     }
 
