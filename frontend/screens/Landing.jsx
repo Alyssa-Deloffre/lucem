@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
         fontWeight : 'bold',
         fontSize : 30,
         alignItems: 'center',
-        borderColor : COLOR_GREEN[600],
         width : "40%",
     },
     merci: {

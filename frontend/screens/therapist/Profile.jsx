@@ -1,6 +1,6 @@
 import { Text, View } from "react-native"
 
-function PofileScreen() {
+export default function TherapistProfileScreen() {
     return (
         <View>
             <Text>
@@ -10,4 +10,3 @@ function PofileScreen() {
     )
 }
 
-export default PofileScreen
