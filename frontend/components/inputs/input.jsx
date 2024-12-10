@@ -1,13 +1,18 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
+import { use } from "react";
 import {TextInput, View, Text, StyleSheet} from 'react-native'
 
 export default function Input ({label, placeholder, errorMessage, value, onChangeText}) {
 
     const [error, setError] = useState(false)
 
-    if (value === "") {
-        setError(true)
-    }
+    useEffect (() => {
+
+        if (value === "") {
+            setError(true)
+        }
+
+    }, [])
 
     return (
         <View>

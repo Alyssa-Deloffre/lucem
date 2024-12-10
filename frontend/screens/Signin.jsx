@@ -19,7 +19,7 @@ export default function SigninScreen({ navigation }) {
             </View>
 
             <View>
-                {ButtonRegular('Créer mon compte', navigateToSignup)}
+            <ButtonRegular text='Créer mon compte patient' onPress={navigateToSignup} type='buttonRegular' />
             </View>
 
 
