@@ -6,7 +6,7 @@ import {
     StyleSheet } from "react-native";
 import { useDispatch } from 'react-redux';
 import ButtonRegular from "../components/buttons/ButtonRegular";
-import input from "../components/inputs/input"
+import Input from "../components/inputs/input"
 
 
 export default function SigninScreen({ navigation }) {
@@ -34,6 +34,7 @@ function SignIn() {
         const connectPatient = async(emailPatient, passwordPatient) => {
             const resp = await fetch('http://10.9.1.135:3000/patient/signin', {
                 method : 'POST',
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({emailPatient, passwordPatient}),
             })
             return await resp.json()
