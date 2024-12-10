@@ -32,11 +32,16 @@ const handleSignIn = async () => {
 export default function SigninScreen({ navigation }) {
 
     const [inputs, setInputs] = useState({ email: "", password: "" })
-    const [inputErrors, setInputErrors] = useState({ email: false, password: false })
-    const [errorEmail, setErrorEmail] = useState(false)
+
+    // Afficher les erreurs des inputs quand on appuie sur le bouton
+    const [isSubmitToggle, setIsSubmitToggle] = useState(false)
 
     const handleChangeEmail = (value) => {
         setInputs(prev => ({ ...prev, email: value }))
+    }
+
+    const handleConnected = () => {
+        setIsSubmitToggle(!isSubmitToggle)
     }
 
     return (
@@ -57,7 +62,7 @@ export default function SigninScreen({ navigation }) {
                         onChangeText={(value) => handleChangeEmail(value)}
                         autoComplete="email"
                         inputMode='email'
-                        forcedErrorMessage="User already exist"
+                        isSubmitToggle={isSubmitToggle}
                     />
                     <InputField
                         label="Mot de passe"
@@ -65,8 +70,10 @@ export default function SigninScreen({ navigation }) {
                         value={inputs.password}
                         onChangeText={(value) => setInputs(prev => ({ ...prev, password: value }))}
                         secureTextEntry={true}
+                        isSubmitToggle={isSubmitToggle}
                     />
                 </View>
+                <ButtonRegular text='Me connecter' onPress={() => handleConnected()} />
             </View>
 
             <View style={styles.button}>
