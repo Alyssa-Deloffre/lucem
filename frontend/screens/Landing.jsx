@@ -17,7 +17,7 @@ export default function LandingScreen({ navigation }) {
                 </Text>
             </View>
             <View>
-                <ButtonRegular text='patient' onPress={navigateToPatient} type='buttonStroke' />
+                <ButtonRegular text='patient' onPress={navigateToPatient} type='buttonRegular' />
             </View>
             <View>
                 <ButtonRegular text='psy' onPress={navigateToPatient} type='buttonStroke' />
