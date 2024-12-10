@@ -1,30 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { TextInput, View, Text, StyleSheet } from 'react-native'
 import { COLOR_GREEN, COLOR_PURPLE, COLOR_RED } from "../../data/styleGlobal";
+import { checkEmail } from "../../modules/checkConnectionInputs";
 
 export default function InputField({
     label,
     placeholder,
-    errorMessage = "Merci de compléter ce champ.",
+    forcedErrorMessage,
     value,
     onChangeText,
     defaultValue = "",
     inputMode = "text",
     secureTextEntry = false,
     autoComplete,
+    require = true
 }) {
-
+    // Regarde si l'input est focuse pour le style
     const [isFocused, setIsFocused] = useState(false)
 
+    // Permet de ne pas mettre d'erreur avant que l'utilisateur n'ait commencé à remplir le champ
     const [firstComplete, setFirstComplete] = useState(true)
+
+    // Permet de modifier le message d'erreur en fonction des cas
+    const [errorMsg, setErrorMsg] = useState("Merci de compléter ce champ.")
+
     const [error, setError] = useState(false)
 
-    // useEffect(() => {
-    //     if (!firstComplete) {
+    const isEmail = inputMode === "email"
 
-    //     }
+    useEffect(() => {
+        if (!firstComplete && isEmail && value !== "") {
+            const isValidEmail = checkEmail(value)
+            setError(!isValidEmail)
+            setErrorMsg("Le format de l'adresse e-mail est invalide.")
+            return
+        }
 
-    // }, [value])
+        if (!firstComplete && require && value === "") {
+            setError(true)
+            setErrorMsg("Merci de compléter ce champ.")
+            return
+        }
+
+        setError(false)
+    }, [value])
+
+    useEffect(() => {
+        if (forcedErrorMessage && forcedErrorMessage !== "") {
+            setError(true)
+            setErrorMsg(forcedErrorMessage)
+        }
+    }, [forcedErrorMessage, value])
 
     const handleOnChangeText = (value) => {
         setFirstComplete(false)
@@ -54,7 +80,7 @@ export default function InputField({
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
             />
-            {error && errorMessage !== "" && <Text style={styles.errorMessage}>{errorMessage}</Text>}
+            {error && <Text style={styles.errorMessage}>{errorMsg}</Text>}
         </View>
     )
 }

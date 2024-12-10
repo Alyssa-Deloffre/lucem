@@ -57,8 +57,7 @@ export default function SigninScreen({ navigation }) {
                         onChangeText={(value) => handleChangeEmail(value)}
                         autoComplete="email"
                         inputMode='email'
-                        error={errorEmail}
-                        errorMessage={errorEmail ? "Le format de l'e-mail est invalide." : null}
+                        forcedErrorMessage="User already exist"
                     />
                     <InputField
                         label="Mot de passe"
