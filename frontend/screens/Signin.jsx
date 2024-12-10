@@ -6,32 +6,30 @@ import {
     StyleSheet
 } from "react-native";
 import { useDispatch } from 'react-redux';
+import { addUserToken } from '../reducers/user';
 import ButtonRegular from "../components/buttons/ButtonRegular";
 import InputField from "../components/inputs/InputField"
 import { checkEmail } from '../modules/checkConnectionInputs';
+import { QUENTIN_URL } from '../data/globalVariables';
+import Card from '../components/Card';
 
 
-const handleSignIn = async () => {
-    const error = missingInput(emailPatient, passwordPatient)
-
-    if (error.result === true) {
-        setError(error.message)
-        return
-    }
-
-    const connectPatient = async (emailPatient, passwordPatient) => {
-        const resp = await fetch('http://10.9.1.135:3000/patient/signin', {
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ emailPatient, passwordPatient }),
-        })
-        return await resp.json()
-    }
+const connectPatient = async (email, password) => {
+    const resp = await fetch(`${QUENTIN_URL}/patients/signin`, {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email, password: password }),
+    })
+    const json = await resp.json()
+    return json
 }
 
 export default function SigninScreen({ navigation }) {
 
+    const dispatch = useDispatch()
+
     const [inputs, setInputs] = useState({ email: "", password: "" })
+    const [globalError, setGlobalError] = useState(false)
 
     // Afficher les erreurs des inputs quand on appuie sur le bouton
     const [isSubmitToggle, setIsSubmitToggle] = useState(false)
@@ -40,45 +38,49 @@ export default function SigninScreen({ navigation }) {
         setInputs(prev => ({ ...prev, email: value }))
     }
 
-    const handleConnected = () => {
+    const handleConnected = async () => {
         setIsSubmitToggle(!isSubmitToggle)
+        if (inputs.email !== "" && inputs.password !== "" && checkEmail(inputs.email)) {
+            const response = await connectPatient(inputs.email, inputs.password)
+            if (response.result) {
+                dispatch(addUserToken(response.token))
+                navigation.navigate("PatientTabNavigator")
+            } else {
+                setGlobalError(true)
+            }
+        } else {
+            setGlobalError(false)
+        }
     }
 
     return (
         <SafeAreaView style={styles.container}>
             <Text>
-                Logo
+                Me connecter
             </Text>
-
-            <View>
-                <Text>
-                    Me connecter
-                </Text>
-                <View>
-                    <InputField
-                        label="Email"
-                        placeholder="Votre adresse e-mail"
-                        value={inputs.email}
-                        onChangeText={(value) => handleChangeEmail(value)}
-                        autoComplete="email"
-                        inputMode='email'
-                        isSubmitToggle={isSubmitToggle}
-                    />
-                    <InputField
-                        label="Mot de passe"
-                        placeholder="Votre mot de passe"
-                        value={inputs.password}
-                        onChangeText={(value) => setInputs(prev => ({ ...prev, password: value }))}
-                        secureTextEntry={true}
-                        isSubmitToggle={isSubmitToggle}
-                    />
-                </View>
+            <Card>
+                <InputField
+                    label="Email"
+                    placeholder="Votre adresse e-mail"
+                    value={inputs.email}
+                    onChangeText={(value) => handleChangeEmail(value)}
+                    autoComplete="email"
+                    inputMode='email'
+                    isSubmitToggle={isSubmitToggle}
+                />
+                <InputField
+                    label="Mot de passe"
+                    placeholder="Votre mot de passe"
+                    value={inputs.password}
+                    onChangeText={(value) => setInputs(prev => ({ ...prev, password: value }))}
+                    secureTextEntry={true}
+                    isSubmitToggle={isSubmitToggle}
+                />
+                {globalError && <Text>Mauvaise adresse e-mail ou mot de passe.</Text>}
                 <ButtonRegular text='Me connecter' onPress={() => handleConnected()} />
-            </View>
+            </Card>
 
-            <View style={styles.button}>
-                <ButtonRegular text='Créer mon compte' onPress={() => navigation.navigate('Signup')} />
-            </View>
+            <ButtonRegular text='Créer mon compte' onPress={() => navigation.navigate('Signup')} />
         </SafeAreaView>
     )
 }
