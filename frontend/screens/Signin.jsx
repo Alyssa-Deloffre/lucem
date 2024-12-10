@@ -1,7 +1,7 @@
 import { Text, View, SafeAreaView, StyleSheet } from "react-native"
-import ButtonRegular from "../components/buttons/Button-regular"
+import ButtonRegular from "../components/buttons/ButtonRegular"
 
-export default function SigninScreen({navigation}) {
+export default function SigninScreen({ navigation }) {
 
     const navigateToSignup = () => {
         return navigation.navigate('Signup')

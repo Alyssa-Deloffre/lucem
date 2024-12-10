@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { COLOR_GREEN, COLOR_PURPLE } from "./data/styleGlobal";
 
 //redux imports
 import { Provider } from "react-redux";
@@ -51,7 +52,45 @@ const Tab = createBottomTabNavigator();
 // Patient tabs
 const PatientTabNavigator = () => {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        // Personnalisation de la tabBar
+        tabBarStyle: {
+          backgroundColor: "red",
+          borderTopLeftRadius: 16,
+          borderTopRightRadius: 16,
+          height: 104,
+        },
+        // Personnalisation des onglets
+        tabBarItemStyle: {
+          margin: 8,
+          padding: 8,
+          borderRadius: 8,
+          height: "auto",
+          borderColor: "white",
+          borderWidth: 1,
+        },
+        tabBarActiveBackgroundColor: COLOR_GREEN[200],
+
+        // Personnalisation des icones
+        tabBarIcon: ({ color, size }) => {
+          let iconName = "";
+
+          if (route.name === "Accueil") {
+            iconName = "home";
+          } else if (route.name === "Échanges") {
+            iconName = "comments";
+          } else if (route.name === "Profil") {
+            iconName = "user";
+          }
+
+          return <FontAwesome name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: COLOR_GREEN[1000],
+        tabBarInactiveTintColor: COLOR_PURPLE[1000],
+        headerShown: false,
+      })}
+    >
       <Tab.Screen name="Accueil" component={PatientHomeScreen} />
       <Tab.Screen name="Échanges" component={PatientExchangesScreen} />
       <Tab.Screen name="Profil" component={PatientProfileScreen} />
@@ -64,6 +103,9 @@ const TherapistTabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        // Personnalisation de la tabBar
+
+        // Personnalisation des icones
         tabBarIcon: ({ color, size }) => {
           let iconName = "";
 
@@ -75,6 +117,10 @@ const TherapistTabNavigator = () => {
 
           return <FontAwesome name={iconName} size={size} color={color} />;
         },
+        tabBarActiveTintColor: COLOR_GREEN[1000],
+        tabBarInactiveTintColor: COLOR_PURPLE[1000],
+
+        tabBarActiveBackgroundColor: COLOR_GREEN[200],
         headerShown: false,
       })}
     >
@@ -107,12 +153,3 @@ export default function App() {
     </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
