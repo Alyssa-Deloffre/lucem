@@ -26,8 +26,8 @@ import PatientHomeScreen from "./screens/patient/Home";
 import PatientExchangesScreen from "./screens/patient/Exchanges";
 import PatientProfileScreen from "./screens/patient/Profile";
 // Therapist screens
-import TherapistHomeScreen from "./screens/patient/Home";
-import TherapistProfileScreen from "./screens/patient/Profile";
+import TherapistHomeScreen from "./screens/therapist/Home";
+import TherapistProfileScreen from "./screens/therapist/Profile";
 
 //Permet d'enregistrer les reducers
 const reducers = combineReducers({ user });
