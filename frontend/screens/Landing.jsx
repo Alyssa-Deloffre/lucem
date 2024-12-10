@@ -1,7 +1,11 @@
 import { Text, View, SafeAreaView, StyleSheet } from "react-native"
 import ButtonRegular from "../components/buttons/ButtonRegular"
+import { useState } from "react"
+import InputField from "../components/inputs/InputField"
 
 export default function LandingScreen({ navigation }) {
+
+    const [testInput, setTestInput] = useState("")
 
     const navigateToPatient = () => {
         return navigation.navigate('Signin')
@@ -15,6 +19,9 @@ export default function LandingScreen({ navigation }) {
                 <Text>
                     Logo
                 </Text>
+            </View>
+            <View>
+                <InputField label="Test" value={testInput} onChangeText={(value) => setTestInput(value)} inputMode="tel" />
             </View>
             <View>
                 <ButtonRegular text='patient' onPress={navigateToPatient} type='buttonRegular' />
