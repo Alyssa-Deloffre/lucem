@@ -11,6 +11,15 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+router.get('/getByEmail', (req, res) => {
+  Patient.findOne({ email: req.body.email }).then((patient) => {
+    if (patient) {
+      res.json({ result: true, data: patient });
+    } else {
+      res.json({ result: false, message: "User not found" });
+    }
+  });
+})
 
 //SIGN UP
 router.post("/signup", (req, res) => {
