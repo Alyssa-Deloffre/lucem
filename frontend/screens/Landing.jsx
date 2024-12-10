@@ -19,7 +19,6 @@ export default function LandingScreen({ navigation }) {
                     Logo
                 </Text>
             </View>
-            <InputField label="Test" placeholder="test" value={testInput} onChangeText={(value) => setTestInput(value)} secureTextEntry={true} errorMessage="Merci de compléter le mot de passe" error={true} />
             <View>
                 <ButtonRegular text='patient' onPress={navigateToPatient} type='buttonRegular' />
             </View>

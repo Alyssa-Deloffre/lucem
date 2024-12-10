@@ -15,15 +15,25 @@ export default function InputField({
     autoComplete,
 }) {
 
+    const [isFocused, setIsFocused] = useState(false)
+
     const handleOnChangeText = (value) => {
         onChangeText(value)
     }
 
+    let inputStyle = styles.inputNotFocused
+    if (isFocused) {
+        inputStyle = styles.inputFocused
+    }
+    if (error) {
+        inputStyle = styles.inputError
+    }
+
     return (
         <View style={styles.inputContainer}>
-            <Text style={styles.label} >{label}</Text>
+            <Text style={error ? styles.labelError : styles.label} >{label}</Text>
             <TextInput
-                style={styles.inputNotFocused}
+                style={[styles.input, inputStyle]}
                 placeholder={placeholder}
                 value={value}
                 onChangeText={(value) => handleOnChangeText(value)}
@@ -31,6 +41,8 @@ export default function InputField({
                 inputMode={inputMode}
                 secureTextEntry={secureTextEntry}
                 autoComplete={autoComplete}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
             />
             {error && errorMessage !== "" && <Text style={styles.errorMessage}>{errorMessage}</Text>}
         </View>
@@ -44,7 +56,13 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 14,
-        fontWeight: 600
+        fontWeight: 600,
+        color: COLOR_PURPLE[1000],
+    },
+    labelError: {
+        fontSize: 14,
+        fontWeight: 600,
+        color: COLOR_RED[600],
     },
     input: {
         fontSize: 18,
@@ -59,6 +77,11 @@ const styles = StyleSheet.create({
     },
     inputFocused: {
         borderColor: COLOR_GREEN[600],
+        backgroundColor: COLOR_GREEN[100],
+    },
+    inputError: {
+        borderColor: COLOR_RED[600],
+        backgroundColor: COLOR_RED[100]
     },
     errorMessage: {
         fontSize: 12,
