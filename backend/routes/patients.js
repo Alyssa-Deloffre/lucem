@@ -11,8 +11,8 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-router.get('/getByEmail', (req, res) => {
-  Patient.findOne({ email: req.body.email }).then((patient) => {
+router.get('/getByEmail/:email', (req, res) => {
+  Patient.findOne({ email: req.params.email }).then((patient) => {
     if (patient) {
       res.json({ result: true, data: patient });
     } else {
