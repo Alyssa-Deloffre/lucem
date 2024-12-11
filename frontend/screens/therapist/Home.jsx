@@ -2,6 +2,7 @@ import { SafeAreaView, Text, View, StyleSheet } from "react-native";
 import PatientButton from "../../components/buttons/PatientButton";
 import { useEffect, useState } from "react";
 import { MAYLEEN_URL } from "../../data/globalVariables";
+import MainContainer from "../../components/MainContainer";
 
 
 const getAllPatient = async (token) => {
@@ -31,7 +32,8 @@ export default function TherapistHomeScreen() {
 
 
     return (
-        <SafeAreaView style={styles.container}>
+        <MainContainer >
+            <View style={styles.container}>
             <View>
                 <Text style={styles.title}>
                     Mes patients
@@ -40,7 +42,8 @@ export default function TherapistHomeScreen() {
             <View style={styles.patientButton}>
                 {patientDisplay}
             </View>
-        </SafeAreaView>
+            </View>
+        </MainContainer>
     )
 }
 

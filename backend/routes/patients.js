@@ -28,9 +28,11 @@ router.post("/signup", (req, res) => {
       res.json({ result: false, error: "Missing or empty fields" });
       return;
     }
-   Patient.findOne({ name: req.body.name }).then((data) => {
+   Patient.findOne({ name: req.body.name }).then(async (data) => {
       if (data === null) {
         const hash = bcrypt.hashSync(req.body.password, 10);
+    
+    const therapistId = await Therapist.findOne({token : req.body.therapist}).then(data)
 
         const newPatient = new Patient({
           firstname : req.body.firstname,
@@ -39,7 +41,9 @@ router.post("/signup", (req, res) => {
           password : hash,
           token : uid2(32),
           phone : req.body.phone,
-          birthdate : req.body.birthdate
+          birthdate : req.body.birthdate,
+          therapist : [therapistId._id],
+          avatar : req.body.avatar
         });
 
         newPatient.save().then((newDoc) => {
