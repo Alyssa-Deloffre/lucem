@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const {checkBody} = require("../modules/checkBody");
 require("../models/connection");
 const Patient = require("../models/patient");
+const Therapist = require('../models/therapist');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -27,9 +28,11 @@ router.post("/signup", (req, res) => {
       res.json({ result: false, error: "Missing or empty fields" });
       return;
     }
-   Patient.findOne({ name: req.body.name }).then((data) => {
+   Patient.findOne({ name: req.body.name }).then(async (data) => {
       if (data === null) {
         const hash = bcrypt.hashSync(req.body.password, 10);
+    
+    const therapistId = await Therapist.findOne({token : req.body.therapist}).then(data)
 
         const newPatient = new Patient({
           firstname : req.body.firstname,
@@ -37,6 +40,10 @@ router.post("/signup", (req, res) => {
           email : req.body.email,
           password : hash,
           token : uid2(32),
+          phone : req.body.phone,
+          birthdate : req.body.birthdate,
+          therapist : [therapistId._id],
+          avatar : req.body.avatar
         });
 
         newPatient.save().then((newDoc) => {
@@ -66,5 +73,11 @@ router.post("/signin", (req, res) => {
     });
   });
 
+
+  //GET all therapists
+  router.get('/getalltherapists', (req, res) => {
+    Therapist.find()
+    .then(data => res.json({result : true, data : data}))
+  })
 
 module.exports = router;

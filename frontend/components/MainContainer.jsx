@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { SafeAreaView, StyleSheet, Dimensions, View } from "react-native";
 import { COLOR_PURPLE } from "../data/styleGlobal";
 import Svg, { Path } from "react-native-svg"
 
@@ -21,6 +21,8 @@ const styles = StyleSheet.create({
     main: {
         backgroundColor: COLOR_PURPLE[100],
         flex: 1,
+        height: Dimensions.get("window").height,
+        width: Dimensions.get("window").width,
     },
     safeArea: {
         flex: 1,

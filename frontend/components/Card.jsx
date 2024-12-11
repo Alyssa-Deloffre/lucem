@@ -1,16 +1,33 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text, KeyboardAvoidingView, Platform } from "react-native";
 import { COLOR_PURPLE } from "../data/styleGlobal";
 
-export default function Card({ children }) {
+export default function Card({ children, label }) {
     return (
-
-        <View style={styles.card}>
-            {children}
-        </View>
+        <KeyboardAvoidingView style={{ width: "100%" }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <View style={styles.cardContainer}>
+                {label && (
+                    <Text style={styles.title}>
+                        {label}
+                    </Text>
+                )}
+                <View style={styles.card}>
+                    {children}
+                </View>
+            </View>
+        </KeyboardAvoidingView>
     )
 }
 
 const styles = StyleSheet.create({
+    cardContainer: {
+        width: "100%",
+        justifyContent: "center",
+        gap: 8
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 600
+    },
     card: {
         width: "100%",
         paddingVertical: 24,

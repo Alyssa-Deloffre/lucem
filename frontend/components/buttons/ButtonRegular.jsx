@@ -17,9 +17,9 @@ export default function ButtonRegular({ text, onPress, type = 'buttonRegular', o
 
     return (
         <TouchableOpacity onPress={onPress} style={[styles[type], styles.button]}>
-            {orientation === 'left' && <FontAwesome name='chevron-left'/>}
+            {orientation === 'left' && <FontAwesome name='chevron-left' />}
             <Text style={styles[textType]}>{text}</Text>
-            {orientation === 'right' && <FontAwesome name='chevron-right'/>}
+            {orientation === 'right' && <FontAwesome name='chevron-right' />}
         </TouchableOpacity>
     )
 }
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 100,
-        gap : 16
+        gap: 16
     },
     buttonRegular: {
         backgroundColor: COLOR_GREEN[600],
@@ -49,20 +49,20 @@ const styles = StyleSheet.create({
         paddingVertical: 6,
         paddingHorizontal: 16
     },
-    buttonLittleStroke : {
+    buttonLittleStroke: {
         borderColor: COLOR_PURPLE[1000],
         borderWidth: 1,
         paddingVertical: 6,
         paddingHorizontal: 16
     },
-    regular : {
+    regular: {
         fontFamily: 'Quicksand',
 
-        fontSize : 16
+        fontSize: 16
     },
-    little : {
+    little: {
         fontFamily: 'Quicksand',
 
-        fontSize : 14,
+        fontSize: 14,
     }
 })
