@@ -3,7 +3,9 @@ import {
     Text,
     View,
     SafeAreaView,
-    StyleSheet
+    StyleSheet,
+    KeyboardAvoidingView,
+    Platform
 } from "react-native";
 import { useDispatch } from 'react-redux';
 import { addUserToken } from '../reducers/user';
@@ -60,32 +62,27 @@ export default function SigninScreen({ navigation }) {
                 <View>
                     <Text>Logo</Text>
                 </View>
-                <View style={styles.signInContainer}>
-                    <Text style={styles.signInContainer_title}>
-                        Me connecter
-                    </Text>
-                    <Card>
-                        <InputField
-                            label="Email"
-                            placeholder="Votre adresse e-mail"
-                            value={inputs.email}
-                            onChangeText={(value) => handleChangeEmail(value)}
-                            autoComplete="email"
-                            inputMode='email'
-                            isSubmitToggle={isSubmitToggle}
-                        />
-                        <InputField
-                            label="Mot de passe"
-                            placeholder="Votre mot de passe"
-                            value={inputs.password}
-                            onChangeText={(value) => setInputs(prev => ({ ...prev, password: value }))}
-                            secureTextEntry={true}
-                            isSubmitToggle={isSubmitToggle}
-                        />
-                        {globalError && <Text>Mauvaise adresse e-mail ou mot de passe.</Text>}
-                        <ButtonRegular text='Me connecter' onPress={() => handleConnected()} />
-                    </Card>
-                </View>
+                <Card label="Me connecter">
+                    <InputField
+                        label="Email"
+                        placeholder="Votre adresse e-mail"
+                        value={inputs.email}
+                        onChangeText={(value) => handleChangeEmail(value)}
+                        autoComplete="email"
+                        inputMode='email'
+                        isSubmitToggle={isSubmitToggle}
+                    />
+                    <InputField
+                        label="Mot de passe"
+                        placeholder="Votre mot de passe"
+                        value={inputs.password}
+                        onChangeText={(value) => setInputs(prev => ({ ...prev, password: value }))}
+                        secureTextEntry={true}
+                        isSubmitToggle={isSubmitToggle}
+                    />
+                    {globalError && <Text>Mauvaise adresse e-mail ou mot de passe.</Text>}
+                    <ButtonRegular text='Me connecter' onPress={() => handleConnected()} />
+                </Card>
                 <ButtonRegular
                     text='Créer mon compte'
                     type="buttonStroke"
@@ -101,15 +98,5 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-between',
         alignItems: "center"
-    },
-    signInContainer: {
-        width: "100%",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 4
-    },
-    signInContainer_title: {
-        width: "100%",
-
     }
 })
