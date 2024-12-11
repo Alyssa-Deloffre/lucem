@@ -1,4 +1,4 @@
-const URL = "http://192.168.1.135:3000";
+const URL = "http://10.9.0.229:3000";
 const QUENTIN_URL = "http://10.9.1.146:3000";
 
 export { URL, QUENTIN_URL };
