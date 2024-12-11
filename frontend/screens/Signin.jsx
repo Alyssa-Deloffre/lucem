@@ -12,6 +12,7 @@ import InputField from "../components/inputs/InputField"
 import { checkEmail } from '../modules/checkConnectionInputs';
 import { QUENTIN_URL } from '../data/globalVariables';
 import Card from '../components/Card';
+import MainContainer from '../components/MainContainer';
 
 
 const connectPatient = async (email, password) => {
@@ -54,34 +55,35 @@ export default function SigninScreen({ navigation }) {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <Text>
-                Me connecter
-            </Text>
-            <Card>
-                <InputField
-                    label="Email"
-                    placeholder="Votre adresse e-mail"
-                    value={inputs.email}
-                    onChangeText={(value) => handleChangeEmail(value)}
-                    autoComplete="email"
-                    inputMode='email'
-                    isSubmitToggle={isSubmitToggle}
-                />
-                <InputField
-                    label="Mot de passe"
-                    placeholder="Votre mot de passe"
-                    value={inputs.password}
-                    onChangeText={(value) => setInputs(prev => ({ ...prev, password: value }))}
-                    secureTextEntry={true}
-                    isSubmitToggle={isSubmitToggle}
-                />
-                {globalError && <Text>Mauvaise adresse e-mail ou mot de passe.</Text>}
-                <ButtonRegular text='Me connecter' onPress={() => handleConnected()} />
-            </Card>
-
-            <ButtonRegular text='Créer mon compte' onPress={() => navigation.navigate('Signup')} />
-        </SafeAreaView>
+        <MainContainer>
+            <View style={styles.container}>
+                <Text>
+                    Me connecter
+                </Text>
+                <Card>
+                    <InputField
+                        label="Email"
+                        placeholder="Votre adresse e-mail"
+                        value={inputs.email}
+                        onChangeText={(value) => handleChangeEmail(value)}
+                        autoComplete="email"
+                        inputMode='email'
+                        isSubmitToggle={isSubmitToggle}
+                    />
+                    <InputField
+                        label="Mot de passe"
+                        placeholder="Votre mot de passe"
+                        value={inputs.password}
+                        onChangeText={(value) => setInputs(prev => ({ ...prev, password: value }))}
+                        secureTextEntry={true}
+                        isSubmitToggle={isSubmitToggle}
+                    />
+                    {globalError && <Text>Mauvaise adresse e-mail ou mot de passe.</Text>}
+                    <ButtonRegular text='Me connecter' onPress={() => handleConnected()} />
+                </Card>
+                <ButtonRegular text='Créer mon compte' type="buttonStroke" onPress={() => navigation.navigate('Signup')} />
+            </View>
+        </MainContainer>
     )
 }
 

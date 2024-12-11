@@ -3,7 +3,7 @@ import { COLOR_PURPLE } from "../data/styleGlobal";
 
 export default function Card({ children }) {
     return (
-        
+
         <View style={styles.card}>
             {children}
         </View>
