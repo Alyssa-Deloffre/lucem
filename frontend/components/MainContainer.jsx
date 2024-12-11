@@ -6,7 +6,9 @@ export default function MainContainer({ children }) {
     return (
         <View style={styles.main}>
             <SafeAreaView style={styles.safeArea}>
-                {children}
+                <View style={styles.contentContainer}>
+                    {children}
+                </View>
             </SafeAreaView>
             <Svg xmlns="http://www.w3.org/2000/svg" style={styles.svg} width="389" height="290" viewBox="0 0 389 290">
                 <Path d="M0 163.59V290h390V0C293 221.484 111-40.366 0 163.59Z" />
@@ -23,7 +25,12 @@ const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
         position: "relative",
-        zIndex: 2
+        zIndex: 2,
+
+    },
+    contentContainer: {
+        flex: 1,
+        padding: 24,
     },
     svg: {
         fill: COLOR_PURPLE[200],
