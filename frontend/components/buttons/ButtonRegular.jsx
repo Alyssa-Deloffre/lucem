@@ -6,7 +6,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
 
-export default function ButtonRegular({ text, onPress, type = 'buttonRegular' }) {
+export default function ButtonRegular({ text, onPress, type = 'buttonRegular', orientation = 'right' }) {
 
     let textType = ''
     if (type === 'buttonRegular' || type === 'buttonStroke') {
@@ -17,8 +17,9 @@ export default function ButtonRegular({ text, onPress, type = 'buttonRegular' })
 
     return (
         <TouchableOpacity onPress={onPress} style={[styles[type], styles.button]}>
+            {orientation === 'left' && <FontAwesome name='chevron-left'/>}
             <Text style={styles[textType]}>{text}</Text>
-            <FontAwesome name='chevron-right'/>
+            {orientation === 'right' && <FontAwesome name='chevron-right'/>}
         </TouchableOpacity>
     )
 }

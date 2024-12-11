@@ -87,7 +87,6 @@ export default function SignupPatient() {
 
     const handleOptional = () => {
         setCurrentScreen(currentScreen + 1)
-        console.log(birthdate)
     }
 
     const handleReturn = () => {
@@ -141,17 +140,8 @@ export default function SignupPatient() {
 
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
 
-                <View>
-                    <Text>Logo</Text>
-                </View>
-                <View>
-                    <Text>M'inscrire</Text>
-                </View>
-                <View>
-
+<>
                     {currentScreen === 1 &&
 
                         <>
@@ -192,12 +182,14 @@ export default function SignupPatient() {
                                 forcedErrorMessage={passwordError}
                                 isSubmitToggle={isSubmit}
                             />
-                            <ButtonRegular text='Suivant' onPress={() => setCurrentScreen(currentScreen + 1)} /></>
+                            <ButtonRegular text='Suivant' onPress={() => setCurrentScreen(currentScreen + 1)} />
+                            
+                            </>
                     }
 
 
                     {currentScreen === 2 && <>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent : 'center' }}>
                             <FontAwesome name='angle-left' size={50} onPress={() => handleLeftArrow()} />
                             <Image source={avatarImages[imageIndex]} style={{ height: 100, width: 100, marginHorizontal: 8 }} />
                             <FontAwesome name='angle-right' size={50} onPress={() => handleRightArrow()} />
@@ -218,21 +210,24 @@ export default function SignupPatient() {
                             initialDate={birthdate}
                             onDateChange={(date) => setBirthdate(date)}
                         />
-                        <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleStroke' />
+                        <View style={{flexDirection : 'row', justifyContent : 'space-around'}}>
+                        <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleStroke' orientation="left"/>
                         <ButtonRegular text='Passer' onPress={() => (setCurrentScreen(currentScreen + 1))} type='buttonLittleStroke' />
+                        </View>
                         <ButtonRegular text='Suivant' onPress={() => (setCurrentScreen(currentScreen + 1))} /></>
                     }
 
                     {currentScreen === 3 && <>
                         <InputField label='Votre psychologue' placeholder='Cherchez le nom de votre psychologue' />
-                        <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleRegular' />
-                        <ButtonRegular text='Valider' onPress={() => setIsModalVisible(true)} />
+                        <View style={{flexDirection : 'row', justifyContent : 'space-around'}}>
+                        <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleStroke' orientation="left"/>
+                        <ButtonRegular text='Passer' onPress={() => (setCurrentScreen(currentScreen + 1))} type='buttonLittleStroke' />
+                        </View>                        
+                        <ButtonRegular text='Valider' onPress={() => setCurrentScreen(currentScreen + 1)} />
                     </>}
-
-                    <Modal visible={isModalVisible}>
-                        <View style={styles.modalcontainer}>
+                    {currentScreen === 4 && <> 
                             <Text>Récapitulatif</Text>
-                            <Image source={avatarImages[imageIndex]} style={{ height: 100, width: 100, marginHorizontal: 8 }} />
+                            <Image source={avatarImages[imageIndex]} style={{ height: 100, width: 100, marginHorizontal: 8}} />
                             <View style={styles.input}>
                                 <Text style={styles.inputText}>Nom : {inputs.name}</Text>
                                 <Text style={styles.inputText}>Prénom : {inputs.firstname}</Text>
@@ -249,21 +244,17 @@ export default function SignupPatient() {
 
 
                             <ButtonRegular text='Confirmer inscription' onPress={() => validateSignUp()}/>
-                            <ButtonRegular text='Corriger les informations' onPress={() => setIsModalVisible(false)} />
-                        </View>
-                    </Modal>
-
-
-                </View>
-
-            </KeyboardAvoidingView>
+                            <ButtonRegular text='Corriger les informations' onPress={() => handleReturn()} type='buttonLittleStroke' orientation="left"/>
+                    </>}
+                    </>
 
 
 
 
 
 
-        </SafeAreaView>
+
+
     )
 }
 
@@ -274,11 +265,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    modalcontainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+
     input: {
         fontSize: 18,
         color: COLOR_PURPLE[1000],
