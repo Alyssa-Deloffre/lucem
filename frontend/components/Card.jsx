@@ -3,7 +3,7 @@ import { COLOR_PURPLE } from "../data/styleGlobal";
 
 export default function Card({ children }) {
     return (
-        
+
         <View style={styles.card}>
             {children}
         </View>
@@ -12,7 +12,7 @@ export default function Card({ children }) {
 
 const styles = StyleSheet.create({
     card: {
-        width: "90%",
+        width: "100%",
         paddingVertical: 24,
         paddingHorizontal: 16,
         backgroundColor: "white",

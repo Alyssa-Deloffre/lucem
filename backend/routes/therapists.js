@@ -78,7 +78,7 @@ router.post("/patients", (req, res) => {
     return;
   }
 
-  Therapist.findOne({ _id: req.body.token })
+  Therapist.findOne({ token : req.body.token })
     .populate("patients")
     .then((therapist) => {
       if (therapist) {
