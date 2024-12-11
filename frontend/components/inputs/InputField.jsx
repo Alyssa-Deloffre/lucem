@@ -14,7 +14,8 @@ export default function InputField({
     secureTextEntry = false,
     autoComplete,
     require = true,
-    isSubmitToggle
+    isSubmitToggle,
+    autoCapitalize
 }) {
     // État de l'input si focus pour le style
     const [isFocused, setIsFocused] = useState(false)
@@ -90,6 +91,7 @@ export default function InputField({
                 autoComplete={autoComplete}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
+                autoCapitalize={autoCapitalize}
             />
             {error && <Text style={styles.errorMessage}>{errorMsg}</Text>}
         </View>

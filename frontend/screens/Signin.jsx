@@ -7,7 +7,7 @@ import {
     KeyboardAvoidingView,
     Platform
 } from "react-native";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addUserToken } from '../reducers/user';
 import ButtonRegular from "../components/buttons/ButtonRegular";
 import InputField from "../components/inputs/InputField"
@@ -15,10 +15,13 @@ import { checkEmail } from '../modules/checkConnectionInputs';
 import { QUENTIN_URL } from '../data/globalVariables';
 import Card from '../components/Card';
 import MainContainer from '../components/MainContainer';
+import AutocompleteField from '../components/inputs/AutocompleteField';
+import { COLOR_RED } from '../data/styleGlobal';
 
 
-const connectPatient = async (email, password) => {
-    const resp = await fetch(`${QUENTIN_URL}/patients/signin`, {
+const connectUser = async (email, password, userType) => {
+    const routePath = userType === "psy" ? "therapists" : "patients"
+    const resp = await fetch(`${QUENTIN_URL}/${routePath}/signin`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email, password: password }),
@@ -30,6 +33,7 @@ const connectPatient = async (email, password) => {
 export default function SigninScreen({ navigation }) {
 
     const dispatch = useDispatch()
+    const userType = useSelector(state => state.user.type)
 
     const [inputs, setInputs] = useState({ email: "", password: "" })
     const [globalError, setGlobalError] = useState(false)
@@ -44,10 +48,10 @@ export default function SigninScreen({ navigation }) {
     const handleConnected = async () => {
         setIsSubmitToggle(!isSubmitToggle)
         if (inputs.email !== "" && inputs.password !== "" && checkEmail(inputs.email)) {
-            const response = await connectPatient(inputs.email, inputs.password)
+            const response = await connectUser(inputs.email, inputs.password, userType)
             if (response.result) {
                 dispatch(addUserToken(response.token))
-                navigation.navigate("PatientTabNavigator")
+                navigation.navigate(userType === "psy" ? "TherapistTabNavigator" : "PatientTabNavigator")
             } else {
                 setGlobalError(true)
             }
@@ -60,7 +64,7 @@ export default function SigninScreen({ navigation }) {
         <MainContainer>
             <View style={styles.container}>
                 <View>
-                    <Text>Logo</Text>
+                    <Text>{userType}</Text>
                 </View>
                 <Card label="Me connecter">
                     <InputField
@@ -71,6 +75,7 @@ export default function SigninScreen({ navigation }) {
                         autoComplete="email"
                         inputMode='email'
                         isSubmitToggle={isSubmitToggle}
+                        autoCapitalize="none"
                     />
                     <InputField
                         label="Mot de passe"
@@ -80,7 +85,7 @@ export default function SigninScreen({ navigation }) {
                         secureTextEntry={true}
                         isSubmitToggle={isSubmitToggle}
                     />
-                    {globalError && <Text>Mauvaise adresse e-mail ou mot de passe.</Text>}
+                    {globalError && <Text style={styles.errorMessage}>Mauvaise adresse e-mail ou mot de passe.</Text>}
                     <ButtonRegular text='Me connecter' onPress={() => handleConnected()} />
                 </Card>
                 <ButtonRegular
@@ -98,5 +103,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-between',
         alignItems: "center"
+    },
+    errorMessage: {
+        fontSize: 14,
+        color: COLOR_RED[600]
     }
 })
