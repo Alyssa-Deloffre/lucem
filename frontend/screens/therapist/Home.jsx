@@ -1,25 +1,33 @@
 import { SafeAreaView, Text, View, StyleSheet } from "react-native";
 import PatientButton from "../../components/buttons/PatientButton";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { MAYLEEN_URL } from "../../data/globalVariables";
 
 
 const getAllPatient = async (token) => {
-    const resp = await fetch('http://10.9.1.146:3000/therapists/patients', {
+    const resp = await fetch(`${MAYLEEN_URL}/therapists/patients`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: token }),
     })
     const json = await resp.json()
-    return json
+    return json.patients
 }
 
 export default function TherapistHomeScreen() {
 
+    const [patientList, setPatientList] = useState([]);
+
     useEffect(() => {
-        const patients = getAllPatient("6758550e498a3b26ff60cc1e")
+        (async() => {
+            const patients = await getAllPatient("vb-H2GnVCWyzdfhz6tVHHk6Xe-cr-p7a")
+            setPatientList(patients)
+        })()
     }, [])
 
-
+    const patientDisplay = patientList.map((patient, i) => {
+        return <PatientButton key={i} firstname={patient.firstname} name={patient.name}/>;
+    })
 
 
     return (
@@ -30,11 +38,7 @@ export default function TherapistHomeScreen() {
                 </Text>
             </View>
             <View style={styles.patientButton}>
-                <PatientButton text='Marie Dupot' type='patientButton' />
-                <PatientButton text='Marie Dupot' type='patientButton' />
-                <PatientButton text='Marie Dupot' type='patientButton' />
-                <PatientButton text='Marie Dupot' type='patientButton' />
-                <PatientButton text='Marie Dupot' type='patientButton' />
+                {patientDisplay}
             </View>
         </SafeAreaView>
     )
@@ -55,7 +59,6 @@ const styles = StyleSheet.create({
     },
     patientButton: {
         justifyContent: 'space-between',
-        height: 450,
 
     }
 })
