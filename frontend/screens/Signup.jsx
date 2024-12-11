@@ -1,6 +1,7 @@
 import React from "react"
 import { Text, View, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform } from "react-native"
 import SignupPatient from "../components/SignupPatient"
+import SignupTherapist from "../components/SignupTherapist"
 import ButtonRegular from "../components/buttons/ButtonRegular"
 
 import Card from "../components/Card"
@@ -16,7 +17,9 @@ export default function SignupScreen({navigation}) {
             </Text>
             <Card>
 
-            <SignupPatient/>
+            {/* <SignupPatient navigation={navigation}/> */}
+
+            <SignupTherapist/>            
             </Card>
             <ButtonRegular text='Retour à la connexion' onPress={() => navigation.navigate('Signin')} type='buttonLittleStroke' orientation="left"/>
         </SafeAreaView>

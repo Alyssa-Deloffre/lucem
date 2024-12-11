@@ -6,7 +6,7 @@ const patientSchema = mongoose.Schema({
     password : String,
     token : String,
     email : String,
-    phone : Number,
+    phone : String,
     therapist : { type :[mongoose.Schema.Types.ObjectId], ref: 'therapists'} || null,
     birthdate : Date,
     firstmeeting : Date,
