@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { Platform, Image, SafeAreaView, Text, TouchableOpacity, KeyboardAvoidingView, StyleSheet, TextInput, View, Modal } from 'react-native'
+import Autocomplete from 'react-native-autocomplete-input';
 
 //Import des composants
 import ButtonRegular from "./buttons/ButtonRegular"
@@ -54,9 +55,12 @@ export default function SignupPatient() {
     const [imageIndex, setImageIndex] = useState(1)
     const [isSubmit, setIsSubmit] = useState(false)
 
-    const [isModalVisible, setIsModalVisible] = useState(false)
+    const [therapistsList, setTherapistsList] = useState([])
+    const [filteredTherapistList, setFilteredTherapistList] = useState([])
+    const [selectedTherapist, setSelectedTherapist] = useState(null)
+    const [inputTherapist, setInputTherapist] = useState('')
 
-    useEffect(() => { }, [currentScreen])
+    useEffect(() => { getAllTherapists() }, [currentScreen])
 
 
     const handleMandatory = async () => {
@@ -135,6 +139,25 @@ export default function SignupPatient() {
 
     }
 
+    const getAllTherapists = async () => {
+            const resp = await fetch(`${URL}/patients/getalltherapists`)
+            const data = await resp.json()
+            setTherapistsList(data.data)
+            console.log(data)
+
+    }
+
+    const findTherapist = (query) => {
+
+        if (query) {
+            const regex = new RegExp(`${query.trim()}`, 'i');
+            setFilteredTherapistList(therapistsList.filter((item) => item.name.search(regex) >=0))
+            setInputTherapist(query)
+        } else {
+            setFilteredTherapistList([])
+        }
+
+    }
 
 
 
@@ -142,6 +165,7 @@ export default function SignupPatient() {
     return (
 
 <>
+
                     {currentScreen === 1 &&
 
                         <>
@@ -218,6 +242,33 @@ export default function SignupPatient() {
                     }
 
                     {currentScreen === 3 && <>
+                        <Autocomplete 
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        data={filteredTherapistList}
+                        onChangeText={(value) => {findTherapist(value) 
+                            
+                            console.log(value)}}
+                        placeholder="Cherche ton psy"
+                        flatListProps={{
+                            keyExtractor :(_, idx) => idx.toString(),
+                            renderItem : ({item}) => { 
+                                return <TouchableOpacity onPress={() => {setSelectedTherapist(item) 
+                                    setFilteredTherapistList([])
+                                    setInputTherapist('')
+                                    }}>
+                                        <Text>{item.name.toUpperCase()} {item.firstname} ({item.email})</Text>
+                                    </TouchableOpacity>
+                            },
+    
+                            }
+                            
+                        }
+                        value={inputTherapist}/>
+
+
+                            {selectedTherapist ? <Text>Votre psy : {selectedTherapist?.name.toUpperCase()} {selectedTherapist?.firstname}</Text> : <Text>Pas de psy sélectionné</Text>}
+
                         <InputField label='Votre psychologue' placeholder='Cherchez le nom de votre psychologue' />
                         <View style={{flexDirection : 'row', justifyContent : 'space-around'}}>
                         <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleStroke' orientation="left"/>
