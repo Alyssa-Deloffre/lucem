@@ -4,7 +4,7 @@ import {COLOR_GREEN} from "../../data/styleGlobal";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
-export default function FullButton({text, onPress, type='fullButton', illustration}){
+export default function FullButton({text, onPress, type, illustration}){
 
     return(
         <TouchableOpacity onPress={onPress} style={styles[type]}>

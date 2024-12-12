@@ -3,8 +3,9 @@ import MainContainer from "../../components/MainContainer";
 import FullButton from "../../components/buttons/FullButton";
 import { MAYLEEN_URL } from "../../data/globalVariables";
 import Card from "../../components/Card";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { COLOR_PURPLE } from "../../data/styleGlobal";
+import DateCheck from "../../components/DateCheck";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
 export default function HomeScreen() {
@@ -18,11 +19,14 @@ export default function HomeScreen() {
                     <Text style={styles.title}>
                         Marie
                     </Text>
-                </View>
-                <View style={styles.check}>
-                    <FontAwesome name='times-circle'/>
-                    <FontAwesome name='check-circle'/>
-                    <FontAwesome name='circle-thin'/>
+                </View> 
+                <View style={styles.dateCheck}>
+                <FontAwesome style={styles.chevronLeft} name='chevron-left'/>
+                    <DateCheck text='Lun' type='check'/>
+                    <DateCheck text='Mar' type='circle'/>
+                    <DateCheck text='Mer' type='today'/>
+                    <DateCheck text='Jeu' type='todayCheck'/>
+                    <DateCheck text='Ven' type='todayCheck'/>
                 </View>
                 <Card>
                 <View style={styles.text}>
@@ -47,6 +51,7 @@ export default function HomeScreen() {
                         text='Faire mon récap mood' 
                         illustration={require('../../assets/avatars/avatar1.png')}
                     />
+                    <Text style={styles.dateDuJour}>Aujourd'hui</Text>
                 </Card>
             </View>
         </MainContainer>
@@ -76,6 +81,11 @@ const styles = StyleSheet.create({
     text1: {
         flexDirection: 'row',
     },
+    chevronLeft:{
+        fontSize : 20,
+        color : 'grey',
+        paddingVertical : '20',
+    },
     textRecap: {
         fontWeight : 'bold',
     },
@@ -87,6 +97,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection : 'row',
+    },
+    dateCheck:{
+        flexDirection : 'row',
+        width : '80%',
+        justifyContent: 'space-between',
+    },
+    dateDuJour: {
+        color : COLOR_PURPLE[500],
+        fontWeight : 'bold',
+        width : '100%',
     }
 })
 
