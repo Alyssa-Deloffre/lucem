@@ -11,6 +11,16 @@ router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
+router.get('/getByEmail/:email', (req, res) => {
+  Therapist.findOne({ email: req.params.email }).then((patient) => {
+    if (patient) {
+      res.json({ result: true, data: patient });
+    } else {
+      res.json({ result: false, message: "User not found" });
+    }
+  });
+})
+
 //SIGN UP
 router.post("/signup", (req, res) => {
   if (

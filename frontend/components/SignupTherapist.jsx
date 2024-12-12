@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux'
-import { Platform, Image, SafeAreaView, Text, TouchableOpacity, KeyboardAvoidingView, StyleSheet, TextInput, View, Modal } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { Image, Text, StyleSheet, View } from 'react-native'
 
 //Import des composants
 import ButtonRegular from "./buttons/ButtonRegular"
@@ -10,8 +10,7 @@ import TextArea from "./inputs/TextArea";
 
 //Import des éléments de style
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { COLOR_GREEN, COLOR_PURPLE } from "../data/styleGlobal";
-
+import {COLOR_PURPLE } from "../data/styleGlobal";
 
 //Import des ressources
 import { avatarImages } from "../data/imageSource";
@@ -20,29 +19,13 @@ import { addUserToken } from "../reducers/user";
 
 
 
-const formatDate = (date) => {
-    if (date < new Date()) {
-        let day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
-
-        if (day < 10) day = "0" + day;
-        return `${day}/${month < 10 ? "0" + month : month}/${year}`;
-
-    } else {
-        return 'Date non valide'
-    }
-};
-
-
 export default function SignupTherapist({navigation}) {
     const [currentScreen, setCurrentScreen] = useState(1)
 
     const [inputs, setInputs] = useState({ firstname: '', name: '', email: '', password: '', passwordConfirmation: '' })
 
-
-    const [birthdate, setBirthdate] = useState(new Date())
     const [phone, setPhone] = useState('')
+    const [description, setDescription] = useState('')
 
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
@@ -52,23 +35,19 @@ export default function SignupTherapist({navigation}) {
     const [imageIndex, setImageIndex] = useState(1)
     const [isSubmit, setIsSubmit] = useState(false)
 
-    const [therapistsList, setTherapistsList] = useState([])
-    const [filteredTherapistList, setFilteredTherapistList] = useState([])
-    const [selectedTherapist, setSelectedTherapist] = useState(null)
-    const [inputTherapist, setInputTherapist] = useState('')
-
     const dispatch = useDispatch()
 
     useEffect(() => {  }, [currentScreen])
 
 
+    //Fonction pour gérer les inputs obligatoires pour l'inscription et les erreurs possibles
     const handleMandatory = async () => {
         setIsSubmit(!isSubmit)
         setEmailError('')
         setPasswordError('')
 
         if (inputs.firstname !== '' || inputs.name !== '' || inputs.email !== '' || inputs.password !== '' || inputs.passwordConfirmation !== '') {
-            const resp = await fetch(`${URL}/patients/getByEmail/${inputs.email}`)
+            const resp = await fetch(`${URL}/therapists/getByEmail/${inputs.email}`)
             const isUserExisting = await resp.json()
 
             if (isUserExisting.result) {
@@ -87,15 +66,12 @@ export default function SignupTherapist({navigation}) {
 
     }
 
-
-
+    //Revenir au screen précédent
     const handleReturn = () => {
         if (currentScreen > 1) {
             setCurrentScreen(currentScreen - 1)
         }
     }
-
-
 
     //Gestion des flèches du caroussel d'avatars
     const handleLeftArrow = () => {
@@ -116,54 +92,39 @@ export default function SignupTherapist({navigation}) {
         }
     }
 
+    //Fonction qui gère la validation de l'inscription et le POST en DB
     const validateSignUp = async () => {
 
-        const token = selectedTherapist ? selectedTherapist.token : ''
-        console.log(token)
-        const newPatient = {
+        const newTherapist = {
             firstname: inputs.firstname,
             name: inputs.name,
             email: inputs.email,
             password: inputs.password,
             phone : phone,
-            birthdate : birthdate,
-            therapist : token,
             avatar : avatarImages[imageIndex].toString(),
+            description : description,
         }
         console.log(newPatient)
-        const resp = await fetch(`${URL}/patients/signup`, {
+        const resp = await fetch(`${URL}/therapists/signup`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newPatient)
+            body: JSON.stringify(newTherapist)
         })
         const data = await resp.json()
-        console.log(data)
 
         if (data.result) {
             dispatch(addUserToken(data.token))
-            navigation.navigate('PatientTabNavigator')
-            
-
+            navigation.navigate('TherapistTabNavigator')
         } else {
             setValidationError('Une erreur a eu lieu lors de la création de compte, veuillez recommencer')
         }
-
-
     }
-
-
-
-
-
-
-
 
     return (
 
         <>
-
+            <Text>THERAPIST</Text>
             {currentScreen === 1 &&
-
                 <>
                     <InputField
                         label='Prénom'
@@ -203,18 +164,14 @@ export default function SignupTherapist({navigation}) {
                         isSubmitToggle={isSubmit}
                     />
                     <ButtonRegular text='Suivant' onPress={() => handleMandatory()} />
-
                 </>
             }
-
-
             {currentScreen === 2 && <>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                     <FontAwesome name='angle-left' size={50} onPress={() => handleLeftArrow()} />
                     <Image source={avatarImages[imageIndex]} style={{ height: 100, width: 100, marginHorizontal: 8 }} />
                     <FontAwesome name='angle-right' size={50} onPress={() => handleRightArrow()} />
                 </View>
-
                 <InputField
                     label='Téléphone'
                     placeholder='Téléphone'
@@ -224,27 +181,15 @@ export default function SignupTherapist({navigation}) {
                     forcedErrorMessage={phoneError}
                     require={false}
                 />
-
-
-                <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                    <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleStroke' orientation="left" />
-                    <ButtonRegular text='Passer' onPress={() => (setCurrentScreen(currentScreen + 1))} type='buttonLittleStroke' />
-                </View>
-                <ButtonRegular text='Suivant' onPress={() => (setCurrentScreen(currentScreen + 1))} /></>
-            }
-
-            {currentScreen === 3 && <>
-
-                <TextArea label='le bô textarea' onChangeText={() => console.log('ok')}/>
-                
-
+                <TextArea label='Description' onChangeText={(value) => setDescription(value)}/>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                     <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleStroke' orientation="left" />
                     <ButtonRegular text='Passer' onPress={() => (setCurrentScreen(currentScreen + 1))} type='buttonLittleStroke' />
                 </View>
                 <ButtonRegular text='Valider' onPress={() => setCurrentScreen(currentScreen + 1)} />
-            </>}
-            {currentScreen === 4 && <>
+                </>
+            }
+            {currentScreen === 3 && <>
                 <Text>Récapitulatif</Text>
                 <Image source={avatarImages[imageIndex]} style={{ height: 100, width: 100, marginHorizontal: 8 }} />
                 <View style={styles.input}>
@@ -253,31 +198,17 @@ export default function SignupTherapist({navigation}) {
                     <Text style={styles.inputText}>Adresse email : {inputs.email}</Text>
                 </View>
                 <View style={styles.input}>
-
-                    <Text style={styles.inputText}>Date de naissance : {formatDate(birthdate)}</Text>
                     <Text style={styles.inputText}>Numéro de téléphone : {phone}</Text>
                 </View>
 
                 <View style={styles.input}>
-                    <Text style={styles.inputText}>Mon psy : {selectedTherapist ? <>{selectedTherapist?.name} {selectedTherapist?.firstname}</> : <>Pas de psy sélectionné</>}</Text>
+                <Text style={styles.inputText}>Description : {description}</Text>
                 </View>
-
-
-
-
                 {validationError !== '' && validationError}
                 <ButtonRegular text='Confirmer inscription' onPress={() => validateSignUp()} />
                 <ButtonRegular text='Corriger les informations' onPress={() => handleReturn()} type='buttonLittleStroke' orientation="left" />
             </>}
         </>
-
-
-
-
-
-
-
-
     )
 }
 

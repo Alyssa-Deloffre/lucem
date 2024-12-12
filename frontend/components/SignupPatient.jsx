@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux'
-import { Platform, Image, SafeAreaView, Text, TouchableOpacity, KeyboardAvoidingView, StyleSheet, TextInput, View, Modal } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { Image, SafeAreaView, Text, TouchableOpacity, StyleSheet, View } from 'react-native'
 import Autocomplete from 'react-native-autocomplete-input';
 
 //Import des composants
@@ -11,7 +11,7 @@ import DatePickerInput from "./inputs/DatePickerInput";
 
 //Import des éléments de style
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { COLOR_GREEN, COLOR_PURPLE } from "../data/styleGlobal";
+import { COLOR_PURPLE } from "../data/styleGlobal";
 
 
 //Import des ressources
@@ -20,7 +20,7 @@ import { URL } from "../data/globalVariables";
 import { addUserToken } from "../reducers/user";
 
 
-
+//Fonction pour formater l'affichage de la date
 const formatDate = (date) => {
     if (date < new Date()) {
         let day = date.getDate();
@@ -62,7 +62,7 @@ export default function SignupPatient({navigation}) {
 
     useEffect(() => { getAllTherapists() }, [currentScreen])
 
-
+    //Fonction pour gérer les inputs obligatoires pour l'inscription et les erreurs possibles
     const handleMandatory = async () => {
         setIsSubmit(!isSubmit)
         setEmailError('')
@@ -83,9 +83,7 @@ export default function SignupPatient({navigation}) {
 
                 setCurrentScreen(currentScreen + 1)
             }
-
         }
-
     }
 
     const handleReturn = () => {
@@ -93,8 +91,6 @@ export default function SignupPatient({navigation}) {
             setCurrentScreen(currentScreen - 1)
         }
     }
-
-
 
     //Gestion des flèches du caroussel d'avatars
     const handleLeftArrow = () => {
@@ -115,6 +111,7 @@ export default function SignupPatient({navigation}) {
         }
     }
 
+    //Fonction qui gère la validation de l'inscription et le POST en DB
     const validateSignUp = async () => {
 
         const token = selectedTherapist ? selectedTherapist.token : ''
@@ -150,6 +147,7 @@ export default function SignupPatient({navigation}) {
 
     }
 
+    //Fonctions pour récupérer tous les psys, les trier et les afficher dans le input autocomplete
     const getAllTherapists = async () => {
         const resp = await fetch(`${URL}/patients/getalltherapists`)
         const data = await resp.json()
@@ -158,7 +156,6 @@ export default function SignupPatient({navigation}) {
     }
 
     const findTherapist = (query) => {
-
         if (query) {
             const regex = new RegExp(`${query.trim()}`, 'i');
             setFilteredTherapistList(therapistsList.filter((item) => item.name.search(regex) >= 0))
@@ -166,7 +163,6 @@ export default function SignupPatient({navigation}) {
         } else {
             setFilteredTherapistList([])
         }
-
     }
 
 
@@ -175,7 +171,7 @@ export default function SignupPatient({navigation}) {
     return (
 
         <>
-
+            <Text>PATIENT</Text>
             {currentScreen === 1 &&
 
                 <>
@@ -306,10 +302,6 @@ export default function SignupPatient({navigation}) {
                 <View style={styles.input}>
                     <Text style={styles.inputText}>Mon psy : {selectedTherapist ? <>{selectedTherapist?.name} {selectedTherapist?.firstname}</> : <>Pas de psy sélectionné</>}</Text>
                 </View>
-
-
-
-
                 {validationError !== '' && validationError}
                 <ButtonRegular text='Confirmer inscription' onPress={() => validateSignUp()} />
                 <ButtonRegular text='Corriger les informations' onPress={() => handleReturn()} type='buttonLittleStroke' orientation="left" />
