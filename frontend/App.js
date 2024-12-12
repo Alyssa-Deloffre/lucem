@@ -29,6 +29,9 @@ import PatientProfileScreen from "./screens/patient/Profile";
 import TherapistHomeScreen from "./screens/therapist/Home";
 import TherapistProfileScreen from "./screens/therapist/Profile";
 
+// SCREEN TO DELETE
+import Test from "./screens/Test";
+
 //Permet d'enregistrer les reducers
 const reducers = combineReducers({ user });
 
@@ -147,6 +150,7 @@ export default function App() {
               name="TherapistTabNavigator"
               component={TherapistTabNavigator}
             />
+            <Stack.Screen name="Test" component={Test}/>
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

@@ -14,8 +14,8 @@ export default function LandingScreen({ navigation }) {
         navigation.navigate('Signin')
     }
 
-    const navigateToSignup = () => {
-        navigation.navigate('Signup')
+    const navigateToTest = () => {
+        navigation.navigate('Test')
     }
 
 
@@ -45,7 +45,7 @@ export default function LandingScreen({ navigation }) {
                     <ButtonRegular text='Test patient' onPress={() => navigation.navigate("PatientTabNavigator")} type='buttonStroke' />
                 </View>
                 <View>
-                    <ButtonRegular text='Créer mon compte' onPress={() => navigateToSignup()} />
+                    <ButtonRegular text='Test' onPress={() => navigateToTest()} />
 
                 </View>
             </View>
