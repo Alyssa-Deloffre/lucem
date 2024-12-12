@@ -107,6 +107,8 @@ const styles = StyleSheet.create({
         color : COLOR_PURPLE[500],
         fontWeight : 'bold',
         width : '100%',
+        textAlign : 'right',
+        fontSize : 15,
     }
 })
 
