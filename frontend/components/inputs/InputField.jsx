@@ -15,7 +15,9 @@ export default function InputField({
     autoComplete,
     require = true,
     isSubmitToggle,
-    autoCapitalize
+    autoCapitalize,
+    onFocus,
+    onBlur,
 }) {
     // État de l'input si focus pour le style
     const [isFocused, setIsFocused] = useState(false)
@@ -68,6 +70,16 @@ export default function InputField({
         onChangeText(value)
     }
 
+    const handleFocus = () => {
+        setIsFocused(true)
+        onFocus && onFocus()
+    }
+
+    const handleBlur = () => {
+        setIsFocused(false)
+        onBlur && onBlur()
+    }
+
     // Style variable en fonction de l'état de l'input
     let inputStyle = styles.inputNotFocused
     if (isFocused) {
@@ -89,8 +101,8 @@ export default function InputField({
                 inputMode={inputMode}
                 secureTextEntry={secureTextEntry}
                 autoComplete={autoComplete}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
+                onFocus={() => handleFocus()}
+                onBlur={() => handleBlur()}
                 autoCapitalize={autoCapitalize}
             />
             {error && <Text style={styles.errorMessage}>{errorMsg}</Text>}

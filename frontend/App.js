@@ -70,8 +70,7 @@ const PatientTabNavigator = () => {
             borderTopLeftRadius: 16,
             borderTopRightRadius: 16,
             position: "absolute",
-            paddingBottom:
-              Platform.OS === "android" ? StatusBar.currentHeight : 0,
+            paddingBottom: Platform.OS === "android" ? 80 : 0,
           },
           // Personnalisation des onglets
           tabBarItemStyle: {
@@ -120,6 +119,7 @@ const TherapistTabNavigator = () => {
             borderTopLeftRadius: 16,
             borderTopRightRadius: 16,
             position: "absolute",
+            paddingBottom: Platform.OS === "android" ? 80 : 0,
           },
           // Personnalisation des onglets
           tabBarItemStyle: {
