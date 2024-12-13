@@ -15,7 +15,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 // let yesterday = new Date(date.getTime());
 // yesterday.setDate(date.getDate()-1)
 
-const DateFormat = (date = new Date()) => {
+const dateFormat = (date = new Date()) => {
 
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -28,20 +28,25 @@ const DateFormat = (date = new Date()) => {
 //     return new Intl.DateTimeFormat('fr-FR', options).format(date);
 //   };
 
-// const DateFormat = () => {
-//     const dates = [];
-//     const today = new Date();
-//     dates.push(DateFormat(today));
+const getDates = () => {
+    const dates = [];
+    let startDate = new Date();
 
-// for (let i=1; i<=5; i++){
-//     const previousDate = new Date(today);
-//     previousDate.setDate(today.getDate()-i);
-//     date.push(DateFormat(previousDate));
-// }
-// return dates;
-// };
+    for (let i = 0; i < 5; i++){
+        const newDay = new Date(startDate)
+        newDay.setDate(startDate.getDate() - i);
+        dates.unshift(dateFormat(newDay));
+    }
+    return dates;
+};
 
 export default function HomeScreen() {
+    const dates = getDates()
+console.log(dates)
+    const datesDisplay = dates.map((date, i) => {
+        return <DateCheck key={i} text={date} type='check'/> 
+    })
+    
     return (
         <MainContainer >
             <View style={styles.container}>
@@ -55,11 +60,7 @@ export default function HomeScreen() {
                 </View>
                 <View style={styles.dateCheck}>
                     <FontAwesome style={styles.chevronLeft} name='chevron-left' />
-                    <DateCheck text='Lun' type='check' />
-                    <DateCheck text='Mar' type='circle' />
-                    <DateCheck text='Mer' type='today' />
-                    <DateCheck text='Jeu' type='todayCheck' />
-                    <DateCheck text='Ven' type='todayCheck' />
+                    {datesDisplay}
                 </View>
                 <Card>
                     <View style={styles.text}>
@@ -84,7 +85,7 @@ export default function HomeScreen() {
                         text='Faire mon récap mood'
                         illustration={require('../../assets/avatars/avatar1.png')}
                     />
-                    <Text style={styles.dateDuJour}>{DateFormat()}</Text>
+                    <Text style={styles.dateDuJour}>{dateFormat()}</Text>
                 </Card>
             </View>
         </MainContainer>
