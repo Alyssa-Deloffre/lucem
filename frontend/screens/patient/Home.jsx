@@ -7,6 +7,39 @@ import { COLOR_PURPLE } from "../../data/styleGlobal";
 import DateCheck from "../../components/DateCheck";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
+// const getCurrentDate=() =>{
+//     let date = new Date().toLocaleString();
+//     return (date)
+// };
+
+// let yesterday = new Date(date.getTime());
+// yesterday.setDate(date.getDate()-1)
+
+const DateFormat = (date = new Date()) => {
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+  
+    return `${day}/${month}`;
+};
+
+// const formatDate = (date) => {
+//     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+//     return new Intl.DateTimeFormat('fr-FR', options).format(date);
+//   };
+
+// const DateFormat = () => {
+//     const dates = [];
+//     const today = new Date();
+//     dates.push(DateFormat(today));
+
+// for (let i=1; i<=5; i++){
+//     const previousDate = new Date(today);
+//     previousDate.setDate(today.getDate()-i);
+//     date.push(DateFormat(previousDate));
+// }
+// return dates;
+// };
 
 export default function HomeScreen() {
     return (
@@ -51,7 +84,7 @@ export default function HomeScreen() {
                         text='Faire mon récap mood'
                         illustration={require('../../assets/avatars/avatar1.png')}
                     />
-                    <Text style={styles.dateDuJour}>Aujourd'hui</Text>
+                    <Text style={styles.dateDuJour}>{DateFormat()}</Text>
                 </Card>
             </View>
         </MainContainer>
