@@ -6,37 +6,55 @@ import InputField from "./InputField";
 import ButtonRegular from "../buttons/ButtonRegular";
 
 
+ function formatTime(time) {
+     return time.toLocaleTimeString(navigator.language, {
+       hour: '2-digit',
+       minute:'2-digit'
+     });
+
+   }
 
 
-export default function TimePickerInput () {
-    const [date, setDate] = useState(new Date())
+export default function TimePickerInput ({
+value,
+onChange
+}) {
     const [isModalVisible, setIsModalVisible] = useState(false)
+
 
     return (
         <>
         <Text>TimePicker</Text>
 
-        <InputField inputMode="none" onFocus={() => setIsModalVisible(true)} onChangeText={() => setIsModalVisible(true)}/>
+        <InputField inputMode="none" value={formatTime(value)} onFocus={() => setIsModalVisible(true)} />
 
         <Modal visible={isModalVisible} >
             <View style={{flex : 1, justifyContent : 'center'}}>
 
         <DateTimePicker 
         mode='time'
-        value={new Date()}
+        value={value}
         textColor="red"
         accentColor="blue"
         display="spinner"
+        onChange={onChange}
+        locale='fr'
+
+
         />
-        <ButtonRegular text='truc'/>
+        <ButtonRegular text='Valider' onPress={() => setIsModalVisible(false)}/>
 
             </View>
         </Modal>
-        <DateTimePicker
+
+
+
+        
+        {/* <DateTimePicker
         mode='date'
         value={date}
         display="spinner"
-        />
+        /> */}
 
         
 

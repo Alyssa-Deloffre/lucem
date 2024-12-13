@@ -46,8 +46,8 @@ export default function DatePickerInput({
         <DateTimePicker
           value={date}
           mode={mode}
-          display="default"
           onChange={onChange}
+
         />
       )}
 
