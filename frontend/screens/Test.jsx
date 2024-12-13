@@ -3,6 +3,7 @@ import { Text, View, StyleSheet } from "react-native"
 import Card from '../components/Card';
 import MainContainer from "../components/MainContainer";
 import CustomSlider from "../components/CustomSlider";
+import TimePickerInput from "../components/inputs/TimePickerInput";
 import { sleepQuality } from "../data/sleep";
 import { useState } from "react";
 
@@ -17,6 +18,7 @@ export default function Test() {
         <Text>Page Test
         </Text>
         <CustomSlider data={sleepQuality} value={value} onValueChange={(test) => setValue(test)}/>
+        <TimePickerInput/>
             </Card>
         </MainContainer>
     )
