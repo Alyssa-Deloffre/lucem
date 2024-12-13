@@ -9,7 +9,7 @@ export default function DateCheck({text, type = 'circle'}){
     let dateCheck = <FontAwesome name='circle-thin' size={40}/>
 
     if (type === 'check'){
-        dateCheck = <FontAwesome name='check-circle' size={40} style={styles.check }/>
+        dateCheck = <FontAwesome name='check-circle' size={40} style={styles.check}/>
     }else if (type === 'today'){
         dateCheck = <FontAwesome name='circle-thin' size={40} style={styles.today}/> 
     }else{
