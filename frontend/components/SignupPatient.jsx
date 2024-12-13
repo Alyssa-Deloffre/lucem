@@ -16,7 +16,7 @@ import { COLOR_PURPLE } from "../data/styleGlobal";
 
 //Import des ressources
 import { avatarImages } from "../data/imageSource";
-import { URL } from "../data/globalVariables";
+import { QUENTIN_URL as URL } from "../data/globalVariables";
 import { addUserToken } from "../reducers/user";
 
 
@@ -36,7 +36,7 @@ const formatDate = (date) => {
 };
 
 
-export default function SignupPatient({navigation}) {
+export default function SignupPatient({ navigation }) {
     const [currentScreen, setCurrentScreen] = useState(1)
 
     const [inputs, setInputs] = useState({ firstname: '', name: '', email: '', password: '', passwordConfirmation: '' })
@@ -121,10 +121,10 @@ export default function SignupPatient({navigation}) {
             name: inputs.name,
             email: inputs.email,
             password: inputs.password,
-            phone : phone,
-            birthdate : birthdate,
-            therapist : token,
-            avatar : avatarImages[imageIndex].toString(),
+            phone: phone,
+            birthdate: birthdate,
+            therapist: token,
+            avatar: avatarImages[imageIndex].toString(),
         }
         console.log(newPatient)
         const resp = await fetch(`${URL}/patients/signup`, {
@@ -138,7 +138,7 @@ export default function SignupPatient({navigation}) {
         if (data.result) {
             dispatch(addUserToken(data.token))
             navigation.navigate('PatientTabNavigator')
-            
+
 
         } else {
             setValidationError('Une erreur a eu lieu lors de la création de compte, veuillez recommencer')
