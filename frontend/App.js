@@ -1,5 +1,11 @@
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { COLOR_GREEN, COLOR_PURPLE } from "./data/styleGlobal";
 
@@ -55,46 +61,50 @@ const Tab = createBottomTabNavigator();
 // Patient tabs
 const PatientTabNavigator = () => {
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        // Personnalisation de la tabBar
-        tabBarStyle: {
-          backgroundColor: "white",
-          borderTopLeftRadius: 16,
-          borderTopRightRadius: 16,
-          position: "absolute",
-        },
-        // Personnalisation des onglets
-        tabBarItemStyle: {
-          margin: 8,
-          padding: 8,
-          borderRadius: 8,
-          borderColor: "white",
-          borderWidth: 1,
-          height: 64,
-        },
-        tabBarActiveBackgroundColor: COLOR_GREEN[200],
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          // Personnalisation de la tabBar
+          tabBarStyle: {
+            backgroundColor: "white",
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
+            position: "absolute",
+            paddingBottom:
+              Platform.OS === "android" ? StatusBar.currentHeight : 0,
+          },
+          // Personnalisation des onglets
+          tabBarItemStyle: {
+            margin: 8,
+            padding: 8,
+            borderRadius: 8,
+            borderColor: "white",
+            borderWidth: 1,
+            height: 64,
+          },
+          tabBarActiveBackgroundColor: COLOR_GREEN[200],
 
-        // Personnalisation des icones
-        tabBarIcon: ({ color, size }) => {
-          let iconName = "";
+          // Personnalisation des icones
+          tabBarIcon: ({ color, size }) => {
+            let iconName = "";
 
-          if (route.name === "Accueil") {
-            iconName = "home";
-          } else if (route.name === "Profil") {
-            iconName = "user";
-          }
+            if (route.name === "Accueil") {
+              iconName = "home";
+            } else if (route.name === "Profil") {
+              iconName = "user";
+            }
 
-          return <FontAwesome name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: COLOR_GREEN[1000],
-        tabBarInactiveTintColor: COLOR_PURPLE[1000],
-        headerShown: false,
-      })}
-    >
-      <Tab.Screen name="Accueil" component={PatientHomeScreen} />
-      <Tab.Screen name="Profil" component={PatientProfileScreen} />
-    </Tab.Navigator>
+            return <FontAwesome name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: COLOR_GREEN[1000],
+          tabBarInactiveTintColor: COLOR_PURPLE[1000],
+          headerShown: false,
+        })}
+      >
+        <Tab.Screen name="Accueil" component={PatientHomeScreen} />
+        <Tab.Screen name="Profil" component={PatientProfileScreen} />
+      </Tab.Navigator>
+    </SafeAreaView>
   );
 };
 
