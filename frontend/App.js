@@ -34,6 +34,7 @@ import PatientProfileScreen from "./screens/patient/Profile";
 // Therapist screens
 import TherapistHomeScreen from "./screens/therapist/Home";
 import TherapistProfileScreen from "./screens/therapist/Profile";
+import TherapistPatientScreen from "./screens/therapist/Patient";
 
 // SCREEN TO DELETE
 import Test from "./screens/Test";
@@ -140,6 +141,8 @@ const TherapistTabNavigator = () => {
               iconName = "home";
             } else if (route.name === "Profil") {
               iconName = "user";
+            } else if (route.name === "Patient") {
+              iconName = "user";
             }
 
             return <FontAwesome name={iconName} size={size} color={color} />;
@@ -151,6 +154,8 @@ const TherapistTabNavigator = () => {
       >
         <Tab.Screen name="Accueil" component={TherapistHomeScreen} />
         <Tab.Screen name="Profil" component={TherapistProfileScreen} />
+        <Tab.Screen name="Patient" component={TherapistPatientScreen} />
+
       </Tab.Navigator>
     </SafeAreaView>
   );
