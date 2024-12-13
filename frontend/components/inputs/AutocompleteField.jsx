@@ -17,22 +17,22 @@ export default function AutocompleteField({
     const [showSuggestion, setShowSuggestion] = useState(false)
 
     useEffect(() => {
-        if (value.length > 0) {
-            setShowSuggestion(true)
-            return
-        }
-        setShowSuggestion(false)
+        setShowSuggestion(true)
     }, [value])
 
     const handleOnChangeText = (value) => {
         // -- Filtrer les suggestions
-        const valueWithoutAccent = value.normalize('NFD').replace(/\p{Diacritic}/gu, '')
-        const pattern = new RegExp(valueWithoutAccent, "gi")
-        const filterSuggestion = suggestionsArr.filter(suggestion => {
-            const suggestionWithoutAccent = suggestion.normalize('NFD').replace(/\p{Diacritic}/gu, '')
-            return pattern.test(suggestionWithoutAccent)
-        })
-        setSuggestions(filterSuggestion)
+        if (value.length > 0) {
+            const valueWithoutAccent = value.normalize('NFD').replace(/\p{Diacritic}/gu, '')
+            const pattern = new RegExp(valueWithoutAccent, "gi")
+            const filterSuggestion = suggestionsArr.filter(suggestion => {
+                const suggestionWithoutAccent = suggestion.normalize('NFD').replace(/\p{Diacritic}/gu, '')
+                return pattern.test(suggestionWithoutAccent)
+            })
+            setSuggestions(filterSuggestion)
+        } else {
+            setSuggestions(suggestionsArr)
+        }
 
 
         onChangeText(value)
