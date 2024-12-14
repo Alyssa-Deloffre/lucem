@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, TouchableOpacity, Platform, StyleSheet, Modal, TextInput } from "react-native";
+import { Text, View, StyleSheet, Modal } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { COLOR_GREEN, COLOR_PURPLE } from "../../data/styleGlobal";
 import InputField from "./InputField";

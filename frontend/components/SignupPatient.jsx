@@ -24,10 +24,10 @@ const formatDate = (date) => {
     let day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-  
+
     if (day < 10) day = "0" + day;
     return `${day}/${month < 10 ? "0" + month : month}/${year}`;
-  };
+};
 
 
 
@@ -151,7 +151,6 @@ export default function SignupPatient({ navigation }) {
 
 
 
-console.log(selectedTherapist)
 
 
     return (
@@ -183,6 +182,8 @@ console.log(selectedTherapist)
                         value={inputs.email}
                         forcedErrorMessage={emailError}
                         isSubmitToggle={isSubmit}
+                        autoCapitalize='none'
+
                     />
                     <InputField
                         label='Mot de passe'
@@ -190,6 +191,8 @@ console.log(selectedTherapist)
                         onChangeText={(value) => setInputs(prev => ({ ...prev, password: value }))}
                         value={inputs.password}
                         isSubmitToggle={isSubmit}
+                        autoCapitalize='none'
+
                     />
                     <InputField
                         placeholder='Confirmez votre mot de passe'
@@ -197,8 +200,10 @@ console.log(selectedTherapist)
                         value={inputs.passwordConfirmation}
                         forcedErrorMessage={passwordError}
                         isSubmitToggle={isSubmit}
+                        autoCapitalize='none'
+
                     />
-                    <ButtonRegular text='Suivant' onPress={() => setCurrentScreen(currentScreen + 1) } />
+                    <ButtonRegular text='Suivant' onPress={() => setCurrentScreen(currentScreen + 1)} />
 
                 </>
             }
@@ -269,7 +274,7 @@ console.log(selectedTherapist)
                 <View style={styles.input}>
                     <Text style={styles.inputText}>Mon psy : {selectedTherapist.fullname !== '' ? <>{selectedTherapist?.fullname}</> : <>Pas de psy sélectionné</>}</Text>
                 </View>
-                {validationError !== '' && validationError}
+                {validationError !== '' && <Text>{validationError}</Text>}
                 <ButtonRegular text='Confirmer inscription' onPress={() => validateSignUp()} />
                 <ButtonRegular text='Corriger les informations' onPress={() => handleReturn()} type='buttonLittleStroke' orientation="left" />
             </>}

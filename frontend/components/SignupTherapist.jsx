@@ -14,7 +14,7 @@ import {COLOR_PURPLE } from "../data/styleGlobal";
 
 //Import des ressources
 import { avatarImages } from "../data/imageSource";
-import { URL } from "../data/globalVariables";
+import { URL as URL } from "../data/globalVariables";
 import { addUserToken } from "../reducers/user";
 
 
@@ -104,7 +104,7 @@ export default function SignupTherapist({navigation}) {
             avatar : avatarImages[imageIndex].toString(),
             description : description,
         }
-        console.log(newPatient)
+        console.log(newTherapist)
         const resp = await fetch(`${URL}/therapists/signup`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -114,6 +114,7 @@ export default function SignupTherapist({navigation}) {
 
         if (data.result) {
             dispatch(addUserToken(data.token))
+            console.log(data.result)
             navigation.navigate('TherapistTabNavigator')
         } else {
             setValidationError('Une erreur a eu lieu lors de la création de compte, veuillez recommencer')
@@ -148,6 +149,8 @@ export default function SignupTherapist({navigation}) {
                         value={inputs.email}
                         forcedErrorMessage={emailError}
                         isSubmitToggle={isSubmit}
+                        autoCapitalize="none"
+
                     />
                     <InputField
                         label='Mot de passe'
@@ -155,6 +158,8 @@ export default function SignupTherapist({navigation}) {
                         onChangeText={(value) => setInputs(prev => ({ ...prev, password: value }))}
                         value={inputs.password}
                         isSubmitToggle={isSubmit}
+                        autoCapitalize="none"
+
                     />
                     <InputField
                         placeholder='Confirmez votre mot de passe'
@@ -162,6 +167,8 @@ export default function SignupTherapist({navigation}) {
                         value={inputs.passwordConfirmation}
                         forcedErrorMessage={passwordError}
                         isSubmitToggle={isSubmit}
+                        autoCapitalize="none"
+
                     />
                     <ButtonRegular text='Suivant' onPress={() => handleMandatory()} />
                 </>

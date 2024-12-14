@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Image, Keyboard, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import InputField from "./InputField";
 import { COLOR_GREEN, COLOR_PURPLE } from "../../data/styleGlobal";
 

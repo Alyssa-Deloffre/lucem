@@ -1,7 +1,6 @@
-import { View, StyleSheet, Text, KeyboardAvoidingView, Platform } from "react-native";
+import { Text } from "react-native";
 import { COLOR_PURPLE, COLOR_GREEN } from "../data/styleGlobal";
 import Slider from '@react-native-community/slider';
-import { useState } from "react";
 
 
 export default function CustomSlider ({

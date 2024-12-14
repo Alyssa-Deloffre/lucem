@@ -170,6 +170,8 @@ export default function App() {
             <Stack.Screen name="Landing" component={LandingScreen} />
             <Stack.Screen name="Signin" component={Signin} />
             <Stack.Screen name="Signup" component={Signup} />
+            <Stack.Screen name="TherapistPatientScreen" component={TherapistPatientScreen}/>
+            <Stack.Screen name="TherapistHomeScreen" component={TherapistHomeScreen}/>
             <Stack.Screen
               name="PatientTabNavigator"
               component={PatientTabNavigator}
