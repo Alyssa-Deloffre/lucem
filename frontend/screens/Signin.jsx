@@ -2,10 +2,7 @@ import { useState } from 'react';
 import {
     Text,
     View,
-    SafeAreaView,
     StyleSheet,
-    KeyboardAvoidingView,
-    Platform
 } from "react-native";
 import { useDispatch, useSelector } from 'react-redux';
 import { addUserToken } from '../reducers/user';
@@ -15,7 +12,6 @@ import { checkEmail } from '../modules/checkConnectionInputs';
 import { QUENTIN_URL } from '../data/globalVariables';
 import Card from '../components/Card';
 import MainContainer from '../components/MainContainer';
-import AutocompleteField from '../components/inputs/AutocompleteField';
 import { COLOR_RED } from '../data/styleGlobal';
 
 

@@ -2,7 +2,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux'
 import { Image, SafeAreaView, Text, TouchableOpacity, StyleSheet, View } from 'react-native'
-//import Autocomplete from 'react-native-autocomplete-input';
 
 //Import des composants
 import ButtonRegular from "./buttons/ButtonRegular"
@@ -17,16 +16,17 @@ import { COLOR_PURPLE } from "../data/styleGlobal";
 
 //Import des ressources
 import { avatarImages } from "../data/imageSource";
-import { URL as URL } from "../data/globalVariables";
+import { QUENTIN_URL2 as URL } from "../data/globalVariables";
 import { addUserToken } from "../reducers/user";
+import UserAutocomplete from "./inputs/UserAutocomplete";
 
 
-// //Fonction pour formater l'affichage de la date
-// const formatDate = (date) => {
-//     if (date < new Date()) {
-//         let day = date.getDate();
-//         const month = date.getMonth() + 1;
-//         const year = date.getFullYear();
+//Fonction pour formater l'affichage de la date
+const formatDate = (date) => {
+    if (date < new Date()) {
+        let day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
 
 //         if (day < 10) day = "0" + day;
 //         return `${day}/${month < 10 ? "0" + month : month}/${year}`;
@@ -55,9 +55,11 @@ export default function SignupPatient({ navigation }) {
     const [isSubmit, setIsSubmit] = useState(false)
 
     const [therapistsList, setTherapistsList] = useState([])
-    const [filteredTherapistList, setFilteredTherapistList] = useState([])
-    const [selectedTherapist, setSelectedTherapist] = useState(null)
-    const [inputTherapist, setInputTherapist] = useState('')
+    // const [filteredTherapistList, setFilteredTherapistList] = useState([])
+    const [selectedTherapist, setSelectedTherapist] = useState({ photo: "", fullname: "", token: "" })
+    // const [inputTherapist, setInputTherapist] = useState(null)
+
+    console.log(selectedTherapist)
 
     const dispatch = useDispatch()
 
@@ -72,7 +74,6 @@ export default function SignupPatient({ navigation }) {
         if (inputs.firstname !== '' || inputs.name !== '' || inputs.email !== '' || inputs.password !== '' || inputs.passwordConfirmation !== '') {
             const resp = await fetch(`${URL}/patients/getByEmail/${inputs.email}`)
             const isUserExisting = await resp.json()
-            console.log(isUserExisting)
 
             if (isUserExisting.result) {
                 setEmailError('Cet email est déjà utilisé')
@@ -152,20 +153,22 @@ export default function SignupPatient({ navigation }) {
     //Fonctions pour récupérer tous les psys, les trier et les afficher dans le input autocomplete
     const getAllTherapists = async () => {
         const resp = await fetch(`${URL}/patients/getalltherapists`)
-        const data = await resp.json()
-        setTherapistsList(data.data)
-
+        const json = await resp.json()
+        console.log(json)
+        setTherapistsList(json.data.map(therapist => {
+            return { photo: therapist.avatar, fullname: therapist.firstname + " " + therapist.name, token: therapist.token }
+        }))
     }
 
-    const findTherapist = (query) => {
-        if (query) {
-            const regex = new RegExp(`${query.trim()}`, 'i');
-            setFilteredTherapistList(therapistsList.filter((item) => item.name.search(regex) >= 0))
-            setInputTherapist(query)
-        } else {
-            setFilteredTherapistList([])
-        }
-    }
+    // const findTherapist = (query) => {
+    //     if (query) {
+    //         const regex = new RegExp(`${query.trim()}`, 'i');
+    //         setFilteredTherapistList(therapistsList.filter((item) => item.name.search(regex) >= 0))
+    //         setInputTherapist(query)
+    //     } else {
+    //         setFilteredTherapistList([])
+    //     }
+    // }
 
 
 
@@ -250,14 +253,6 @@ export default function SignupPatient({ navigation }) {
             }
 
             {currentScreen === 3 && <>
-                <AutocompleteField
-                label='Votre psychologue'
-                placeholder='Cherchez votre psychologue'
-                defaultValue={}
-                
-                
-                />
-
                 {/* <Autocomplete
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -282,12 +277,20 @@ export default function SignupPatient({ navigation }) {
                     }
 
                     }
-                    value={inputTherapist} />
+                    value={inputTherapist} /> */}
+                <UserAutocomplete
+                    label="Mon psychologue"
+                    placeholder="Choisissez votre psychologue"
+                    value={selectedTherapist}
+                    onChangeText={(value) => setSelectedTherapist(value)}
+                    users={therapistsList}
+                    require={false}
+                />
 
 
-                {selectedTherapist ? <Text>Votre psy : {selectedTherapist?.name.toUpperCase()} {selectedTherapist?.firstname}</Text> : <Text>Pas de psy sélectionné</Text>} */}
+                {/* {selectedTherapist ? <Text>Votre psy : {selectedTherapist?.name.toUpperCase()} {selectedTherapist?.firstname}</Text> : <Text>Pas de psy sélectionné</Text>} */}
 
-                <InputField label='Votre psychologue' placeholder='Cherchez le nom de votre psychologue' />
+                {/* <InputField label='Votre psychologue' placeholder='Cherchez le nom de votre psychologue' /> */}
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                     <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleStroke' orientation="left" />
                     <ButtonRegular text='Passer' onPress={() => (setCurrentScreen(currentScreen + 1))} type='buttonLittleStroke' />
@@ -309,7 +312,7 @@ export default function SignupPatient({ navigation }) {
                 </View>
 
                 <View style={styles.input}>
-                    <Text style={styles.inputText}>Mon psy : {selectedTherapist ? <>{selectedTherapist?.name} {selectedTherapist?.firstname}</> : <>Pas de psy sélectionné</>}</Text>
+                    <Text style={styles.inputText}>Mon psy : {selectedTherapist ? <>{selectedTherapist?.fullname}</> : <>Pas de psy sélectionné</>}</Text>
                 </View>
                 {validationError !== '' && validationError}
                 <ButtonRegular text='Confirmer inscription' onPress={() => validateSignUp()} />
