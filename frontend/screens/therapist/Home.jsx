@@ -36,7 +36,7 @@ export default function TherapistHomeScreen({navigation}) {
     })
 
     const goToPatient = (patientdata) => {
-        navigation.navigate('TherapistPatientScreen', { data : patientdata})
+        navigation.navigate('Patient', { data : patientdata})
 
     }
     return (

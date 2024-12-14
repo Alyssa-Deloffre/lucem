@@ -11,7 +11,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { avatarImages } from "../../data/imageSource"
 import { formatBirthdate } from '../../modules/dateAndTimeFunctions'
 
-export default function TherapistPatientScreen({ navigation, route }) {
+export default function Patient({ navigation, route }) {
 
 
     const [patientInfos, setPatientInfos] = useState({})
@@ -32,7 +32,7 @@ export default function TherapistPatientScreen({ navigation, route }) {
     }, [route.params.data.token])
 
     const returnToHome = () => {
-        navigation.navigate('TherapistHomeScreen')
+        navigation.navigate('TherapistTabNavigator')
     }
     
     const buttonStyle = (name) => {
