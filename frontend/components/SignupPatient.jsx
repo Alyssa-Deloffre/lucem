@@ -127,6 +127,7 @@ export default function SignupPatient({ navigation }) {
             body: JSON.stringify(newPatient)
         })
         const data = await resp.json()
+        console.log(data)
 
         if (data.result) {
             dispatch(addUserToken(data.token))
@@ -192,6 +193,7 @@ export default function SignupPatient({ navigation }) {
                         value={inputs.password}
                         isSubmitToggle={isSubmit}
                         autoCapitalize='none'
+                        autoComplete={false}
 
                     />
                     <InputField
@@ -201,6 +203,7 @@ export default function SignupPatient({ navigation }) {
                         forcedErrorMessage={passwordError}
                         isSubmitToggle={isSubmit}
                         autoCapitalize='none'
+                        autoComplete={false}
 
                     />
                     <ButtonRegular text='Suivant' onPress={() => setCurrentScreen(currentScreen + 1)} />

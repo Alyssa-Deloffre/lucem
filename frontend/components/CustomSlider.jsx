@@ -21,6 +21,7 @@ export default function CustomSlider ({
         minimumValue={0}
         maximumValue={data.length - 1}
         onValueChange={onValueChange}
+        value={2}
         step={1}
         />
         <Text style={{textAlign : 'center', fontSize : 16}}>{data[value].text}</Text>

@@ -4,28 +4,19 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { COLOR_GREEN, COLOR_PURPLE } from "../../data/styleGlobal";
 import InputField from "./InputField";
 import ButtonRegular from "../buttons/ButtonRegular";
+import { formatTime } from "../../modules/dateAndTimeFunctions";
 
-
-function formatTime(time) {
-    return time.toLocaleTimeString(navigator.language, {
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-
-}
 
 
 export default function TimePickerInput({
     value,
-    onChange
+    onChange,
+    minuteInterval=1
 }) {
     const [isModalVisible, setIsModalVisible] = useState(false)
 
-
     return (
         <>
-            <Text>TimePicker</Text>
-
             <InputField inputMode="none" value={formatTime(value)} onFocus={() => setIsModalVisible(true)} />
 
             <Modal visible={isModalVisible} >
@@ -39,32 +30,16 @@ export default function TimePickerInput({
                             display="spinner"
                             onChange={onChange}
                             locale='fr'
-
-
+                            minuteInterval={minuteInterval}
                         />
 
                         <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '100%'}}>
-
                         <ButtonRegular text='Retour' onPress={() => setIsModalVisible(false)} type='buttonLittleStroke' orientation="left"/>
-
                         <ButtonRegular text='Valider' onPress={() => setIsModalVisible(false)} />
                         </View>
                     </View>
                 </View>
             </Modal>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         </>
     )
@@ -81,7 +56,7 @@ const styles = StyleSheet.create({
     pickerContainer: {
         backgroundColor: "#FFF",
         borderRadius: 10,
-        padding: 20,
+        padding: 10,
         width: "90%",
         alignItems: "center",
     },

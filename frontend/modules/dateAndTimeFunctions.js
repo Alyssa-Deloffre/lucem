@@ -7,4 +7,11 @@ const formatBirthdate = (date) => {
     return `${day}/${month < 10 ? "0" + month : month}/${year}`;
 };
 
-export {formatBirthdate}
+const formatTime = (time) => {
+    return time.toLocaleTimeString(navigator.language, {
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+}
+export {formatBirthdate, formatTime}

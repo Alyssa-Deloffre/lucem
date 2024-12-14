@@ -18,7 +18,7 @@ const formatDate = (date) => {
 export default function DatePickerInput({
   value,
   onChange,
-  label
+  label,
 }) {
 
   const [isModalVisible, setIsModalVisible] = useState(false)

@@ -31,6 +31,7 @@ import Signup from "./screens/Signup";
 import PatientHomeScreen from "./screens/patient/Home";
 import PatientExchangesScreen from "./screens/patient/Exchanges";
 import PatientProfileScreen from "./screens/patient/Profile";
+import SleepFormScreen from "./screens/patient/SleepForm";
 // Therapist screens
 import TherapistHomeScreen from "./screens/therapist/Home";
 import TherapistProfileScreen from "./screens/therapist/Profile";
@@ -170,6 +171,7 @@ export default function App() {
             <Stack.Screen name="Landing" component={LandingScreen} />
             <Stack.Screen name="Signin" component={Signin} />
             <Stack.Screen name="Signup" component={Signup} />
+            <Stack.Screen name="SleepForm" component={SleepFormScreen}/>
             {/* <Stack.Screen name="TherapistPatientScreen" component={TherapistPatientScreen}/> */}
             <Stack.Screen
               name="PatientTabNavigator"
