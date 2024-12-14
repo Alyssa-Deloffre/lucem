@@ -153,8 +153,8 @@ const TherapistTabNavigator = () => {
         })}
       >
         <Tab.Screen name="Accueil" component={TherapistHomeScreen} />
-        <Tab.Screen name="Profil" component={TherapistProfileScreen} />
         <Tab.Screen name="Patient" component={TherapistPatientScreen} />
+        <Tab.Screen name="Profil" component={TherapistProfileScreen} />
 
       </Tab.Navigator>
     </SafeAreaView>
