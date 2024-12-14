@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, Platform, StyleSheet, Modal } from "react
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { COLOR_GREEN, COLOR_PURPLE } from "../../data/styleGlobal";
 import ButtonRegular from "../buttons/ButtonRegular";
+import InputField from "./InputField";
 
 const formatDate = (date) => {
   let day = date.getDate();
@@ -13,96 +14,44 @@ const formatDate = (date) => {
   return `${day}/${month < 10 ? "0" + month : month}/${year}`;
 };
 
+
 export default function DatePickerInput({
-  label,
-  mode = "date",
-  onDateChange,
-  initialDate = new Date(),
+  value,
+  onChange
 }) {
-  const [date, setDate] = useState(initialDate); 
-  const [show, setShow] = useState(false);
 
-  const onChange = (event, selectedDate) => {
-    if (Platform.OS === "android") {
-      setShow(false);
-    }
-    if (selectedDate) {
-      setDate(selectedDate);
-      onDateChange && onDateChange(selectedDate);
-    }
-  };
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
-  return (
-    <View style={styles.inputContainer}>
-      {label && <Text style={styles.label}>{label}</Text>}
+  return <>
+    <Text>DatePicker</Text>
+    <InputField inputMode="none" value={formatDate(value)} onFocus={() => setIsModalVisible(true)} />
 
-      <TouchableOpacity onPress={() => setShow(true)}>
-        <View style={styles.input}>
-          <Text style={styles.inputText}>{formatDate(date)}</Text>
-        </View>
-      </TouchableOpacity>
+    <Modal visible={isModalVisible} >
+      <View style={styles.modalOverlay}>
+        <View style={styles.pickerContainer}>
 
-      {Platform.OS === "android" && show && (
-        <DateTimePicker
-          value={date}
-          mode={mode}
-          onChange={onChange}
+          <DateTimePicker
+            mode='date'
+            value={value}
+            textColor={COLOR_PURPLE[1000]}
+            display="spinner"
+            onChange={onChange}
+            locale='fr'
 
-        />
-      )}
 
-      {Platform.OS === "ios" && (
-        <Modal
-          transparent={true}
-          animationType="slide"
-          visible={show}
-        >
-          <View style={styles.modalOverlay}>
-            <View style={styles.pickerContainer}>
-              <DateTimePicker
-                value={date}
-                mode={mode}
-                display="default"
-                onChange={onChange}
-                accentColor={COLOR_PURPLE[500]}
-                style={{width : '100%'}}
-                locale='fr'
-                />
+          />
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
 
-              <ButtonRegular text='Confirmer'
-              onPress={() => setShow(false)}
-              />
-            </View>
+            <ButtonRegular text='Retour' onPress={() => setIsModalVisible(false)} type='buttonLittleStroke' orientation="left" />
+            <ButtonRegular text='Valider' onPress={() => setIsModalVisible(false)} />
           </View>
-        </Modal>
-      )}
-    </View>
-  );
-}
+        </View>
+      </View>
+    </Modal>
 
+  </>
+}
 const styles = StyleSheet.create({
-  inputContainer: {
-    marginBottom: 15,
-    width: "100%",
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: COLOR_PURPLE[1000],
-    marginBottom: 5,
-  },
-  input: {
-    fontSize: 18,
-    color: COLOR_PURPLE[1000],
-    borderWidth: 1,
-    borderRadius: 8,
-    width: "100%",
-    padding: 12,
-  },
-  inputText: {
-    fontSize: 16,
-    color: COLOR_PURPLE[1000],
-  },
   modalOverlay: {
     flex: 1,
     justifyContent: "center",
@@ -116,6 +65,6 @@ const styles = StyleSheet.create({
     width: "90%",
     alignItems: "center",
   },
+})
 
 
-});

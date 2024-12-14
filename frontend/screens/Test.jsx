@@ -11,7 +11,7 @@ import { useState } from "react";
 export default function Test() {
     const [value, setValue] = useState(0)
     const [time, setTime] = useState(new Date())
-    console.log(time.toISOString())
+    const [date, setDate] = useState(new Date())
 
 
 
@@ -24,7 +24,7 @@ export default function Test() {
 
         <TimePickerInput value={time} onChange={(event, selectedDate) => setTime(selectedDate)}/>
 
-        <DatePickerInput />
+        <DatePickerInput value={date} onChange={(event, selectedDate) => setDate(selectedDate)}/>
             </Card>
         </MainContainer>
     )

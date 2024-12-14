@@ -2,12 +2,13 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux'
 import { Image, SafeAreaView, Text, TouchableOpacity, StyleSheet, View } from 'react-native'
-import Autocomplete from 'react-native-autocomplete-input';
+//import Autocomplete from 'react-native-autocomplete-input';
 
 //Import des composants
 import ButtonRegular from "./buttons/ButtonRegular"
 import InputField from "./inputs/InputField";
 import DatePickerInput from "./inputs/DatePickerInput";
+import AutocompleteField from "./inputs/AutocompleteField";
 
 //Import des éléments de style
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -16,24 +17,24 @@ import { COLOR_PURPLE } from "../data/styleGlobal";
 
 //Import des ressources
 import { avatarImages } from "../data/imageSource";
-import { QUENTIN_URL as URL } from "../data/globalVariables";
+import { URL as URL } from "../data/globalVariables";
 import { addUserToken } from "../reducers/user";
 
 
-//Fonction pour formater l'affichage de la date
-const formatDate = (date) => {
-    if (date < new Date()) {
-        let day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
+// //Fonction pour formater l'affichage de la date
+// const formatDate = (date) => {
+//     if (date < new Date()) {
+//         let day = date.getDate();
+//         const month = date.getMonth() + 1;
+//         const year = date.getFullYear();
 
-        if (day < 10) day = "0" + day;
-        return `${day}/${month < 10 ? "0" + month : month}/${year}`;
+//         if (day < 10) day = "0" + day;
+//         return `${day}/${month < 10 ? "0" + month : month}/${year}`;
 
-    } else {
-        return 'Date non valide'
-    }
-};
+//     } else {
+//         return 'Date non valide'
+//     }
+// };
 
 
 export default function SignupPatient({ navigation }) {
@@ -213,7 +214,7 @@ export default function SignupPatient({ navigation }) {
                         forcedErrorMessage={passwordError}
                         isSubmitToggle={isSubmit}
                     />
-                    <ButtonRegular text='Suivant' onPress={() => handleMandatory()} />
+                    <ButtonRegular text='Suivant' onPress={() => setCurrentScreen(currentScreen + 1) } />
 
                 </>
             }
@@ -238,8 +239,8 @@ export default function SignupPatient({ navigation }) {
 
                 <DatePickerInput
                     label="Date de naissance"
-                    initialDate={birthdate}
-                    onDateChange={(date) => setBirthdate(date)}
+                    value={birthdate}
+                    onDateChange={(event, date) => setBirthdate(date)}
                 />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                     <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleStroke' orientation="left" />
@@ -249,7 +250,15 @@ export default function SignupPatient({ navigation }) {
             }
 
             {currentScreen === 3 && <>
-                <Autocomplete
+                <AutocompleteField
+                label='Votre psychologue'
+                placeholder='Cherchez votre psychologue'
+                defaultValue={}
+                
+                
+                />
+
+                {/* <Autocomplete
                     autoCapitalize="none"
                     autoCorrect={false}
                     data={filteredTherapistList}
@@ -276,7 +285,7 @@ export default function SignupPatient({ navigation }) {
                     value={inputTherapist} />
 
 
-                {selectedTherapist ? <Text>Votre psy : {selectedTherapist?.name.toUpperCase()} {selectedTherapist?.firstname}</Text> : <Text>Pas de psy sélectionné</Text>}
+                {selectedTherapist ? <Text>Votre psy : {selectedTherapist?.name.toUpperCase()} {selectedTherapist?.firstname}</Text> : <Text>Pas de psy sélectionné</Text>} */}
 
                 <InputField label='Votre psychologue' placeholder='Cherchez le nom de votre psychologue' />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
