@@ -17,14 +17,14 @@ const formatDate = (date) => {
 
 export default function DatePickerInput({
   value,
-  onChange
+  onChange,
+  label
 }) {
 
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   return <>
-    <Text>DatePicker</Text>
-    <InputField inputMode="none" value={formatDate(value)} onFocus={() => setIsModalVisible(true)} />
+    <InputField label={label} inputMode="none" value={formatDate(value)} onFocus={() => setIsModalVisible(true)} />
 
     <Modal visible={isModalVisible} >
       <View style={styles.modalOverlay}>

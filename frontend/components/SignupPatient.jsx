@@ -7,7 +7,7 @@ import { Image, SafeAreaView, Text, TouchableOpacity, StyleSheet, View } from 'r
 import ButtonRegular from "./buttons/ButtonRegular"
 import InputField from "./inputs/InputField";
 import DatePickerInput from "./inputs/DatePickerInput";
-import AutocompleteField from "./inputs/AutocompleteField";
+//import AutocompleteField from "./inputs/AutocompleteField";
 
 //Import des éléments de style
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -16,25 +16,19 @@ import { COLOR_PURPLE } from "../data/styleGlobal";
 
 //Import des ressources
 import { avatarImages } from "../data/imageSource";
-import { QUENTIN_URL2 as URL } from "../data/globalVariables";
+import { URL as URL } from "../data/globalVariables";
 import { addUserToken } from "../reducers/user";
 import UserAutocomplete from "./inputs/UserAutocomplete";
 
-
-//Fonction pour formater l'affichage de la date
 const formatDate = (date) => {
-    if (date < new Date()) {
-        let day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
+    let day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+  
+    if (day < 10) day = "0" + day;
+    return `${day}/${month < 10 ? "0" + month : month}/${year}`;
+  };
 
-//         if (day < 10) day = "0" + day;
-//         return `${day}/${month < 10 ? "0" + month : month}/${year}`;
-
-//     } else {
-//         return 'Date non valide'
-//     }
-// };
 
 
 export default function SignupPatient({ navigation }) {
@@ -59,7 +53,6 @@ export default function SignupPatient({ navigation }) {
     const [selectedTherapist, setSelectedTherapist] = useState({ photo: "", fullname: "", token: "" })
     // const [inputTherapist, setInputTherapist] = useState(null)
 
-    console.log(selectedTherapist)
 
     const dispatch = useDispatch()
 
@@ -118,7 +111,6 @@ export default function SignupPatient({ navigation }) {
     const validateSignUp = async () => {
 
         const token = selectedTherapist ? selectedTherapist.token : ''
-        console.log(token)
         const newPatient = {
             firstname: inputs.firstname,
             name: inputs.name,
@@ -129,14 +121,12 @@ export default function SignupPatient({ navigation }) {
             therapist: token,
             avatar: avatarImages[imageIndex].toString(),
         }
-        console.log(newPatient)
         const resp = await fetch(`${URL}/patients/signup`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newPatient)
         })
         const data = await resp.json()
-        console.log(data)
 
         if (data.result) {
             dispatch(addUserToken(data.token))
@@ -154,23 +144,14 @@ export default function SignupPatient({ navigation }) {
     const getAllTherapists = async () => {
         const resp = await fetch(`${URL}/patients/getalltherapists`)
         const json = await resp.json()
-        console.log(json)
         setTherapistsList(json.data.map(therapist => {
             return { photo: therapist.avatar, fullname: therapist.firstname + " " + therapist.name, token: therapist.token }
         }))
     }
 
-    // const findTherapist = (query) => {
-    //     if (query) {
-    //         const regex = new RegExp(`${query.trim()}`, 'i');
-    //         setFilteredTherapistList(therapistsList.filter((item) => item.name.search(regex) >= 0))
-    //         setInputTherapist(query)
-    //     } else {
-    //         setFilteredTherapistList([])
-    //     }
-    // }
 
 
+console.log(selectedTherapist)
 
 
     return (
@@ -243,7 +224,7 @@ export default function SignupPatient({ navigation }) {
                 <DatePickerInput
                     label="Date de naissance"
                     value={birthdate}
-                    onDateChange={(event, date) => setBirthdate(date)}
+                    onChange={(event, newDate) => setBirthdate(newDate)}
                 />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                     <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleStroke' orientation="left" />
@@ -253,31 +234,7 @@ export default function SignupPatient({ navigation }) {
             }
 
             {currentScreen === 3 && <>
-                {/* <Autocomplete
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    data={filteredTherapistList}
-                    onChangeText={(value) => {
-                        findTherapist(value)
 
-                    }}
-                    placeholder="Cherche ton psy"
-                    flatListProps={{
-                        keyExtractor: (_, idx) => idx.toString(),
-                        renderItem: ({ item }) => {
-                            return <TouchableOpacity onPress={() => {
-                                setSelectedTherapist(item)
-                                setFilteredTherapistList([])
-                                setInputTherapist('')
-                            }}>
-                                <Text>{item.name.toUpperCase()} {item.firstname} ({item.email})</Text>
-                            </TouchableOpacity>
-                        },
-
-                    }
-
-                    }
-                    value={inputTherapist} /> */}
                 <UserAutocomplete
                     label="Mon psychologue"
                     placeholder="Choisissez votre psychologue"
@@ -288,9 +245,7 @@ export default function SignupPatient({ navigation }) {
                 />
 
 
-                {/* {selectedTherapist ? <Text>Votre psy : {selectedTherapist?.name.toUpperCase()} {selectedTherapist?.firstname}</Text> : <Text>Pas de psy sélectionné</Text>} */}
 
-                {/* <InputField label='Votre psychologue' placeholder='Cherchez le nom de votre psychologue' /> */}
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                     <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleStroke' orientation="left" />
                     <ButtonRegular text='Passer' onPress={() => (setCurrentScreen(currentScreen + 1))} type='buttonLittleStroke' />
@@ -312,20 +267,13 @@ export default function SignupPatient({ navigation }) {
                 </View>
 
                 <View style={styles.input}>
-                    <Text style={styles.inputText}>Mon psy : {selectedTherapist ? <>{selectedTherapist?.fullname}</> : <>Pas de psy sélectionné</>}</Text>
+                    <Text style={styles.inputText}>Mon psy : {selectedTherapist.fullname !== '' ? <>{selectedTherapist?.fullname}</> : <>Pas de psy sélectionné</>}</Text>
                 </View>
                 {validationError !== '' && validationError}
                 <ButtonRegular text='Confirmer inscription' onPress={() => validateSignUp()} />
                 <ButtonRegular text='Corriger les informations' onPress={() => handleReturn()} type='buttonLittleStroke' orientation="left" />
             </>}
         </>
-
-
-
-
-
-
-
 
     )
 }
