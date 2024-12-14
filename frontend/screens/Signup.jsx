@@ -1,6 +1,6 @@
 import React from "react"
-import { Text, View, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform } from "react-native"
-import { useDispatch, useSelector } from "react-redux"
+import { Text, StyleSheet, SafeAreaView } from "react-native"
+import { useSelector } from "react-redux"
 import SignupPatient from "../components/SignupPatient"
 import SignupTherapist from "../components/SignupTherapist"
 import ButtonRegular from "../components/buttons/ButtonRegular"
@@ -8,7 +8,7 @@ import ButtonRegular from "../components/buttons/ButtonRegular"
 import Card from "../components/Card"
 
 
-export default function SignupScreen({navigation}) {
+export default function SignupScreen({ navigation }) {
     const userType = useSelector(state => state.user.type)
     return (
         <SafeAreaView style={styles.container}>
@@ -19,11 +19,11 @@ export default function SignupScreen({navigation}) {
             </Text>
             <Card>
 
-            {userType === 'patient' && <SignupPatient navigation={navigation}/>}
+                {userType === 'patient' && <SignupPatient navigation={navigation} />}
 
-            {userType === 'psy' && <SignupTherapist navigation={navigation}/> }           
+                {userType === 'psy' && <SignupTherapist navigation={navigation} />}
             </Card>
-            <ButtonRegular text='Retour à la connexion' onPress={() => navigation.navigate('Signin')} type='buttonLittleStroke' orientation="left"/>
+            <ButtonRegular text='Retour à la connexion' onPress={() => navigation.navigate('Signin')} type='buttonLittleStroke' orientation="left" />
         </SafeAreaView>
     )
 }
