@@ -11,7 +11,7 @@ router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
-router.get('/getByEmail/:email', (req, res) => {
+router.get("/getByEmail/:email", (req, res) => {
   Therapist.findOne({ email: req.params.email }).then((patient) => {
     if (patient) {
       res.json({ result: true, data: patient });
@@ -19,7 +19,7 @@ router.get('/getByEmail/:email', (req, res) => {
       res.json({ result: false, message: "User not found" });
     }
   });
-})
+});
 
 //SIGN UP
 router.post("/signup", (req, res) => {
@@ -49,6 +49,7 @@ router.post("/signup", (req, res) => {
         phone: req.body.phone,
         avatar: req.body.avatar,
         token: uid2(32),
+        description: req.body.description,
       });
 
       newTherapist.save().then((newTher) => {
@@ -88,7 +89,7 @@ router.post("/patients", (req, res) => {
     return;
   }
 
-  Therapist.findOne({ token : req.body.token })
+  Therapist.findOne({ token: req.body.token })
     .populate("patients")
     .then((therapist) => {
       if (therapist) {

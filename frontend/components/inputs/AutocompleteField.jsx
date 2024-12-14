@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Keyboard, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import InputField from "./InputField";
 import { COLOR_GREEN, COLOR_PURPLE } from "../../data/styleGlobal";
 
@@ -10,18 +10,30 @@ export default function AutocompleteField({
     value,
     onChangeText,
     suggestionsArr,
-    require
+    require = true,
+    onlySuggestions = true
 }) {
 
     const [suggestions, setSuggestions] = useState(suggestionsArr)
     const [showSuggestion, setShowSuggestion] = useState(false)
+    const [loaded, setLoaded] = useState(false)
+    const [forcedErrorMessage, setForcedErrorMessage] = useState("")
 
     useEffect(() => {
-        setShowSuggestion(true)
+        if (loaded) {
+            setShowSuggestion(true)
+        }
     }, [value])
 
-    const handleOnChangeText = (value) => {
-        // -- Filtrer les suggestions
+    useEffect(() => {
+        if (suggestions.length === 0 && onlySuggestions) {
+            setForcedErrorMessage("Aucun élément trouvé")
+            return
+        }
+        setForcedErrorMessage("")
+    }, [suggestions, value])
+
+    const filterSuggestions = (value) => {
         if (value.length > 0) {
             const valueWithoutAccent = value.normalize('NFD').replace(/\p{Diacritic}/gu, '')
             const pattern = new RegExp(valueWithoutAccent, "gi")
@@ -33,14 +45,33 @@ export default function AutocompleteField({
         } else {
             setSuggestions(suggestionsArr)
         }
+    }
 
-
-        onChangeText(value)
+    const handleOnChangeText = (changeTextValue) => {
+        setLoaded(true)
+        // -- Filtrer les suggestions
+        filterSuggestions(changeTextValue)
+        onChangeText(changeTextValue)
     }
 
     const handleSuggestionPress = async (value) => {
         await onChangeText(value)
         setShowSuggestion(false)
+        Keyboard.dismiss()
+    }
+
+    const handleFocus = () => {
+        filterSuggestions(value)
+        setShowSuggestion(true)
+    }
+
+    const handleBlur = () => {
+        setShowSuggestion(false)
+        if (onlySuggestions && !suggestions.some(suggestion => suggestion === value)) {
+            setForcedErrorMessage("La valeur renseignée est invalide.")
+            return
+        }
+        setForcedErrorMessage("")
     }
 
     const suggestionDisplay = suggestions.map((suggestion, i) => {
@@ -58,11 +89,11 @@ export default function AutocompleteField({
                 placeholder={placeholder}
                 defaultValue={defaultValue}
                 value={value}
-                onChangeText={(value) => handleOnChangeText(value)}
-                forcedErrorMessage={suggestions.length === 0 ? "Aucun élément trouvé" : null}
+                onChangeText={(changeTextValue) => handleOnChangeText(changeTextValue)}
+                forcedErrorMessage={forcedErrorMessage}
                 require={require}
-                onBlur={() => setShowSuggestion(false)}
-                onFocus={() => setShowSuggestion(true)}
+                onFocus={() => handleFocus()}
+                onBlur={() => handleBlur()}
             />
             {showSuggestion && suggestions.length > 0 && (
                 <View style={styles.suggestions}>

@@ -16,7 +16,6 @@ export default function TherapistProfileScreen() {
                 value={autocomplete}
                 onChangeText={(value) => setAutocomplete(value)}
                 suggestionsArr={test}
-                require={false}
             />
 
         </MainContainer>
