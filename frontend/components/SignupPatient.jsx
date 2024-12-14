@@ -71,6 +71,7 @@ export default function SignupPatient({ navigation }) {
         if (inputs.firstname !== '' || inputs.name !== '' || inputs.email !== '' || inputs.password !== '' || inputs.passwordConfirmation !== '') {
             const resp = await fetch(`${URL}/patients/getByEmail/${inputs.email}`)
             const isUserExisting = await resp.json()
+            console.log(isUserExisting)
 
             if (isUserExisting.result) {
                 setEmailError('Cet email est déjà utilisé')
@@ -237,7 +238,6 @@ export default function SignupPatient({ navigation }) {
 
                 <DatePickerInput
                     label="Date de naissance"
-                    mode="date"
                     initialDate={birthdate}
                     onDateChange={(date) => setBirthdate(date)}
                 />
