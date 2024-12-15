@@ -68,7 +68,7 @@ export default function SleepFormScreen({ navigation }) {
 
 
     const displayNightWake = ({ item, index }) => (
-        <View style={styles.flatlist}>
+        <View style={styles.flatlist} key={index}>
             <Card >
                 <View style={{flexDirection : 'row', justifyContent :'space-between'}}>
                 <Text>Réveil nocturne #{index + 1}</Text>
