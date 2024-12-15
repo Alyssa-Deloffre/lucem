@@ -12,8 +12,6 @@ import { avatarImages } from "../../data/imageSource"
 import { formatBirthdate } from '../../modules/dateAndTimeFunctions'
 
 export default function Patient({ navigation, route }) {
-
-
     const [patientInfos, setPatientInfos] = useState({})
     const [menuItem, setMenuItem] = useState('Récap')
 

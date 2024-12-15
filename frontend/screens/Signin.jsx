@@ -84,11 +84,20 @@ export default function SigninScreen({ navigation }) {
                     {globalError && <Text style={styles.errorMessage}>Mauvaise adresse e-mail ou mot de passe.</Text>}
                     <ButtonRegular text='Me connecter' onPress={() => handleConnected()} />
                 </Card>
+
+                <View style={{flexDirection : 'row'}}>
+                <ButtonRegular
+                    text='Retour'
+                    type="buttonStroke"
+                    orientation='left'
+                    onPress={() => navigation.navigate('Landing')}
+                />
                 <ButtonRegular
                     text='Créer mon compte'
                     type="buttonStroke"
                     onPress={() => navigation.navigate('Signup')}
                 />
+                </View>
             </View>
         </MainContainer>
     )
