@@ -1,5 +1,6 @@
-import { Text, View, StyleSheet, Modal, FlatList } from "react-native"
+import { Text, View, StyleSheet, Modal, FlatList, ScrollView } from "react-native"
 import { useState, useEffect } from "react"
+import { useSelector } from "react-redux"
 
 import MainContainer from "../../components/MainContainer"
 import Card from "../../components/Card"
@@ -11,29 +12,32 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import { formatTime } from "../../modules/dateAndTimeFunctions"
 import { sleepQuality, wakeQuality } from "../../data/sleep"
+import { URL as URL } from "../../data/globalVariables"
 
-const getMidnight = (date) => {
-    date.setHours(0, 0, 0, 0);
+const setDefaultHour = (date, hours, minutes) => {
+    date.setHours(hours, minutes, 0, 0);
+    console.log(date)
     return date;
 };
 
 export default function SleepFormScreen({ navigation }) {
     const [infos, setInfos] = useState({
-        sleepTime: new Date(),
-        wakeTime: new Date(),
+        sleepTime: setDefaultHour(new Date(), 21, 0),
+        wakeTime: setDefaultHour(new Date(), 8, 0),
         nightWake: [],
-        sleepQuality: 0,
-        wakeQuality: 0,
+        sleepQuality: 2,
+        wakeQuality: 2,
         details: '',
     })
     const [nightWaking, setNightWaking] = useState({
         start: new Date(),
         end: '',
-        duration: getMidnight(new Date()),
+        duration: setDefaultHour(new Date(), 0, 0),
         type: '',
     })
     const [currentScreen, setCurrentScreen] = useState(1)
     const [isModalVisible, setIsModalVisible] = useState(false)
+    const patientToken = useSelector(state => state.user.token)
 
 
     const navigationButtons = () => {
@@ -43,14 +47,14 @@ export default function SleepFormScreen({ navigation }) {
         else {
             return <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <ButtonRegular text='Retour' onPress={() => currentScreen > 1 && setCurrentScreen(currentScreen - 1)} orientation="left" type='buttonStroke' />
-                <ButtonRegular text='Valider' onPress={() => setCurrentScreen(currentScreen + 1)} />
+                <ButtonRegular text='Valider' onPress={() => validateForm()} />
             </View>
         }
     }
 
 
-    console.log(infos)
-    console.log(nightWaking)
+    console.log({token : patientToken, data : infos})
+    // console.log(nightWaking)
 
     const addNightWake = () => {
         setInfos(prev => ({ ...prev, nightWake: [...prev.nightWake, nightWaking] }))
@@ -65,18 +69,35 @@ export default function SleepFormScreen({ navigation }) {
 
     const displayNightWake = ({ item, index }) => (
         <View style={styles.flatlist}>
-
             <Card >
                 <View style={{flexDirection : 'row', justifyContent :'space-between'}}>
                 <Text>Réveil nocturne #{index + 1}</Text>
                 <FontAwesome name='trash-o' size={20} onPress={() => deleteNightWake(index)}/>
-
                 </View>
                 <Text>Début : {formatTime(item.start)}</Text>
                 <Text>Durée : {formatTime(item.duration)}</Text>
             </Card>
         </View>
     )
+
+    const validateForm = async() => {
+        const resp = await fetch(`${URL}/events/addSleepGlobal`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                token : patientToken, date : new Date(), data : infos
+            })
+        })
+        const data = await resp.json()
+        if (data.result) {
+            console.log('form validé')
+            navigation.navigate('PatientTabNavigator')
+
+        } else {
+            console.log('problème')
+            navigation.navigate('PatientTabNavigator')
+        }
+    }
 
 
     return (
@@ -85,17 +106,13 @@ export default function SleepFormScreen({ navigation }) {
                 <View style={{
                     rowGap: 16,
                 }}>
-
                     {currentScreen === 1 &&
                         <>
-
-                            <Card>
-                                <Text>Heure de coucher</Text>
-                                <TimePickerInput value={infos.sleepTime} onChange={(event, selectedTime) => setInfos(prev => ({ ...prev, sleepTime: selectedTime }))} />
+                            <Card label='Heure de coucher'>
+                                <TimePickerInput value={infos.sleepTime} onChange={(event, selectedTime) => setInfos(prev => ({ ...prev, sleepTime: selectedTime.toLocaleTimeString() }))} />
                             </Card>
-                            <Card>
-                                <Text>Heure de lever</Text>
-                                <TimePickerInput value={infos.wakeTime} onChange={(event, selectedTime) => setInfos(prev => ({ ...prev, wakeTime: selectedTime }))} />
+                            <Card label='Heure de lever'>
+                                <TimePickerInput value={infos.wakeTime} onChange={(event, selectedTime) => setInfos(prev => ({ ...prev, wakeTime: selectedTime.toLocaleTimeString() }))} />
                             </Card>
                             <ButtonRegular text='Ajouter un réveil nocturne' orientation='plus-left' onPress={() => setIsModalVisible(true)} />
                             {
@@ -146,23 +163,16 @@ export default function SleepFormScreen({ navigation }) {
                                 <CustomSlider data={wakeQuality} value={infos.wakeQuality} onValueChange={(newValue) => setInfos(prev => ({ ...prev, wakeQuality: newValue }))} />
                             </Card>
                             <Card>
-                                <TextArea label='Avez-vous des détails à noter sur votre nuit ?' />
+                                <TextArea label='Avez-vous des détails à noter sur votre nuit ?' onChangeText={(newValue) => setInfos(prev => ({ ...prev, details : newValue }))} />
                             </Card>
                         </>
-
                     }
-
-
-
-
                 </View>
-
+            </View>
                 <View>
                     {navigationButtons()}
                     <ButtonRegular text="Retour à l'accueil" type='buttonLittleStroke' orientation="left" onPress={() => navigation.navigate('PatientTabNavigator')} />
                 </View>
-            </View>
-
         </MainContainer>
     )
 }
