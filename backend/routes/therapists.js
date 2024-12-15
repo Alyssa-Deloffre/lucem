@@ -5,34 +5,23 @@ const bcrypt = require("bcrypt");
 const { checkBody } = require("../modules/checkBody");
 require("../models/connection");
 const Therapist = require("../models/therapist");
-const Patient = require('../models/patient')
+const Patient = require("../models/patient");
 
-/* GET home page. */
-router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
-});
-
+// ----- Get theratpist by email
 router.get("/getByEmail/:email", (req, res) => {
-  Therapist.findOne({ email: req.params.email }).then((patient) => {
-    if (patient) {
-      res.json({ result: true, data: patient });
+  Therapist.findOne({ email: req.params.email }).then((therapist) => {
+    if (therapist) {
+      res.json({ result: true, data: therapist });
     } else {
       res.json({ result: false, message: "User not found" });
     }
   });
 });
 
-//SIGN UP
+// ----- SIGN UP
 router.post("/signup", (req, res) => {
   if (
-    !checkBody(req.body, [
-      "name",
-      "firstname",
-      "password",
-      "email",
-      // "phone",
-      "avatar",
-    ])
+    !checkBody(req.body, ["name", "firstname", "password", "email", "avatar"])
   ) {
     res.json({ result: false, error: "Missing or empty fields" });
     return;
@@ -54,7 +43,7 @@ router.post("/signup", (req, res) => {
       });
 
       newTherapist.save().then((newTher) => {
-        console.log('newTher ' + newTher)
+        console.log("newTher " + newTher);
         res.json({ result: true, token: newTher.token });
       });
     } else {
@@ -64,7 +53,7 @@ router.post("/signup", (req, res) => {
   });
 });
 
-//SIGN IN
+// ----- SIGN IN
 router.post("/signin", (req, res) => {
   if (!checkBody(req.body, ["email", "password"])) {
     res.json({ result: false, error: "Missing or empty fields" });
@@ -83,9 +72,8 @@ router.post("/signin", (req, res) => {
   });
 });
 
-//GET ALL PATIENTS
+// ----- GET ALL PATIENTS
 router.post("/patients", (req, res) => {
-  console.log(req.body);
   if (!checkBody(req.body, ["token"])) {
     res.json({ result: false, message: "Missing therapist token" });
     return;
@@ -102,9 +90,9 @@ router.post("/patients", (req, res) => {
     });
 });
 
-//GET ONE PATIENT
+// ----- GET ONE PATIENT
 router.get("/getPatient/:token", (req, res) => {
-  Patient.findOne({ token : req.params.token }).then((patient) => {
+  Patient.findOne({ token: req.params.token }).then((patient) => {
     if (patient) {
       res.json({ result: true, data: patient });
     } else {
