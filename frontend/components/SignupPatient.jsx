@@ -16,7 +16,7 @@ import { COLOR_PURPLE } from "../data/styleGlobal";
 
 //Import des ressources
 import { avatarImages } from "../data/imageSource";
-import { URL as URL } from "../data/globalVariables";
+import { QUENTIN_URL2 as URL } from "../data/globalVariables";
 import { addUserToken } from "../reducers/user";
 import UserAutocomplete from "./inputs/UserAutocomplete";
 
@@ -42,6 +42,7 @@ export default function SignupPatient({ navigation }) {
 
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
+    // https://stackoverflow.com/questions/38483885/regex-for-french-telephone-numbers
     const [phoneError, setPhoneError] = useState('')
     const [validationError, setValidationError] = useState('')
 
