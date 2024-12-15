@@ -31,7 +31,7 @@ export default function SigninScreen({ navigation }) {
     const dispatch = useDispatch()
     const userType = useSelector(state => state.user.type)
 
-    const [inputs, setInputs] = useState({ email: "", password: "" })
+    const [inputs, setInputs] = useState({ email: "truc@truc.com", password: "truc" })
     const [globalError, setGlobalError] = useState(false)
 
     // Afficher les erreurs des inputs quand on appuie sur le bouton
