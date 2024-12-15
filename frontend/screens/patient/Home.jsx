@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet } from "react-native"
 import MainContainer from "../../components/MainContainer";
 import FullButton from "../../components/buttons/FullButton";
-import { MAYLEEN_URL } from "../../data/globalVariables";
+import { URL as URL } from "../../data/globalVariables";
 import Card from "../../components/Card";
 import { COLOR_PURPLE } from "../../data/styleGlobal";
 import DateCheck from "../../components/DateCheck";
