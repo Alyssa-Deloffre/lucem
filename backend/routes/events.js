@@ -47,7 +47,7 @@ router.post("/addSleepGlobal", (req, res) => {
 });
 
 // ---- Retrouver tous les événements d'un patient par date
-router.post("/getPatientEvents", async (req, res) => {
+router.post("/getPatientEventsByDate", async (req, res) => {
   if (!checkBody(req.body, ["patientToken", "date"])) {
     res.json({ result: false, error: "Missing or empty fields" });
     return;

@@ -20,6 +20,7 @@ const getDates = (date) => {
         const newDay = new Date(startDate)
         newDay.setDate(startDate.getDate() - i);
         dates.unshift({ formattedDate: dateFormat(newDay), date: newDay });
+        
     }
     return dates;
 };
