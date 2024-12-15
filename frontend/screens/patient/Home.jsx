@@ -13,14 +13,24 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { dateFormat } from "../../modules/dateAndTimeFunctions";
 
 
-const getDates = (date) => {
+const getDates = async (date, token) => {
     const dates = [];
     let startDate = date;
     for (let i = 0; i < 5; i++) {
         const newDay = new Date(startDate)
         newDay.setDate(startDate.getDate() - i);
+        const resp = await fetch(`${URL}/events/getPatientEventsByDate`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                patientToken : token,
+                date : newDay
+            })
+        })
+        const data = await resp.json()
+        console.log(data)
         dates.unshift({ formattedDate: dateFormat(newDay), date: newDay });
-        
+
     }
     return dates;
 };
@@ -34,14 +44,20 @@ const isEqualDates = (date1, date2) => {
 export default function HomeScreen({ navigation }) {
     const [startDate, setStartDate] = useState(new Date())
     const [selectedDate, setSelectedDate] = useState(startDate)
-    const [arrDates, setArrDates] = useState(getDates(startDate))
+    const [arrDates, setArrDates] = useState([])
+
+    const patientToken = useSelector(state => state.user.token)
 
     useEffect(() => {
+        const fetchDates = async () => {
+            const dates = await getDates(startDate, patientToken); // attendre la résolution
+            setArrDates(dates); // Mettre à jour l'état avec le tableau de dates
+        };
+        fetchDates();
+        setSelectedDate(startDate);
+    }, [startDate]);
+    
 
-        setArrDates(getDates(startDate))
-        setSelectedDate(startDate)
-
-    }, [startDate])
 
 
 

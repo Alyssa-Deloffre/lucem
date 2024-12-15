@@ -64,21 +64,21 @@ router.post("/getPatientEventsByDate", async (req, res) => {
     });
     return;
   }
-
   const day = new Date(date).getDate();
   const month = new Date(date).getMonth();
   const year = new Date(date).getFullYear();
   const startDate = new Date(year, month, day);
   const endDate = new Date(year, month, day + 1);
-
+  console.log(patient._id)
   const events = await Event.find({
     user: patient._id,
     date: {
       $gte: startDate,
       $lt: endDate,
     },
-  }).populate("ref");
-
+  })
+  .populate("ref");
+  console.log('events : ', events)
   if (events.length > 0) {
     res.json({ result: true, events: events });
     return;
