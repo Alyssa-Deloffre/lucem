@@ -106,6 +106,7 @@ export default function InputField({
                 onFocus={() => handleFocus()}
                 onBlur={() => handleBlur()}
                 autoCapitalize={autoCapitalize}
+                placeholderTextColor={COLOR_PURPLE[1000] + "3F"}
             />
             {error && <Text style={styles.errorMessage}>{errorMsg}</Text>}
         </View>

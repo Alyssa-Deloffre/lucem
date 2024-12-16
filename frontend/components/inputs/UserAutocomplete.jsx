@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Image, Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Keyboard, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import InputField from "./InputField";
 import { COLOR_GREEN, COLOR_PURPLE } from "../../data/styleGlobal";
 
@@ -10,12 +10,9 @@ export default function UserAutocomplete({
     value,
     onChangeText,
     users,
-    require = true,
+    require = false,
     onlySuggestions = true
 }) {
-
-
-
     const [suggestions, setSuggestions] = useState(users)
     const [showSuggestion, setShowSuggestion] = useState(false)
     const [loaded, setLoaded] = useState(false)
@@ -89,7 +86,7 @@ export default function UserAutocomplete({
     })
 
     return (
-        <View>
+        <View style={styles.autocomplete}>
             <InputField
                 label={label}
                 placeholder={placeholder}
@@ -106,11 +103,13 @@ export default function UserAutocomplete({
                 </View>
             )}
         </View>
-
     )
 }
 
 const styles = StyleSheet.create({
+    autocomplete: {
+        width: "100%"
+    },
     suggestions: {
         backgroundColor: COLOR_GREEN[100],
         borderRadius: 8,
@@ -126,7 +125,6 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
     },
     user: {
-        flex: 1,
         flexDirection: "row",
         alignItems: "center",
         gap: 8

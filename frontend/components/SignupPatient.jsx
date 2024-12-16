@@ -207,7 +207,7 @@ export default function SignupPatient({ navigation }) {
                         autoComplete={false}
 
                     />
-                    <ButtonRegular text='Suivant' onPress={() => setCurrentScreen(currentScreen + 1)} />
+                    <ButtonRegular text='Suivant' onPress={() => handleMandatory()} />
 
                 </>
             }

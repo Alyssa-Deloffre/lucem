@@ -9,14 +9,15 @@ import Card from "../../components/Card"
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import { avatarImages } from "../../data/imageSource"
-import { formatBirthdate } from '../../modules/dateAndTimeFunctions'
+import { formatBirthdate, getUserAge } from '../../modules/dateAndTimeFunctions'
+import { COLOR_PURPLE } from "../../data/styleGlobal"
 
 export default function Patient({ navigation, route }) {
     const [patientInfos, setPatientInfos] = useState({})
     const [menuItem, setMenuItem] = useState('Récap')
 
     const getPatient = async (token) => {
-        const resp = await fetch(`${URL}/therapists/getPatient/${token}`)
+        const resp = await fetch(`${URL}/patients/getPatient/${token}`)
         const infos = await resp.json()
         return infos.data
     }
@@ -42,14 +43,27 @@ export default function Patient({ navigation, route }) {
 
     }
 
-    const contact = <>
-        <Text>Adresse e-mail</Text>
-        <FontAwesome name='envelope-o' />
-        <Text>{patientInfos.email}</Text>
-        <Text>Téléphone</Text>
-        <FontAwesome name='phone' />
-        <Text>{patientInfos.phone}</Text>
-    </>
+    const getPatientAge = getUserAge(patientInfos.birthdate)
+
+
+    const contact = (
+        <>
+            <View style={styles.infosBlock}>
+                <Text style={styles.infosBlock_label}>Adresse e-mail</Text>
+                <View style={styles.infosBlock_infos}>
+                    <FontAwesome style={styles.infosBlock_infos_texts} name='envelope-o' />
+                    <Text style={styles.infosBlock_infos_texts}>{patientInfos.email}</Text>
+                </View>
+            </View>
+            <View style={styles.infosBlock}>
+                <Text style={styles.infosBlock_label}>Téléphone</Text>
+                <View style={styles.infosBlock_infos}>
+                    <FontAwesome style={styles.infosBlock_infos_texts} name='phone' />
+                    <Text style={styles.infosBlock_infos_texts}>{patientInfos.phone}</Text>
+                </View>
+            </View>
+        </>
+    );
 
     const recap = <>
         <Text>Récap</Text>
@@ -68,7 +82,7 @@ export default function Patient({ navigation, route }) {
                     <View style={styles.header}>
                         <Image source={avatarImages[patientInfos.avatar]} style={{ width: 100, height: 100 }} />
                         <Text>{patientInfos.firstname} {patientInfos.name}</Text>
-                        <Text>{formatBirthdate(new Date(patientInfos.birthdate))}</Text>
+                        <Text>{getPatientAge} ans</Text>
                     </View>
                     <View style={styles.menu}>
                         <ButtonRegular text='Récap' type={buttonStyle('Récap')} orientation="none" onPress={() => setMenuItem('Récap')} />
@@ -108,5 +122,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         alignItems: 'center',
         width: '100%'
+    },
+    infosBlock_infos: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8,
+    },
+    infosBlock_infos_texts: {
+        fontSize: 20,
+        fontWeight: 600,
+        color: COLOR_PURPLE[600]
     }
 })
