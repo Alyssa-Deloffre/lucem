@@ -102,8 +102,7 @@ router.put("/addTherapist", async (req, res) => {
   if (!patient || !therapist) {
     res.json({
       result: false,
-      message:
-        "Therapist and/or patient token does not match registered user.",
+      message: "Therapist and/or patient token does not match registered user.",
     });
     return;
   }

@@ -9,7 +9,7 @@ import { addUserToken } from '../reducers/user';
 import ButtonRegular from "../components/buttons/ButtonRegular";
 import InputField from "../components/inputs/InputField"
 import { checkEmail } from '../modules/checkConnectionInputs';
-import { URL as URL } from '../data/globalVariables';
+import { URL } from '../data/globalVariables';
 import Card from '../components/Card';
 import MainContainer from '../components/MainContainer';
 import { COLOR_RED } from '../data/styleGlobal';
@@ -85,18 +85,18 @@ export default function SigninScreen({ navigation }) {
                     <ButtonRegular text='Me connecter' onPress={() => handleConnected()} />
                 </Card>
 
-                <View style={{flexDirection : 'row'}}>
-                <ButtonRegular
-                    text='Retour'
-                    type="buttonStroke"
-                    orientation='left'
-                    onPress={() => navigation.navigate('Landing')}
-                />
-                <ButtonRegular
-                    text='Créer mon compte'
-                    type="buttonStroke"
-                    onPress={() => navigation.navigate('Signup')}
-                />
+                <View style={{ flexDirection: 'row' }}>
+                    <ButtonRegular
+                        text='Retour'
+                        type="buttonStroke"
+                        orientation='left'
+                        onPress={() => navigation.navigate('Landing')}
+                    />
+                    <ButtonRegular
+                        text='Créer mon compte'
+                        type="buttonStroke"
+                        onPress={() => navigation.navigate('Signup')}
+                    />
                 </View>
             </View>
         </MainContainer>

@@ -10,16 +10,16 @@ import TextArea from "./inputs/TextArea";
 
 //Import des éléments de style
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import {COLOR_PURPLE } from "../data/styleGlobal";
+import { COLOR_PURPLE } from "../data/styleGlobal";
 
 //Import des ressources
 import { avatarImages } from "../data/imageSource";
-import { URL as URL } from "../data/globalVariables";
+import { URL } from "../data/globalVariables";
 import { addUserToken } from "../reducers/user";
 
 
 
-export default function SignupTherapist({navigation}) {
+export default function SignupTherapist({ navigation }) {
     const [currentScreen, setCurrentScreen] = useState(1)
 
     const [inputs, setInputs] = useState({ firstname: '', name: '', email: '', password: '', passwordConfirmation: '' })
@@ -37,7 +37,7 @@ export default function SignupTherapist({navigation}) {
 
     const dispatch = useDispatch()
 
-    useEffect(() => {  }, [currentScreen])
+    useEffect(() => { }, [currentScreen])
 
 
     //Fonction pour gérer les inputs obligatoires pour l'inscription et les erreurs possibles
@@ -100,9 +100,9 @@ export default function SignupTherapist({navigation}) {
             name: inputs.name,
             email: inputs.email,
             password: inputs.password,
-            phone : phone,
-            avatar : avatarImages[imageIndex].toString(),
-            description : description,
+            phone: phone,
+            avatar: avatarImages[imageIndex].toString(),
+            description: description,
         }
         console.log(newTherapist)
         const resp = await fetch(`${URL}/therapists/signup`, {
@@ -188,13 +188,13 @@ export default function SignupTherapist({navigation}) {
                     forcedErrorMessage={phoneError}
                     require={false}
                 />
-                <TextArea label='Description' onChangeText={(value) => setDescription(value)}/>
+                <TextArea label='Description' onChangeText={(value) => setDescription(value)} />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                     <ButtonRegular text='Retour' onPress={() => (handleReturn())} type='buttonLittleStroke' orientation="left" />
                     <ButtonRegular text='Passer' onPress={() => (setCurrentScreen(currentScreen + 1))} type='buttonLittleStroke' />
                 </View>
                 <ButtonRegular text='Valider' onPress={() => setCurrentScreen(currentScreen + 1)} />
-                </>
+            </>
             }
             {currentScreen === 3 && <>
                 <Text>Récapitulatif</Text>
@@ -209,7 +209,7 @@ export default function SignupTherapist({navigation}) {
                 </View>
 
                 <View style={styles.input}>
-                <Text style={styles.inputText}>Description : {description}</Text>
+                    <Text style={styles.inputText}>Description : {description}</Text>
                 </View>
                 {validationError !== '' && validationError}
                 <ButtonRegular text='Confirmer inscription' onPress={() => validateSignUp()} />

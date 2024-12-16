@@ -16,7 +16,7 @@ import { COLOR_PURPLE } from "../data/styleGlobal";
 
 //Import des ressources
 import { avatarImages } from "../data/imageSource";
-import { QUENTIN_URL2 as URL } from "../data/globalVariables";
+import { URL } from "../data/globalVariables";
 import { addUserToken } from "../reducers/user";
 import UserAutocomplete from "./inputs/UserAutocomplete";
 

@@ -12,7 +12,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import { formatTime } from "../../modules/dateAndTimeFunctions"
 import { sleepQuality, wakeQuality } from "../../data/sleep"
-import { URL as URL } from "../../data/globalVariables"
+import { URL } from "../../data/globalVariables"
 
 const setDefaultHour = (date, hours, minutes) => {
     date.setHours(hours, minutes, 0, 0);
@@ -53,7 +53,7 @@ export default function SleepFormScreen({ navigation }) {
     }
 
 
-    console.log({token : patientToken, data : infos})
+    console.log({ token: patientToken, data: infos })
     // console.log(nightWaking)
 
     const addNightWake = () => {
@@ -63,16 +63,16 @@ export default function SleepFormScreen({ navigation }) {
 
     const deleteNightWake = (nightWakeIndex) => {
         let newArr = infos.nightWake.filter((item, index) => index !== nightWakeIndex)
-        setInfos(prev => ({...prev, nightWake : newArr}))
+        setInfos(prev => ({ ...prev, nightWake: newArr }))
     }
 
 
     const displayNightWake = ({ item, index }) => (
         <View style={styles.flatlist}>
             <Card >
-                <View style={{flexDirection : 'row', justifyContent :'space-between'}}>
-                <Text>Réveil nocturne #{index + 1}</Text>
-                <FontAwesome name='trash-o' size={20} onPress={() => deleteNightWake(index)}/>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Text>Réveil nocturne #{index + 1}</Text>
+                    <FontAwesome name='trash-o' size={20} onPress={() => deleteNightWake(index)} />
                 </View>
                 <Text>Début : {formatTime(item.start)}</Text>
                 <Text>Durée : {formatTime(item.duration)}</Text>
@@ -80,12 +80,12 @@ export default function SleepFormScreen({ navigation }) {
         </View>
     )
 
-    const validateForm = async() => {
+    const validateForm = async () => {
         const resp = await fetch(`${URL}/events/addSleepGlobal`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                token : patientToken, date : new Date(), data : infos
+                token: patientToken, date: new Date(), data: infos
             })
         })
         const data = await resp.json()
@@ -163,16 +163,16 @@ export default function SleepFormScreen({ navigation }) {
                                 <CustomSlider data={wakeQuality} value={infos.wakeQuality} onValueChange={(newValue) => setInfos(prev => ({ ...prev, wakeQuality: newValue }))} />
                             </Card>
                             <Card>
-                                <TextArea label='Avez-vous des détails à noter sur votre nuit ?' onChangeText={(newValue) => setInfos(prev => ({ ...prev, details : newValue }))} />
+                                <TextArea label='Avez-vous des détails à noter sur votre nuit ?' onChangeText={(newValue) => setInfos(prev => ({ ...prev, details: newValue }))} />
                             </Card>
                         </>
                     }
                 </View>
             </View>
-                <View>
-                    {navigationButtons()}
-                    <ButtonRegular text="Retour à l'accueil" type='buttonLittleStroke' orientation="left" onPress={() => navigation.navigate('PatientTabNavigator')} />
-                </View>
+            <View>
+                {navigationButtons()}
+                <ButtonRegular text="Retour à l'accueil" type='buttonLittleStroke' orientation="left" onPress={() => navigation.navigate('PatientTabNavigator')} />
+            </View>
         </MainContainer>
     )
 }
