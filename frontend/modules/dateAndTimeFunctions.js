@@ -17,6 +17,7 @@ const dateFormat = (date) => {
 
 
 const formatTime = (time) => {
+    console.log('time : ', time)
     return time.toLocaleTimeString(navigator.language, {
         hour: '2-digit',
         minute: '2-digit'

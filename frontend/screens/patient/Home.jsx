@@ -28,17 +28,14 @@ const getDates = async (date, token) => {
             })
         })
         const data = await resp.json()
-        console.log(data)
-        dates.unshift({ formattedDate: dateFormat(newDay), date: newDay });
+        dates.unshift({ formattedDate: dateFormat(newDay), date: newDay, ...data });
 
     }
     return dates;
 };
 
 const isEqualDates = (date1, date2) => {
-
     return date1.getDay() === date2.getDay() && date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear()
-
 }
 
 export default function HomeScreen({ navigation }) {
@@ -50,8 +47,8 @@ export default function HomeScreen({ navigation }) {
 
     useEffect(() => {
         const fetchDates = async () => {
-            const dates = await getDates(startDate, patientToken); // attendre la résolution
-            setArrDates(dates); // Mettre à jour l'état avec le tableau de dates
+            const dates = await getDates(startDate, patientToken); 
+            setArrDates(dates); 
         };
         fetchDates();
         setSelectedDate(startDate);
@@ -64,7 +61,7 @@ export default function HomeScreen({ navigation }) {
     const datesDisplay = arrDates.map((date, i) => {
 
         return <TouchableOpacity key={i} onPress={() => setSelectedDate(date.date)}>
-            <DateCheck text={date.formattedDate} select={isEqualDates(date.date, selectedDate)} />
+            <DateCheck text={date.formattedDate} select={isEqualDates(date.date, selectedDate)} check={date.result}/>
         </TouchableOpacity>
     })
 
