@@ -15,9 +15,10 @@ async function getEvent(eventId) {
 }
 
 
-export default function EventRecap() {
+export default function EventRecap({navigation, route}) {
 
 const [infos, setInfos] = useState(null);
+const truc = route.params.data
 
 useEffect(() => {
     const setEvent = async () => {
@@ -26,7 +27,6 @@ useEffect(() => {
     }
     setEvent()
 }, [])
-
 
 
     return (

@@ -33,6 +33,7 @@ import PatientExchangesScreen from "./screens/patient/Exchanges";
 import PatientProfileScreen from "./screens/patient/Profile";
 import SleepFormScreen from "./screens/patient/SleepForm";
 import MoodFormScreen from "./screens/patient/MoodForm";
+import EventRecap from "./screens/patient/EventRecap";
 
 // Therapist screens
 import TherapistHomeScreen from "./screens/therapist/Home";
@@ -42,7 +43,6 @@ import TherapistPatientScreen from "./screens/therapist/Patient";
 // SCREEN TO DELETE
 import Test from "./screens/Test";
 
-import EventRecap from "./screens/patient/EventRecap";
 
 //Permet d'enregistrer les reducers
 const reducers = combineReducers({ user });
@@ -177,6 +177,7 @@ export default function App() {
             <Stack.Screen name="Signup" component={Signup} />
             <Stack.Screen name="SleepForm" component={SleepFormScreen}/>
             <Stack.Screen name="MoodForm" component={MoodFormScreen}/>
+            <Stack.Screen name="EventRecap" component={EventRecap}/>
             {/* <Stack.Screen name="TherapistPatientScreen" component={TherapistPatientScreen}/> */}
             <Stack.Screen
               name="PatientTabNavigator"
@@ -187,7 +188,6 @@ export default function App() {
               component={TherapistTabNavigator}
             />
             <Stack.Screen name="Test" component={Test} />
-            <Stack.Screen name="EventRecap" component={EventRecap} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
