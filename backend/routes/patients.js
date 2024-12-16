@@ -102,7 +102,8 @@ router.put("/addTherapist", async (req, res) => {
   if (!patient || !therapist) {
     res.json({
       result: false,
-      message: "Therapist and/or patient token does not match registered user.",
+      message:
+        "Therapist token and/or the patient token do not match an existing user",
     });
     return;
   }
@@ -130,13 +131,13 @@ router.put("/addTherapist", async (req, res) => {
   if (respPatient.modifiedCount + respTherapist.modifiedCount === 2) {
     res.json({
       result: true,
-      message: "Les comptes therapist et patient ont bien été liés",
+      message: "Therapist and patient accounts have been successfully linked",
     });
     return;
   }
   res.json({
     result: false,
-    message: "Les comptes therapist et/ou patient n'ont pas pu être liés",
+    message: "Therapist and/or patient accounts could not be linked",
   });
 });
 
@@ -162,7 +163,7 @@ router.put("/removeTherapist", async (req, res) => {
     res.json({
       result: false,
       message:
-        "Le token du therapist et/ou le token patient ne correspondent pas à un utilisateur existant.",
+        "Therapist token and/or the patient token do not match an existing user",
     });
     return;
   }
@@ -170,7 +171,7 @@ router.put("/removeTherapist", async (req, res) => {
   if (!patient.therapist.includes(therapist._id)) {
     res.json({
       result: false,
-      message: "Le patient et le therapist ne sont pas rattachés",
+      message: "Patient and the therapist are not linked",
     });
     return;
   }
@@ -190,13 +191,13 @@ router.put("/removeTherapist", async (req, res) => {
   if (respPatient.modifiedCount + respTherapist.modifiedCount === 2) {
     res.json({
       result: true,
-      message: "Les comptes therapist et patient ont étés déliés",
+      message: "Therapist and patient accounts have been unlinked",
     });
     return;
   }
   res.json({
     result: false,
-    message: "Les comptes therapist et/ou patient n'ont pas pu être déliés",
+    message: "Therapist and/or patient accounts could not be unlinked",
   });
 });
 

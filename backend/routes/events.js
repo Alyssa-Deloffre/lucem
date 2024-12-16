@@ -69,18 +69,35 @@ router.post("/getPatientEventsByDate", async (req, res) => {
   const year = new Date(date).getFullYear();
   const startDate = new Date(year, month, day);
   const endDate = new Date(year, month, day + 1);
-  console.log(patient._id)
+  console.log(patient._id);
   const events = await Event.find({
     user: patient._id,
     date: {
       $gte: startDate,
       $lt: endDate,
     },
-  })
-  .populate("ref");
-  console.log('events : ', events)
+  }).populate("ref");
+  console.log("events : ", events);
   if (events.length > 0) {
     res.json({ result: true, events: events });
+    return;
+  }
+  res.json({ result: false });
+});
+
+// ---- Retrouver un événement
+router.get("/getEvent/:eventId", async (req, res) => {
+  if (!checkBody(req.params, ["eventId"])) {
+    res.json({ result: false, error: "eventId param is missing" });
+    return;
+  }
+
+  const event = await Event.findById(req.params.eventId)
+    .populate("ref")
+    .populate("user");
+
+  if (event) {
+    res.json({ result: true, event: event });
     return;
   }
   res.json({ result: false });
