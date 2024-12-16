@@ -40,6 +40,8 @@ import TherapistPatientScreen from "./screens/therapist/Patient";
 // SCREEN TO DELETE
 import Test from "./screens/Test";
 
+import EventRecap from "./screens/patient/EventRecap";
+
 //Permet d'enregistrer les reducers
 const reducers = combineReducers({ user });
 
@@ -182,6 +184,7 @@ export default function App() {
               component={TherapistTabNavigator}
             />
             <Stack.Screen name="Test" component={Test} />
+            <Stack.Screen name="EventRecap" component={EventRecap} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

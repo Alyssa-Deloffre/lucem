@@ -37,7 +37,6 @@ export default function TherapistHomeScreen({ navigation }) {
 
     const goToPatient = (patientdata) => {
         navigation.navigate('Patient', { data: patientdata })
-
     }
     return (
         <MainContainer >
