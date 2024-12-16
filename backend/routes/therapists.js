@@ -5,13 +5,14 @@ const bcrypt = require("bcrypt");
 const { checkBody } = require("../modules/checkBody");
 require("../models/connection");
 const Therapist = require("../models/therapist");
+const Patient = require('../models/patient')
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
-router.get('/getByEmail/:email', (req, res) => {
+router.get("/getByEmail/:email", (req, res) => {
   Therapist.findOne({ email: req.params.email }).then((patient) => {
     if (patient) {
       res.json({ result: true, data: patient });
@@ -19,7 +20,7 @@ router.get('/getByEmail/:email', (req, res) => {
       res.json({ result: false, message: "User not found" });
     }
   });
-})
+});
 
 //SIGN UP
 router.post("/signup", (req, res) => {
@@ -29,7 +30,7 @@ router.post("/signup", (req, res) => {
       "firstname",
       "password",
       "email",
-      "phone",
+      // "phone",
       "avatar",
     ])
   ) {
@@ -49,9 +50,11 @@ router.post("/signup", (req, res) => {
         phone: req.body.phone,
         avatar: req.body.avatar,
         token: uid2(32),
+        description: req.body.description,
       });
 
       newTherapist.save().then((newTher) => {
+        console.log('newTher ' + newTher)
         res.json({ result: true, token: newTher.token });
       });
     } else {
@@ -88,7 +91,7 @@ router.post("/patients", (req, res) => {
     return;
   }
 
-  Therapist.findOne({ token : req.body.token })
+  Therapist.findOne({ token: req.body.token })
     .populate("patients")
     .then((therapist) => {
       if (therapist) {
@@ -97,6 +100,17 @@ router.post("/patients", (req, res) => {
       }
       res.json({ result: false, message: "No therapist found" });
     });
+});
+
+//GET ONE PATIENT
+router.get("/getPatient/:token", (req, res) => {
+  Patient.findOne({ token : req.params.token }).then((patient) => {
+    if (patient) {
+      res.json({ result: true, data: patient });
+    } else {
+      res.json({ result: false, message: "User not found" });
+    }
+  });
 });
 
 module.exports = router;

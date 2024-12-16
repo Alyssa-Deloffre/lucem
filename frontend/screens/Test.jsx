@@ -4,11 +4,14 @@ import Card from '../components/Card';
 import MainContainer from "../components/MainContainer";
 import CustomSlider from "../components/CustomSlider";
 import TimePickerInput from "../components/inputs/TimePickerInput";
+import DatePickerInput from "../components/inputs/DatePickerInput";
 import { sleepQuality } from "../data/sleep";
 import { useState } from "react";
 
 export default function Test() {
     const [value, setValue] = useState(0)
+    const [time, setTime] = useState(new Date())
+    const [date, setDate] = useState(new Date())
 
 
 
@@ -18,7 +21,10 @@ export default function Test() {
         <Text>Page Test
         </Text>
         <CustomSlider data={sleepQuality} value={value} onValueChange={(test) => setValue(test)}/>
-        <TimePickerInput/>
+
+        <TimePickerInput value={time} onChange={(event, selectedDate) => setTime(selectedDate)}/>
+
+        <DatePickerInput value={date} onChange={(event, selectedDate) => setDate(selectedDate)}/>
             </Card>
         </MainContainer>
     )

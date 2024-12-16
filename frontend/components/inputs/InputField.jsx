@@ -6,7 +6,7 @@ import { checkEmail } from "../../modules/checkConnectionInputs";
 export default function InputField({
     label,
     placeholder,
-    forcedErrorMessage,
+    forcedErrorMessage = "",
     value,
     onChangeText,
     defaultValue = "",
@@ -52,15 +52,17 @@ export default function InputField({
             setErrorMsg("Merci de compléter ce champ.")
             return
         }
-
         setError(false)
     }, [value, isSubmitToggle])
 
     // Si il existe une erreur forcée ou qu'elle est modifiée, on force l'erreur et on l'affiche
     useEffect(() => {
-        if (forcedErrorMessage && forcedErrorMessage !== "") {
+        if (forcedErrorMessage !== "") {
             setError(true)
             setErrorMsg(forcedErrorMessage)
+            return
+        } else if (!require) {
+            setError(false)
         }
     }, [forcedErrorMessage, value, isSubmitToggle])
 

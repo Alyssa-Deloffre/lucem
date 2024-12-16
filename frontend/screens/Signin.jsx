@@ -2,26 +2,22 @@ import { useState } from 'react';
 import {
     Text,
     View,
-    SafeAreaView,
     StyleSheet,
-    KeyboardAvoidingView,
-    Platform
 } from "react-native";
 import { useDispatch, useSelector } from 'react-redux';
 import { addUserToken } from '../reducers/user';
 import ButtonRegular from "../components/buttons/ButtonRegular";
 import InputField from "../components/inputs/InputField"
 import { checkEmail } from '../modules/checkConnectionInputs';
-import { QUENTIN_URL } from '../data/globalVariables';
+import { URL as URL } from '../data/globalVariables';
 import Card from '../components/Card';
 import MainContainer from '../components/MainContainer';
-import AutocompleteField from '../components/inputs/AutocompleteField';
 import { COLOR_RED } from '../data/styleGlobal';
 
 
 const connectUser = async (email, password, userType) => {
     const routePath = userType === "psy" ? "therapists" : "patients"
-    const resp = await fetch(`${QUENTIN_URL}/${routePath}/signin`, {
+    const resp = await fetch(`${URL}/${routePath}/signin`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email, password: password }),

@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
-import { Keyboard, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import InputField from "./InputField";
 import { COLOR_GREEN, COLOR_PURPLE } from "../../data/styleGlobal";
 
-export default function AutocompleteField({
+
+export default function UserAutocomplete({
     label,
     placeholder,
-    defaultValue,
     value,
     onChangeText,
-    suggestionsArr,
+    users,
     require = true,
     onlySuggestions = true
 }) {
 
-    const [suggestions, setSuggestions] = useState(suggestionsArr)
+
+
+    const [suggestions, setSuggestions] = useState(users)
     const [showSuggestion, setShowSuggestion] = useState(false)
     const [loaded, setLoaded] = useState(false)
     const [forcedErrorMessage, setForcedErrorMessage] = useState("")
@@ -37,13 +39,13 @@ export default function AutocompleteField({
         if (value.length > 0) {
             const valueWithoutAccent = value.normalize('NFD').replace(/\p{Diacritic}/gu, '')
             const pattern = new RegExp(valueWithoutAccent, "gi")
-            const filterSuggestion = suggestionsArr.filter(suggestion => {
-                const suggestionWithoutAccent = suggestion.normalize('NFD').replace(/\p{Diacritic}/gu, '')
+            const filterSuggestion = users.filter(suggestion => {
+                const suggestionWithoutAccent = suggestion.fullname.normalize('NFD').replace(/\p{Diacritic}/gu, '')
                 return pattern.test(suggestionWithoutAccent)
             })
             setSuggestions(filterSuggestion)
         } else {
-            setSuggestions(suggestionsArr)
+            setSuggestions(users)
         }
     }
 
@@ -75,9 +77,13 @@ export default function AutocompleteField({
     }
 
     const suggestionDisplay = suggestions.map((suggestion, i) => {
+        const { photo, fullname, token } = suggestion
         return (
             <TouchableOpacity key={i} onPress={() => handleSuggestionPress(suggestion)}>
-                <Text style={styles.suggestionText}>{suggestion}</Text>
+                <View style={styles.user}>
+                    <Image source={photo} style={styles.userImage} />
+                    <Text style={styles.userName}>{fullname}</Text>
+                </View>
             </TouchableOpacity>
         )
     })
@@ -87,8 +93,7 @@ export default function AutocompleteField({
             <InputField
                 label={label}
                 placeholder={placeholder}
-                defaultValue={defaultValue}
-                value={value}
+                value={value.fullname}
                 onChangeText={(changeTextValue) => handleOnChangeText(changeTextValue)}
                 forcedErrorMessage={forcedErrorMessage}
                 require={require}
@@ -111,6 +116,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         padding: 12,
         position: "absolute",
+        zIndex: 10000,
         width: "100%",
         top: "110%",
         gap: 12,
@@ -119,8 +125,20 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 5,
     },
-    suggestionText: {
+    user: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8
+    },
+    userImage: {
+        width: 50,
+        height: 50,
+        borderRadius: 1000,
+        backgroundColor: "gray"
+    },
+    userName: {
         fontSize: 18,
         color: COLOR_PURPLE[1000],
-    }
+    },
 })

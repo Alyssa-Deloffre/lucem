@@ -1,12 +1,15 @@
-import { SafeAreaView, Text, View, StyleSheet } from "react-native";
-import PatientButton from "../../components/buttons/PatientButton";
+import { SafeAreaView, Text, View, StyleSheet, FlatList } from "react-native";
 import { useEffect, useState } from "react";
-import { MAYLEEN_URL } from "../../data/globalVariables";
+import { useDispatch, useSelector } from 'react-redux';
+
+import { URL as URL } from "../../data/globalVariables";
 import MainContainer from "../../components/MainContainer";
+import PatientButton from "../../components/buttons/PatientButton";
+
 
 
 const getAllPatient = async (token) => {
-    const resp = await fetch(`${MAYLEEN_URL}/therapists/patients`, {
+    const resp = await fetch(`${URL}/therapists/patients`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: token }),
@@ -15,22 +18,27 @@ const getAllPatient = async (token) => {
     return json.patients
 }
 
-export default function TherapistHomeScreen() {
+export default function TherapistHomeScreen({navigation}) {
+    const userToken = useSelector(state => state.user.token)
 
     const [patientList, setPatientList] = useState([]);
 
     useEffect(() => {
         (async() => {
-            const patients = await getAllPatient("vb-H2GnVCWyzdfhz6tVHHk6Xe-cr-p7a")
+            //const patients = await getAllPatient("vb-H2GnVCWyzdfhz6tVHHk6Xe-cr-p7a")
+            const patients = await getAllPatient(userToken)
             setPatientList(patients)
         })()
     }, [])
 
     const patientDisplay = patientList.map((patient, i) => {
-        return <PatientButton key={i} firstname={patient.firstname} name={patient.name}/>;
+        return <PatientButton key={i} firstname={patient.firstname} name={patient.name} onPress={() => goToPatient(patient)}/>;
     })
 
+    const goToPatient = (patientdata) => {
+        navigation.navigate('Patient', { data : patientdata})
 
+    }
     return (
         <MainContainer >
             <View style={styles.container}>

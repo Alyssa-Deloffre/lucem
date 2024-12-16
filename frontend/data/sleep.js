@@ -6,4 +6,12 @@ const sleepQuality = [
     {value : 4, text : 'Très bon'}
 ]
 
-export {sleepQuality}
+const wakeQuality = [
+    {value : 0, text : 'Pas du tout en forme'},
+    {value : 1, text : 'En mauvaise forme'},
+    {value : 2, text : 'En moyenne forme'},
+    {value : 3, text : 'En forme'},
+    {value : 4, text : 'En pleine forme'}
+]
+
+export {sleepQuality, wakeQuality}

@@ -10,7 +10,7 @@ export default function PatientButton({avatar, firstname, name, onPress}){
 
     return(
         <TouchableOpacity onPress={onPress} style={styles.patientButton}>
-            <Image style={styles.avatar} source={require(testImage)}/>
+            <Image style={styles.avatar} source={avatar}/>
             <Text style={styles.buttonTxt}>{firstname} {name}</Text>
             <FontAwesome name='chevron-right'/>
         </TouchableOpacity>

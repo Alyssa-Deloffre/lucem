@@ -1,7 +1,6 @@
-import { View, StyleSheet, Text, KeyboardAvoidingView, Platform } from "react-native";
+import { Text } from "react-native";
 import { COLOR_PURPLE, COLOR_GREEN } from "../data/styleGlobal";
 import Slider from '@react-native-community/slider';
-import { useState } from "react";
 
 
 export default function CustomSlider ({
@@ -22,6 +21,7 @@ export default function CustomSlider ({
         minimumValue={0}
         maximumValue={data.length - 1}
         onValueChange={onValueChange}
+        value={2}
         step={1}
         />
         <Text style={{textAlign : 'center', fontSize : 16}}>{data[value].text}</Text>

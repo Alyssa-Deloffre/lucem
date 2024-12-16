@@ -1,39 +1,91 @@
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native"
-import MainContainer from "../../components/MainContainer";
-import {COLOR_GREEN, COLOR_PURPLE } from "../../data/styleGlobal";
-import Card from "../../components/Card";
+import { Text, View, StyleSheet, Image } from "react-native"
+import { useState, useEffect } from "react"
+import { URL as URL } from "../../data/globalVariables"
+
+import ButtonRegular from "../../components/buttons/ButtonRegular"
+import MainContainer from "../../components/MainContainer"
+import Card from "../../components/Card"
+
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { useDispatch } from "react-redux";
+
+import { avatarImages } from "../../data/imageSource"
+import { formatBirthdate } from '../../modules/dateAndTimeFunctions'
+
+export default function Patient({ navigation, route }) {
 
 
-export default function PatientScreen() {
+    const [patientInfos, setPatientInfos] = useState({})
+    const [menuItem, setMenuItem] = useState('Récap')
 
-    const dispatch = useDispatch()
-
-    const navigateContact = (contact) => {
-        dispatch(buttonContact(contact))
-        navigation.navigate('Contact')
+    const getPatient = async (token) => {
+        const resp = await fetch(`${URL}/therapists/getPatient/${token}`)
+        const infos = await resp.json()
+        return infos.data
     }
+
+    useEffect(() => {
+        const fetchPatient = async () => {
+            const infos = await getPatient(route.params.data.token)
+            setPatientInfos(infos)
+        }
+        fetchPatient()
+    }, [route.params.data.token])
+
+    const returnToHome = () => {
+        navigation.navigate('TherapistTabNavigator')
+    }
+    
+    const buttonStyle = (name) => {
+        if (name === menuItem) {
+            return 'buttonLittleRegular'
+        } else {
+            return 'buttonLittleStroke'
+        }
+
+    }
+
+    const contact = <>
+    <Text>Adresse e-mail</Text>
+    <FontAwesome name='envelope-o'/>
+    <Text>{patientInfos.email}</Text>
+    <Text>Téléphone</Text>
+    <FontAwesome name='phone'/>
+    <Text>{patientInfos.phone}</Text>
+    </>
+
+    const recap = <>
+    <Text>Récap</Text>
+    </>
+
+    const stats = <>
+    <Text>Stats</Text>
+    </>
 
 
     return (
         <MainContainer>
-        <View style={styles.container}>
-            <Text illustration={require('../../assets/avatars/avatar1.png')}/>
-            <Text style={styles.name}>
-                Marie Dupot
-            </Text>
-            <Text style={styles.age}>
-                24 ans
-            </Text>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Contacts")}/>
-            <Card style={styles.card}>
-                <Text>Adresse e-mail</Text>
-                <Text>marie.dupot@gmail.com</Text>
-                <Text>Téléphone</Text>
-                <Text>01.23.45.67.89</Text>
-            </Card>
-        </View>
+            <View style={styles.container}>
+                <View style={{justifyContent : 'center', alignItems : 'center', width : '100%', rowGap : 20}}>
+
+                    <View style={styles.header}>
+                        <Image source={avatarImages[patientInfos.avatar]} style={{ width: 100, height: 100 }} />
+                        <Text>{patientInfos.firstname} {patientInfos.name}</Text>
+                        <Text>{formatBirthdate(new Date(patientInfos.birthdate))}</Text>
+                    </View>
+                    <View style={styles.menu}>
+                        <ButtonRegular text='Récap' type={buttonStyle('Récap')} orientation="none" onPress={() => setMenuItem('Récap')}/>
+                        <ButtonRegular text='Stats' type={buttonStyle('Stats')} orientation="none" onPress={() => setMenuItem('Stats')}/>
+                        <ButtonRegular text='Contact' type={buttonStyle('Contact')} orientation="none" onPress={() => setMenuItem('Contact')}/>
+                    </View>
+                <Card>
+
+                {menuItem === 'Contact' && contact}
+                {menuItem === 'Récap' && recap}
+                {menuItem === 'Stats' && stats}
+                </Card>
+                </View>
+                <ButtonRegular text='Retourner à la liste des patients' onPress={() => returnToHome()} type='buttonLittleStroke' orientation="left" />
+            </View>
         </MainContainer>
     )
 }
@@ -42,25 +94,21 @@ export default function PatientScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-    },
-    name: {
-        fontFamily: 'Heading',
-        fontWeight: 'bold',
-        justifyContent: 'center',
-        fontSize: 30,
-        width: 200,
-        textAlign: 'center',
-    },
-    age: {
         justifyContent: 'space-between',
-        flexDirection: 'row',
         alignItems: 'center',
-        width: 100,
     },
-    button: {
-        color:'green',
-    },
+    header: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        rowGap: 5,
+        marginBottom : 16,
+        width : '100%'
 
+    },
+    menu: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems : 'center',
+        width : '100%'
+    }
 })

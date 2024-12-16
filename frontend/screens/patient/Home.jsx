@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet } from "react-native"
 import MainContainer from "../../components/MainContainer";
 import FullButton from "../../components/buttons/FullButton";
-import { MAYLEEN_URL } from "../../data/globalVariables";
+import { URL as URL } from "../../data/globalVariables";
 import Card from "../../components/Card";
 import { COLOR_PURPLE } from "../../data/styleGlobal";
 import DateCheck from "../../components/DateCheck";
@@ -40,7 +40,7 @@ const getDates = () => {
     return dates;
 };
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
     const dates = getDates()
 console.log(dates)
     const datesDisplay = dates.map((date, i) => {
@@ -70,9 +70,10 @@ console.log(dates)
                         </View>
                         <Text style={styles.textHeure}>8h</Text>
                     </View>
-                    <FullButton style={styles.fullButton} type='emptyButton'
+                    <FullButton type='fullButton'
                         text='Faire mon récap sommeil'
                         illustration={require('../../assets/avatars/avatar1.png')}
+                        onPress={() => navigation.navigate('SleepForm')}
                     />
                     <View style={styles.text}>
                         <View style={styles.text1}>
@@ -81,7 +82,7 @@ console.log(dates)
                         </View>
                         <Text style={styles.textHeure}>18h</Text>
                     </View>
-                    <FullButton style={styles.fullButton} type='emptyButton'
+                    <FullButton type='fullButton'
                         text='Faire mon récap mood'
                         illustration={require('../../assets/avatars/avatar1.png')}
                     />
