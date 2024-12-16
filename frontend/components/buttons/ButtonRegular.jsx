@@ -17,11 +17,13 @@ export default function ButtonRegular({ text, onPress, type = 'buttonRegular', o
 
     return (
         <TouchableOpacity onPress={onPress} style={[styles[type], styles.button]}>
+            {orientation === 'minus-left' && <FontAwesome name='minus-circle' size={20} />}
             {orientation === 'plus-left' && <FontAwesome name='plus-circle' size={20} />}
             {orientation === 'left' && <FontAwesome name='chevron-left' />}
             <Text style={styles[textType]}>{text}</Text>
             {orientation === 'right' && <FontAwesome name='chevron-right' />}
             {orientation === 'plus-right' && <FontAwesome name='plus-circle' size={20} />}
+            {orientation === 'minus-right' && <FontAwesome name='minus-circle' size={20} />}
         </TouchableOpacity>
     )
 }
