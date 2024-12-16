@@ -54,10 +54,6 @@ export default function HomeScreen({ navigation }) {
         setSelectedDate(startDate);
     }, [startDate]);
 
-
-
-
-
     const datesDisplay = arrDates.map((date, i) => {
 
         return <TouchableOpacity key={i} onPress={() => setSelectedDate(date.date)}>
@@ -110,6 +106,8 @@ export default function HomeScreen({ navigation }) {
                     <FullButton type='fullButton'
                         text='Faire mon récap mood'
                         illustration={require('../../assets/avatars/avatar1.png')}
+                        onPress={() => navigation.navigate('MoodForm')}
+
                     />
                     <Text style={styles.dateDuJour}>{dateFormat(selectedDate)}</Text>
                 </Card>
