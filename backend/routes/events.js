@@ -4,6 +4,7 @@ const { checkBody } = require("../modules/checkBody");
 const Event = require("../models/event");
 const SleepGlobal = require("../models/sleepGlobal");
 const Patient = require("../models/patient");
+const MoodGlobal = require('../models/moodGlobal')
 
 // ---- Ajouter un récap sommeil à sleep_globals et à event
 router.post("/addSleepGlobal", (req, res) => {
@@ -45,6 +46,40 @@ router.post("/addSleepGlobal", (req, res) => {
     }
   });
 });
+
+
+// ---- Ajouter un récap mood à mood_globals et à event
+router.post("/addMoodGlobal", (req, res) => {
+  if (!checkBody(req.body, ["token", "date", "data"])) {
+    res.json({ result: false, error: "Missing or empty fields" });
+    return;
+  }
+
+
+  const { token, date, data } = req.body;
+  //récupérer l'id du patient avec le token
+  Patient.findOne({ token: token }).then((patient) => {
+    if (patient !== null) {
+      const patientId = patient._id;
+      console.log(data);
+      //Ajouter event dans mood_globals
+      const newMoodGlobal = new MoodGlobal (data)
+      newMoodGlobal.save().then(
+        (newMood) => {
+          const newEvent = new Event ({
+            user: patientId,
+            type: "mood",
+            ref: newMood._id,
+            date: date,
+          })
+          newEvent.save().then(() => {
+            res.json({ result: true });
+          });
+        }
+      )
+    }})
+})
+
 
 // ---- Retrouver tous les événements d'un patient par date
 router.post("/getPatientEventsByDate", async (req, res) => {

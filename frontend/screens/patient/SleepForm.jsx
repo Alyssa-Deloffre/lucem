@@ -15,8 +15,7 @@ import { sleepQuality, wakeQuality } from "../../data/sleep"
 import { URL } from "../../data/globalVariables"
 
 const setDefaultHour = (date, hours, minutes) => {
-    console.log('date : ', date)
-    date.setHours(hours, minutes, 0, 0);
+    date.setHours(hours + 1, minutes, 0, 0);
     return date;
 };
 
@@ -31,7 +30,6 @@ export default function SleepFormScreen({ navigation }) {
     })
     const [nightWaking, setNightWaking] = useState({
         start: new Date(),
-        end: '',
         duration: setDefaultHour(new Date(), 0, 0),
         type: '',
     })
@@ -51,8 +49,6 @@ export default function SleepFormScreen({ navigation }) {
             </View>
         }
     }
-
-
 
     const addNightWake = () => {
         setInfos(prev => ({ ...prev, nightWake: [...prev.nightWake, nightWaking] }))
@@ -97,22 +93,28 @@ export default function SleepFormScreen({ navigation }) {
         }
     }
 
-
+ console.log(infos)
     return (
         <MainContainer>
             <View style={styles.container}>
+                <ScrollView>
+
                 <View style={{
                     rowGap: 16,
                 }}>
                     {currentScreen === 1 &&
                         <>
                             <Card label='Heure de coucher'>
-                                <TimePickerInput value={infos.sleepTime} onChange={(event, selectedTime) => {
-                                    console.log('selectedTime : ', selectedTime)
-                                    setInfos(prev => ({ ...prev, sleepTime: selectedTime.toLocaleTimeString() }))}} />
+                                <TimePickerInput 
+                                    value={infos.sleepTime} onChange={(event, selectedTime) => {
+                                        console.log('frDate : ', typeof selectedTime)
+                                        selectedTime.toLocaleString("fr-FR", {timezone: "Europe/Paris"})
+                                    setInfos(prev => ({ ...prev, sleepTime: selectedTime }))}} />
                             </Card>
                             <Card label='Heure de lever'>
-                                <TimePickerInput value={infos.wakeTime} onChange={(event, selectedTime) => setInfos(prev => ({ ...prev, wakeTime: selectedTime.toLocaleTimeString() }))} />
+                                <TimePickerInput 
+                                value={infos.wakeTime} 
+                                onChange={(event, selectedTime) => setInfos(prev => ({ ...prev, wakeTime: selectedTime}))} />
                             </Card>
                             <ButtonRegular text='Ajouter un réveil nocturne' orientation='plus-left' onPress={() => setIsModalVisible(true)} />
                             {
@@ -124,8 +126,6 @@ export default function SleepFormScreen({ navigation }) {
                                     style={{ height: '30%' }}
                                 />
                             }
-
-
 
                             <Modal visible={isModalVisible}>
                                 <View style={styles.modalOverlay}>
@@ -168,7 +168,10 @@ export default function SleepFormScreen({ navigation }) {
                         </>
                     }
                 </View>
+                </ScrollView>
+
             </View>
+            
             <View>
                 {navigationButtons()}
                 <ButtonRegular text="Retour à l'accueil" type='buttonLittleStroke' orientation="left" onPress={() => navigation.navigate('PatientTabNavigator')} />

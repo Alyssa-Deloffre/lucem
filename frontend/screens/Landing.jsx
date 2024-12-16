@@ -18,6 +18,9 @@ export default function LandingScreen({ navigation }) {
         navigation.navigate('Test')
     }
 
+    const navigateToEventRecap = () => {
+        navigation.navigate('EventRecap')
+    }
 
 
     return (
@@ -46,7 +49,9 @@ export default function LandingScreen({ navigation }) {
                 </View>
                 <View>
                     <ButtonRegular text='Test' onPress={() => navigation.navigate('Test')} />
-
+                </View>
+                <View>
+                    <ButtonRegular text='TestEventRecap' onPress={() => navigation.navigate('EventRecap')} />
                 </View>
             </View>
         </MainContainer>

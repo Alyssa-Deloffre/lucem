@@ -38,13 +38,23 @@ const isEqualDates = (date1, date2) => {
     return date1.getDay() === date2.getDay() && date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear()
 }
 
+const getCurrentInfos = (date, arr) => {
+    const index = arr.findIndex((event) => 
+        isEqualDates(date, event.date))
+    return arr[index]
+}
+
 export default function HomeScreen({ navigation }) {
     const [startDate, setStartDate] = useState(new Date())
     const [selectedDate, setSelectedDate] = useState(startDate)
     const [arrDates, setArrDates] = useState([])
+    const [currentInfos, setCurrentInfos] = useState([])
+    const [isCompleteMood, setIsCompleteMood] = useState(false)
+    const [isCompleteSleep, setIsCompleteSleep] = useState(false)
 
     const patientToken = useSelector(state => state.user.token)
 
+    
     useEffect(() => {
         const fetchDates = async () => {
             const dates = await getDates(startDate, patientToken); 
@@ -52,18 +62,32 @@ export default function HomeScreen({ navigation }) {
         };
         fetchDates();
         setSelectedDate(startDate);
+
     }, [startDate]);
 
-
-
+    useEffect(() => {
+        (async () => {
+            const infos = getCurrentInfos(selectedDate, arrDates); 
+            setCurrentInfos(infos); 
+            setIsCompleteMood(infos?.events?.some((e) => e.type === 'mood') || false);
+            setIsCompleteSleep(infos?.events?.some((e) => e.type === 'sleep') || false);
+        })();
+    }, [selectedDate, arrDates]); 
+    
 
 
     const datesDisplay = arrDates.map((date, i) => {
+        const isChecked = date?.events?.length >= 2 ? true : false
+
 
         return <TouchableOpacity key={i} onPress={() => setSelectedDate(date.date)}>
-            <DateCheck text={date.formattedDate} select={isEqualDates(date.date, selectedDate)} check={date.result}/>
+            <DateCheck text={date.formattedDate} select={isEqualDates(date.date, selectedDate)} check={isChecked}/>
         </TouchableOpacity>
     })
+
+
+
+
 
     return (
         <MainContainer >
@@ -91,26 +115,62 @@ export default function HomeScreen({ navigation }) {
                     <View style={styles.text}>
                         <View style={styles.text1}>
                             <Text style={styles.textRecap}>Récap sommeil</Text>
+                            {!isCompleteSleep && 
                             <Text style={styles.textAFaire}> - À faire</Text>
+                            }
                         </View>
+                        {
+                            !isCompleteSleep &&
                         <Text style={styles.textHeure}>8h</Text>
+                        }
                     </View>
+
+                    {
+                        !isCompleteSleep && 
                     <FullButton type='fullButton'
                         text='Faire mon récap sommeil'
                         illustration={require('../../assets/avatars/avatar1.png')}
                         onPress={() => navigation.navigate('SleepForm')}
                     />
+                    }
+                    {
+                        isCompleteSleep &&
+                        <FullButton type='emptyButton'
+                        text='Voir mon récap sommeil'
+                        illustration={require('../../assets/avatars/avatar1.png')}
+                        onPress={() => navigation.navigate('SleepForm')}
+                    />  
+                    }
+
+
+
                     <View style={styles.text}>
                         <View style={styles.text1}>
                             <Text style={styles.textRecap}>Récap mood</Text>
+                            {!isCompleteMood &&
                             <Text style={styles.textAFaire}> - À faire</Text>
+                            }
                         </View>
+                        {
+                            !isCompleteMood &&
                         <Text style={styles.textHeure}>18h</Text>
+                        }
                     </View>
+                    {!isCompleteMood && 
                     <FullButton type='fullButton'
                         text='Faire mon récap mood'
                         illustration={require('../../assets/avatars/avatar1.png')}
-                    />
+                        onPress={() => navigation.navigate('MoodForm')}
+
+                    />}
+                    {isCompleteMood && 
+                    <FullButton type='emptyButton'
+                    text='Voir mon récap mood'
+                    illustration={require('../../assets/avatars/avatar1.png')}
+                    onPress={() => navigation.navigate('EventRecap', {data : currentInfos})}
+
+                />
+                    }
                     <Text style={styles.dateDuJour}>{dateFormat(selectedDate)}</Text>
                 </Card>
             </View>
