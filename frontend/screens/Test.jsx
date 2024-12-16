@@ -2,29 +2,23 @@ import { Text, View, StyleSheet } from "react-native"
 
 import Card from '../components/Card';
 import MainContainer from "../components/MainContainer";
-import CustomSlider from "../components/CustomSlider";
-import TimePickerInput from "../components/inputs/TimePickerInput";
-import DatePickerInput from "../components/inputs/DatePickerInput";
+import DateCheck from "../components/DateCheck";
 import { sleepQuality } from "../data/sleep";
 import { useState } from "react";
 
 export default function Test() {
-    const [value, setValue] = useState(0)
-    const [time, setTime] = useState(new Date())
-    const [date, setDate] = useState(new Date())
+
 
 
 
     return (
         <MainContainer>
             <Card>
-        <Text>Page Test
-        </Text>
-        <CustomSlider data={sleepQuality} value={value} onValueChange={(test) => setValue(test)}/>
-
-        <TimePickerInput value={time} onChange={(event, selectedDate) => setTime(selectedDate)}/>
-
-        <DatePickerInput value={date} onChange={(event, selectedDate) => setDate(selectedDate)}/>
+                <Text>toto</Text>
+                <DateCheck text='13/12' select={true} check={true}/>
+                <DateCheck text='13/12' select={false} check={false}/>
+                <DateCheck text='13/12' select={false} check={true} />
+                <DateCheck text='13/12' select={true} check={false}/>
             </Card>
         </MainContainer>
     )

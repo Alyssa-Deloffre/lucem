@@ -45,7 +45,7 @@ export default function LandingScreen({ navigation }) {
                     <ButtonRegular text='Test patient' onPress={() => navigation.navigate("PatientTabNavigator")} type='buttonStroke' />
                 </View>
                 <View>
-                    <ButtonRegular text='Test' onPress={() => navigation.navigate('SleepForm')} />
+                    <ButtonRegular text='Test' onPress={() => navigation.navigate('Test')} />
 
                 </View>
             </View>

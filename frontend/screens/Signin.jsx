@@ -31,7 +31,7 @@ export default function SigninScreen({ navigation }) {
     const dispatch = useDispatch()
     const userType = useSelector(state => state.user.type)
 
-    const [inputs, setInputs] = useState({ email: "", password: "" })
+    const [inputs, setInputs] = useState({ email: "truc@truc.com", password: "truc" })
     const [globalError, setGlobalError] = useState(false)
 
     // Afficher les erreurs des inputs quand on appuie sur le bouton
@@ -84,11 +84,20 @@ export default function SigninScreen({ navigation }) {
                     {globalError && <Text style={styles.errorMessage}>Mauvaise adresse e-mail ou mot de passe.</Text>}
                     <ButtonRegular text='Me connecter' onPress={() => handleConnected()} />
                 </Card>
+
+                <View style={{flexDirection : 'row'}}>
+                <ButtonRegular
+                    text='Retour'
+                    type="buttonStroke"
+                    orientation='left'
+                    onPress={() => navigation.navigate('Landing')}
+                />
                 <ButtonRegular
                     text='Créer mon compte'
                     type="buttonStroke"
                     onPress={() => navigation.navigate('Signup')}
                 />
+                </View>
             </View>
         </MainContainer>
     )
