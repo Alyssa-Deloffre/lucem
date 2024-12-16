@@ -102,8 +102,7 @@ router.put("/addTherapist", async (req, res) => {
   if (!patient || !therapist) {
     res.json({
       result: false,
-      message:
-        "Le token du therapist et/ou le token patient ne correspondent pas à un utilisateur existant.",
+      message: "Therapist and/or patient token does not match registered user.",
     });
     return;
   }
@@ -111,7 +110,7 @@ router.put("/addTherapist", async (req, res) => {
   if (patient.therapist.includes(therapist._id)) {
     res.json({
       result: false,
-      message: "Le patient et le therapist sont déjà rattachés",
+      message: "Therapist and patient are already linked",
     });
     return;
   }

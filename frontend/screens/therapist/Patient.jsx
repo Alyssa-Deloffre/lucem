@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet, Image } from "react-native"
 import { useState, useEffect } from "react"
-import { URL as URL } from "../../data/globalVariables"
+import { URL } from "../../data/globalVariables"
 
 import ButtonRegular from "../../components/buttons/ButtonRegular"
 import MainContainer from "../../components/MainContainer"
@@ -32,7 +32,7 @@ export default function Patient({ navigation, route }) {
     const returnToHome = () => {
         navigation.navigate('TherapistTabNavigator')
     }
-    
+
     const buttonStyle = (name) => {
         if (name === menuItem) {
             return 'buttonLittleRegular'
@@ -43,27 +43,27 @@ export default function Patient({ navigation, route }) {
     }
 
     const contact = <>
-    <Text>Adresse e-mail</Text>
-    <FontAwesome name='envelope-o'/>
-    <Text>{patientInfos.email}</Text>
-    <Text>Téléphone</Text>
-    <FontAwesome name='phone'/>
-    <Text>{patientInfos.phone}</Text>
+        <Text>Adresse e-mail</Text>
+        <FontAwesome name='envelope-o' />
+        <Text>{patientInfos.email}</Text>
+        <Text>Téléphone</Text>
+        <FontAwesome name='phone' />
+        <Text>{patientInfos.phone}</Text>
     </>
 
     const recap = <>
-    <Text>Récap</Text>
+        <Text>Récap</Text>
     </>
 
     const stats = <>
-    <Text>Stats</Text>
+        <Text>Stats</Text>
     </>
 
 
     return (
         <MainContainer>
             <View style={styles.container}>
-                <View style={{justifyContent : 'center', alignItems : 'center', width : '100%', rowGap : 20}}>
+                <View style={{ justifyContent: 'center', alignItems: 'center', width: '100%', rowGap: 20 }}>
 
                     <View style={styles.header}>
                         <Image source={avatarImages[patientInfos.avatar]} style={{ width: 100, height: 100 }} />
@@ -71,16 +71,16 @@ export default function Patient({ navigation, route }) {
                         <Text>{formatBirthdate(new Date(patientInfos.birthdate))}</Text>
                     </View>
                     <View style={styles.menu}>
-                        <ButtonRegular text='Récap' type={buttonStyle('Récap')} orientation="none" onPress={() => setMenuItem('Récap')}/>
-                        <ButtonRegular text='Stats' type={buttonStyle('Stats')} orientation="none" onPress={() => setMenuItem('Stats')}/>
-                        <ButtonRegular text='Contact' type={buttonStyle('Contact')} orientation="none" onPress={() => setMenuItem('Contact')}/>
+                        <ButtonRegular text='Récap' type={buttonStyle('Récap')} orientation="none" onPress={() => setMenuItem('Récap')} />
+                        <ButtonRegular text='Stats' type={buttonStyle('Stats')} orientation="none" onPress={() => setMenuItem('Stats')} />
+                        <ButtonRegular text='Contact' type={buttonStyle('Contact')} orientation="none" onPress={() => setMenuItem('Contact')} />
                     </View>
-                <Card>
+                    <Card>
 
-                {menuItem === 'Contact' && contact}
-                {menuItem === 'Récap' && recap}
-                {menuItem === 'Stats' && stats}
-                </Card>
+                        {menuItem === 'Contact' && contact}
+                        {menuItem === 'Récap' && recap}
+                        {menuItem === 'Stats' && stats}
+                    </Card>
                 </View>
                 <ButtonRegular text='Retourner à la liste des patients' onPress={() => returnToHome()} type='buttonLittleStroke' orientation="left" />
             </View>
@@ -99,14 +99,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         rowGap: 5,
-        marginBottom : 16,
-        width : '100%'
+        marginBottom: 16,
+        width: '100%'
 
     },
     menu: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-        alignItems : 'center',
-        width : '100%'
+        alignItems: 'center',
+        width: '100%'
     }
 })

@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 import MainContainer from "../../components/MainContainer";
 import FullButton from "../../components/buttons/FullButton";
-import { URL as URL } from "../../data/globalVariables";
+import { URL } from "../../data/globalVariables";
 import Card from "../../components/Card";
 import { COLOR_PURPLE } from "../../data/styleGlobal";
 import DateCheck from "../../components/DateCheck";
@@ -23,8 +23,8 @@ const getDates = async (date, token) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                patientToken : token,
-                date : newDay
+                patientToken: token,
+                date: newDay
             })
         })
         const data = await resp.json()
@@ -53,7 +53,7 @@ export default function HomeScreen({ navigation }) {
         fetchDates();
         setSelectedDate(startDate);
     }, [startDate]);
-    
+
 
 
 
