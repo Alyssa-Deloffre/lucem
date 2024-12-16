@@ -15,8 +15,8 @@ import { sleepQuality, wakeQuality } from "../../data/sleep"
 import { URL as URL } from "../../data/globalVariables"
 
 const setDefaultHour = (date, hours, minutes) => {
+    console.log('date : ', date)
     date.setHours(hours, minutes, 0, 0);
-    console.log(date)
     return date;
 };
 
@@ -53,8 +53,6 @@ export default function SleepFormScreen({ navigation }) {
     }
 
 
-    console.log({token : patientToken, data : infos})
-    // console.log(nightWaking)
 
     const addNightWake = () => {
         setInfos(prev => ({ ...prev, nightWake: [...prev.nightWake, nightWaking] }))
@@ -109,7 +107,9 @@ export default function SleepFormScreen({ navigation }) {
                     {currentScreen === 1 &&
                         <>
                             <Card label='Heure de coucher'>
-                                <TimePickerInput value={infos.sleepTime} onChange={(event, selectedTime) => setInfos(prev => ({ ...prev, sleepTime: selectedTime.toLocaleTimeString() }))} />
+                                <TimePickerInput value={infos.sleepTime} onChange={(event, selectedTime) => {
+                                    console.log('selectedTime : ', selectedTime)
+                                    setInfos(prev => ({ ...prev, sleepTime: selectedTime.toLocaleTimeString() }))}} />
                             </Card>
                             <Card label='Heure de lever'>
                                 <TimePickerInput value={infos.wakeTime} onChange={(event, selectedTime) => setInfos(prev => ({ ...prev, wakeTime: selectedTime.toLocaleTimeString() }))} />
