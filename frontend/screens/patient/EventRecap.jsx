@@ -35,8 +35,9 @@ export default function EventRecap({ navigation, route }) {
     }, [])
 
 
-
-    console.log(infos?.event.date)
+    const navigateToHome = async () => {
+        return await navigation.navigate('PatientTabNavigator', {screen: 'Accueil',  params: {date: infos.event.date}})
+    }
     return (
         <MainContainer>
 
@@ -55,7 +56,7 @@ export default function EventRecap({ navigation, route }) {
 
 
             </View>
-                <ButtonRegular type='buttonStroke' text='Retour' orientation="left" onPress={() => navigation.navigate('PatientTabNavigator')} />
+                <ButtonRegular type='buttonStroke' text='Retour' orientation="left" onPress={() => navigateToHome()} />
 
 
         </MainContainer>

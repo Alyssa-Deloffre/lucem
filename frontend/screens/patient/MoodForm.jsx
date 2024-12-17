@@ -20,7 +20,6 @@ export default function MoodFormScreen({ navigation, route }) {
         emotions: [],
         influence: []
     })
-    console.log(moodInfos)
 
     const [showmore, setShowMore] = useState(false)
     const [currentScreen, setCurrentScreen] = useState(1)
@@ -121,16 +120,16 @@ export default function MoodFormScreen({ navigation, route }) {
         const data = await resp.json()
         if (data.result) {
             console.log('form validé')
-            navigation.navigate('PatientTabNavigator')
-
+navigateToHome()
         } else {
             console.log('problème')
-            navigation.navigate('PatientTabNavigator')
-        }
+navigateToHome()        }
 
-        console.log('ok')
     }
 
+    const navigateToHome = async () => {
+        return await navigation.navigate('PatientTabNavigator', {screen: 'Accueil',  params: {date: selectedDate}})
+    }
 
 
     return (
@@ -192,7 +191,7 @@ export default function MoodFormScreen({ navigation, route }) {
 </ScrollView>
                 <View>
                     {navigationButtons()}
-                    <ButtonRegular text="Retour à l'accueil" type='buttonLittleStroke' orientation="left" onPress={() => navigation.navigate('PatientTabNavigator')} />
+                    <ButtonRegular text="Retour à l'accueil" type='buttonLittleStroke' orientation="left" onPress={() => navigateToHome()} />
                 </View>
             </View>
         </MainContainer>

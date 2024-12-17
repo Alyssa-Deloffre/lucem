@@ -37,7 +37,6 @@ export default function SleepFormScreen({ navigation, route }) {
     const [isModalVisible, setIsModalVisible] = useState(false)
     const patientToken = useSelector(state => state.user.token)
     const selectedDate = route.params.date
-    console.log(selectedDate)
 
 
     const navigationButtons = () => {
@@ -87,15 +86,16 @@ export default function SleepFormScreen({ navigation, route }) {
         const data = await resp.json()
         if (data.result) {
             console.log('form validé')
-            navigation.navigate('PatientTabNavigator')
-
+navigateToHome()
         } else {
             console.log('problème')
-            navigation.navigate('PatientTabNavigator')
-        }
+navigateToHome()        }
     }
 
- console.log(infos)
+    const navigateToHome = async () => {
+        return await navigation.navigate('PatientTabNavigator', {screen: 'Accueil',  params: {date: selectedDate}})
+    }
+
     return (
         <MainContainer>
             <View style={styles.container}>
@@ -109,7 +109,6 @@ export default function SleepFormScreen({ navigation, route }) {
                             <Card label='Heure de coucher'>
                                 <TimePickerInput 
                                     value={infos.sleepTime} onChange={(event, selectedTime) => {
-                                        console.log('frDate : ', typeof selectedTime)
                                         selectedTime.toLocaleString("fr-FR", {timezone: "Europe/Paris"})
                                     setInfos(prev => ({ ...prev, sleepTime: selectedTime }))}} />
                             </Card>
@@ -176,7 +175,7 @@ export default function SleepFormScreen({ navigation, route }) {
             
             <View>
                 {navigationButtons()}
-                <ButtonRegular text="Retour à l'accueil" type='buttonLittleStroke' orientation="left" onPress={() => navigation.navigate('PatientTabNavigator')} />
+                <ButtonRegular text="Retour à l'accueil" type='buttonLittleStroke' orientation="left" onPress={() => navigateToHome()} />
             </View>
         </MainContainer>
     )

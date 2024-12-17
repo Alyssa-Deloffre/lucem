@@ -18,7 +18,7 @@ export default function Test() {
                 <DateCheck text='13/12' select={true} check={true}/>
                 <DateCheck text='13/12' select={false} check={false}/>
                 <DateCheck text='13/12' select={false} check={true} />
-                <DateCheck text='13/12' select={true} check={false}/>
+                <DateCheck text='13/12' select={false} check={false}/>
             </Card>
         </MainContainer>
     )
