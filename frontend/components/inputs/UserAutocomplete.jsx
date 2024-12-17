@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Image, Keyboard, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import InputField from "./InputField";
 import { COLOR_GREEN, COLOR_PURPLE } from "../../data/styleGlobal";
 
@@ -11,12 +11,15 @@ export default function UserAutocomplete({
     onChangeText,
     users,
     require = false,
-    onlySuggestions = true
+    onlySuggestions = true,
+    onFocus,
+    onBlur,
+    forcedErrorMessage
 }) {
     const [suggestions, setSuggestions] = useState(users)
     const [showSuggestion, setShowSuggestion] = useState(false)
     const [loaded, setLoaded] = useState(false)
-    const [forcedErrorMessage, setForcedErrorMessage] = useState("")
+    const [forcedErrorMessageState, setForcedErrorMessage] = useState(forcedErrorMessage)
 
     useEffect(() => {
         if (loaded) {
@@ -62,15 +65,17 @@ export default function UserAutocomplete({
     const handleFocus = () => {
         filterSuggestions(value)
         setShowSuggestion(true)
+        onFocus && onFocus()
     }
 
     const handleBlur = () => {
         setShowSuggestion(false)
-        if (onlySuggestions && !suggestions.some(suggestion => suggestion === value)) {
+        if (value !== "" && onlySuggestions && !suggestions.some(suggestion => suggestion === value)) {
             setForcedErrorMessage("La valeur renseignée est invalide.")
             return
         }
-        setForcedErrorMessage("")
+        setForcedErrorMessage(forcedErrorMessage)
+        onBlur && onBlur()
     }
 
     const suggestionDisplay = suggestions.map((suggestion, i) => {
@@ -86,21 +91,27 @@ export default function UserAutocomplete({
     })
 
     return (
+
         <View style={styles.autocomplete}>
             <InputField
                 label={label}
                 placeholder={placeholder}
                 value={value.fullname}
                 onChangeText={(changeTextValue) => handleOnChangeText(changeTextValue)}
-                forcedErrorMessage={forcedErrorMessage}
+                forcedErrorMessage={forcedErrorMessageState}
                 require={require}
                 onFocus={() => handleFocus()}
                 onBlur={() => handleBlur()}
             />
             {showSuggestion && suggestions.length > 0 && (
-                <View style={styles.suggestions}>
+                <ScrollView
+                    style={styles.suggestions}
+                    keyboardShouldPersistTaps="always"
+                >
+                    {/* <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}> */}
                     {suggestionDisplay}
-                </View>
+                    {/* </KeyboardAvoidingView> */}
+                </ScrollView>
             )}
         </View>
     )
@@ -117,8 +128,8 @@ const styles = StyleSheet.create({
         position: "absolute",
         zIndex: 10000,
         width: "100%",
+        maxHeight: 200,
         top: "110%",
-        gap: 12,
         shadowColor: COLOR_PURPLE[1000],
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
@@ -127,7 +138,8 @@ const styles = StyleSheet.create({
     user: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 8
+        gap: 8,
+        marginVertical: 8,
     },
     userImage: {
         width: 50,
