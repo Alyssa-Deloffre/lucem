@@ -90,15 +90,4 @@ router.post("/patients", (req, res) => {
     });
 });
 
-// ----- GET ONE PATIENT
-router.get("/getPatient/:token", (req, res) => {
-  Patient.findOne({ token: req.params.token }).then((patient) => {
-    if (patient) {
-      res.json({ result: true, data: patient });
-    } else {
-      res.json({ result: false, message: "User not found" });
-    }
-  });
-});
-
 module.exports = router;

@@ -3,7 +3,10 @@ import { COLOR_PURPLE } from "../data/styleGlobal";
 
 export default function Card({ children, label }) {
     return (
-        <KeyboardAvoidingView style={{ width: "100%" }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <KeyboardAvoidingView
+            style={{ width: "100%" }}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
             <View style={styles.cardContainer}>
                 {label && (
                     <Text style={styles.title}>
