@@ -18,22 +18,23 @@ async function getEvent(eventId) {
 export default function EventRecap({navigation, route}) {
 
 const [infos, setInfos] = useState(null);
-const truc = route.params.data
+//const truc = route.params.data
 
 useEffect(() => {
     const setEvent = async () => {
-        const event = await getEvent('675efcdc618182ff8b89efd4')
+        const event = await getEvent('675efd391362eda697850b20')
         setInfos(event)
     }
     setEvent()
 }, [])
 
+console.log(infos)
 
     return (
         <MainContainer>
         <View style={styles.container}>
             <Text style={styles.title}>Récap sommeil</Text>
-            {infos && <Text style={styles.title2}>du {formatBirthdate(new Date(infos.event.date))}</Text>}
+            {infos && infos.event && <Text style={styles.title2}>du {formatBirthdate(new Date(infos.event.date))}</Text>}
             <SleepRecap eventInfos={infos}/>
         </View>
         </MainContainer>
