@@ -6,8 +6,6 @@ import {
     Linking,
     TouchableOpacity,
     Modal,
-    KeyboardAvoidingView,
-    Platform,
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -23,6 +21,7 @@ import { getUserAge } from '../../modules/dateAndTimeFunctions';
 import { COLOR_PURPLE, COLOR_RED } from '../../data/styleGlobal';
 import MainContainerWithScroll from '../../components/MainContainerWithScroll';
 import UserAutocomplete from '../../components/inputs/UserAutocomplete';
+import DeconnectUserButton from '../../components/DeconnectUserButton';
 
 const getPatient = async (token) => {
     const resp = await fetch(`${URL}/patients/getPatient/${token}`);
@@ -40,7 +39,6 @@ const unlinkTherapist = async (tokenPatient, tokenTherapist) => {
         }),
     });
     const json = await resp.json();
-    console.log(json);
 };
 
 const getAllTherapists = async () => {
@@ -51,14 +49,27 @@ const getAllTherapists = async () => {
     })
 }
 
-export default function PatientProfileScreen() {
+const linkTherapist = async (tokenPatient, tokenTherapist) => {
+    const resp = await fetch(URL + '/patients/addTherapist', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            tokenPatient: tokenPatient,
+            tokenTherapist: tokenTherapist,
+        }),
+    });
+    const json = await resp.json();
+};
+
+export default function PatientProfileScreen({ navigation }) {
     const [patientInfos, setPatientInfos] = useState({ therapist: [] });
     const [menuItem, setMenuItem] = useState('infos');
     const [showTherapistInfos, setShowTherapistInfos] = useState(null);
-    const [isModalUnlinkVisible, setIsModalUnlinkVisible] = useState(false);
+    const [isModalUnlinkVisible, setIsModalUnlinkVisible] = useState(null);
     const [isAddPsyVisible, setIsAddPsyVisible] = useState(false);
     const [selectedTherapist, setSelectedTherapist] = useState({ photo: "", fullname: "", token: "" })
     const [therapistsList, setTherapistsList] = useState([])
+    const [autocompleteMargin, setAutocompleteMargin] = useState(0)
 
     const patientToken = useSelector((state) => state.user.token);
 
@@ -89,7 +100,7 @@ export default function PatientProfileScreen() {
         await unlinkTherapist(patientToken, therapistToken);
         const infos = await getPatient(patientToken);
         setPatientInfos(infos);
-        setIsModalUnlinkVisible(false);
+        setIsModalUnlinkVisible(null);
     };
 
     const handleAddPsy = async () => {
@@ -98,37 +109,56 @@ export default function PatientProfileScreen() {
         setIsAddPsyVisible(true)
     }
 
+    const handleAutocompleteFocus = async () => {
+        setAutocompleteMargin(-120)
+    }
+
+    const handleAutocompleteBlur = async () => {
+        setAutocompleteMargin(0)
+    }
+
+    const handleLinkTherapist = async (patientToken, therapistToken) => {
+        await linkTherapist(patientToken, therapistToken);
+        const infos = await getPatient(patientToken);
+        setPatientInfos(infos);
+        setIsAddPsyVisible(false);
+    };
+
     const getPatientAge = getUserAge(patientInfos.birthdate);
+    const isTherapistAlreadyLink = patientInfos.therapist.some(therapist => therapist.token === selectedTherapist.token)
 
     const infos = (
-        <Card>
-            <View style={styles.infosBlock}>
-                <Text style={styles.infosBlock_label}>Adresse e-mail</Text>
-                <View style={styles.infosBlock_infos}>
-                    <FontAwesome
-                        style={styles.infosBlock_infos_texts}
-                        name='envelope-o'
-                    />
-                    <Text style={styles.infosBlock_infos_texts}>
-                        {patientInfos.email}
-                    </Text>
-                </View>
-            </View>
-            {patientInfos.phone && (
+        <>
+            <Card>
                 <View style={styles.infosBlock}>
-                    <Text style={styles.infosBlock_label}>Téléphone</Text>
+                    <Text style={styles.infosBlock_label}>Adresse e-mail</Text>
                     <View style={styles.infosBlock_infos}>
                         <FontAwesome
                             style={styles.infosBlock_infos_texts}
-                            name='phone'
+                            name='envelope-o'
                         />
                         <Text style={styles.infosBlock_infos_texts}>
-                            {patientInfos.phone}
+                            {patientInfos.email}
                         </Text>
                     </View>
                 </View>
-            )}
-        </Card>
+                {patientInfos.phone && (
+                    <View style={styles.infosBlock}>
+                        <Text style={styles.infosBlock_label}>Téléphone</Text>
+                        <View style={styles.infosBlock_infos}>
+                            <FontAwesome
+                                style={styles.infosBlock_infos_texts}
+                                name='phone'
+                            />
+                            <Text style={styles.infosBlock_infos_texts}>
+                                {patientInfos.phone}
+                            </Text>
+                        </View>
+                    </View>
+                )}
+            </Card>
+            <DeconnectUserButton navigation={navigation} />
+        </>
     );
 
     const psys = patientInfos.therapist.map((therapist) => {
@@ -226,13 +256,13 @@ export default function PatientProfileScreen() {
                         <View>
                             <ButtonRegular
                                 text='Retirer ce psychologue'
-                                onPress={() => setIsModalUnlinkVisible(true)}
+                                onPress={() => setIsModalUnlinkVisible(therapist.token)}
                             />
                         </View>
                     </>
                 )}
                 <Modal
-                    visible={isModalUnlinkVisible}
+                    visible={isModalUnlinkVisible === therapist.token}
                     transparent={true}
                 >
                     <View style={styles.modalOverlay}>
@@ -247,7 +277,7 @@ export default function PatientProfileScreen() {
                                 <ButtonRegular
                                     text='Annuler'
                                     onPress={() =>
-                                        setIsModalUnlinkVisible(false)
+                                        setIsModalUnlinkVisible(null)
                                     }
                                 />
                                 <ButtonRegular
@@ -270,7 +300,7 @@ export default function PatientProfileScreen() {
 
     return (
         <MainContainerWithScroll>
-            <View style={styles.container}>
+            <View style={[styles.container, { marginTop: autocompleteMargin }]}>
                 <View style={styles.header}>
                     <Image
                         source={avatarImages[patientInfos.avatar]}
@@ -295,7 +325,10 @@ export default function PatientProfileScreen() {
                         text='Mes psychologues'
                         type={buttonStyle('psys')}
                         orientation='none'
-                        onPress={() => setMenuItem('psys')}
+                        onPress={() => {
+                            setMenuItem('psys')
+                            setIsAddPsyVisible(false)
+                        }}
                     />
                 </View>
                 {menuItem === 'infos' && infos}
@@ -317,6 +350,11 @@ export default function PatientProfileScreen() {
                                 onChangeText={(value) => setSelectedTherapist(value)}
                                 users={therapistsList}
                                 require={false}
+                                onFocus={() => handleAutocompleteFocus()}
+                                onBlur={() => handleAutocompleteBlur()}
+                                forcedErrorMessage={
+                                    isTherapistAlreadyLink ? "Vous êtes déjà relié à ce psychologue" : ""
+                                }
                             />
                             <View style={styles.modalContainer_buttons}>
                                 <ButtonRegular
@@ -326,12 +364,12 @@ export default function PatientProfileScreen() {
                                         setIsAddPsyVisible(false)
                                     }
                                 />
-                                <ButtonRegular
+                                {selectedTherapist.token && !isTherapistAlreadyLink && <ButtonRegular
                                     text='Ajouter'
                                     onPress={() =>
-                                        setIsAddPsyVisible(false)
+                                        handleLinkTherapist(patientToken, selectedTherapist.token)
                                     }
-                                />
+                                />}
                             </View>
                         </Card>}
                     </>

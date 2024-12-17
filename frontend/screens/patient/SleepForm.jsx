@@ -19,7 +19,7 @@ const setDefaultHour = (date, hours, minutes) => {
     return date;
 };
 
-export default function SleepFormScreen({ navigation }) {
+export default function SleepFormScreen({ navigation, route }) {
     const [infos, setInfos] = useState({
         sleepTime: setDefaultHour(new Date(), 21, 0),
         wakeTime: setDefaultHour(new Date(), 8, 0),
@@ -36,6 +36,8 @@ export default function SleepFormScreen({ navigation }) {
     const [currentScreen, setCurrentScreen] = useState(1)
     const [isModalVisible, setIsModalVisible] = useState(false)
     const patientToken = useSelector(state => state.user.token)
+    const selectedDate = route.params.date
+    console.log(selectedDate)
 
 
     const navigationButtons = () => {
@@ -79,7 +81,7 @@ export default function SleepFormScreen({ navigation }) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                token: patientToken, date: new Date(), data: infos
+                token: patientToken, date: new Date(selectedDate), data: infos
             })
         })
         const data = await resp.json()

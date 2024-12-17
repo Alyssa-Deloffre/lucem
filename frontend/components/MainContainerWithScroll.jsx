@@ -6,7 +6,7 @@ export default function MainContainerWithScroll({ children }) {
     return (
         <View style={styles.main}>
             <SafeAreaView style={styles.safeArea}>
-                <ScrollView style={styles.contentContainer}>
+                <ScrollView style={styles.contentContainer} keyboardShouldPersistTaps="handled">
                     {children}
                     <View style={styles.contentContainer_padding} />
                 </ScrollView>

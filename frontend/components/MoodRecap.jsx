@@ -1,7 +1,9 @@
 import React from "react";
 import { SafeAreaView, Text, StyleSheet, View } from 'react-native'
 import Card from "./Card";
-import { formatTime } from "../modules/dateAndTimeFunctions";
+import { formatTime, dateFormat } from "../modules/dateAndTimeFunctions";
+import { moodQualityValues } from "../data/mood";
+import { COLOR_PURPLE } from "../data/styleGlobal";
 
 const formatDuration = (date) => {
     let hours = date.getHours()
@@ -16,87 +18,52 @@ const formatDuration = (date) => {
 }
 
 export default function MoodRecap({eventInfos}){
+    // console.log('test : ', eventInfos?.event)
+    const event = eventInfos?.event
 
-    console.log(eventInfos)
+    const quality = event && moodQualityValues.find(item => item.value === event.ref.quality).text
 
-    console.log('truc : ', eventInfos.event.ref.nightwaking)
+    const emotionsToDisplay = event && event.ref.emotions.map((emotion, i) => {
+        return <View  key={i} style={styles.button}> 
+        <Text>{emotion.mood} </Text>
+        </View>
+    })
 
-//PB : ON PERD 1H sur la start et end 
-    return (
+    const influenceToDisplay = event && event.ref.influence.map((influenceFactor, i) => {
+        return <View key={i} style={styles.button}>
+            <Text >{influenceFactor}</Text>
+            </View>
+            
+    })
+    return ( 
         <Card>
-            <View style={styles.sommeil}>
-                <Text>Sommeil de </Text>
-                {eventInfos && <Text style={styles.heures}>{formatTime(new Date(eventInfos.event.ref.start))}</Text>}
-                <Text> à </Text> 
-                {eventInfos && <Text style={styles.heures}>{formatTime(new Date(eventInfos.event.ref.end))}</Text>}
-            </View>
-            <View style={styles.line} />
-            <View style={styles.reveil}>
-                <Text>Réveil(s) nocturne(s) :</Text>
-                <View style={styles.nocturne}>
-                    <Text>Réveil nocturne à </Text>
-                    <Text style={styles.heures}>02h00 </Text> 
-                    <Text>pendant</Text>
-                    <Text style={styles.heures}>{formatDuration(new Date(eventInfos.event.ref.nightwaking[0].duration))}</Text> 
-                </View>
-                <View style={styles.nocturne}>
-                    <Text>Réveil nocturne à </Text>
-                    <Text style={styles.heures}>04h00 </Text> 
-                    <Text>pendant </Text>
-                    <Text style={styles.heures} >30 min </Text> 
-                </View>
-                <View style={styles.line} />
-            </View>
-            <View style={styles.etat}>
-                <Text style={styles.titre}>Qualité du sommeil : </Text>
-                <Text style={styles.qualite}>Très bon</Text>
-            </View>
-                <Text style={styles.description}> Description</Text>
+                <Text>
+                Humeur de la journée : 
+                </Text>
+                <Text style={{fontWeight : 'bold'}}>
+                {event && quality}
+                </Text>
         
-            <View style={styles.line} />
-            <View style={styles.etat}>
-                <Text style={styles.titre}>Etat de forme au réveil : </Text>
-                <Text style={styles.qualite}>En forme</Text>
-            </View>
-                <Text style={styles.description}>Description</Text>
-    
-        </Card>
+                <Text>Emotions ressenties : </Text>
+                <Text>{emotionsToDisplay}</Text>
+                <Text>Facteurs d'influence actuels : </Text>
+
+                <Text>{influenceToDisplay}</Text>
+                <Text>{event && event.ref.details}</Text>
+            </Card>
+
     )
 }
 
 const styles = StyleSheet.create({
-    heures : {
-        fontWeight : 'bold',   
+    buttonView : {
+
     },
-    sommeil : {
-        flexDirection : 'row',
-    },
-    reveil : {
-        width : 300,
-    },
-    line : {
-        height: 1,
-        backgroundColor: 'grey',
-        marginVertical: 15,
-    },
-    nocturne : {
-        borderRadius : 10,
-        borderWidth : 1,
-        borderColor : 'grey',
-        flexDirection : 'row',
-        paddingVertical : '10',
-        marginBottom : 10,
-    },
-    partiel : {
-        width : 300,
-        borderRadius : 16,
-        borderColor : 'grey',
-    },
-    etat : {
-    flexDirection: 'row',
-    margin: 5,
-    },
-    qualite : {
-        fontWeight : 'bold',
+    button : {
+        borderRadius: 100,
+        borderColor: COLOR_PURPLE[1000],
+        borderWidth: 1,
+        paddingVertical: 6,
+        paddingHorizontal: 16,
     }
 })

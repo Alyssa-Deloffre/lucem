@@ -1,11 +1,14 @@
 import React from "react";
 import MainContainer from "../../components/MainContainer";
 import SleepRecap from "../../components/SleepRecap";
+import MoodRecap from "../../components/MoodRecap";
 import { Text, View, StyleSheet } from "react-native"
 import { URL } from "../../data/globalVariables";
 import { useState } from "react";
 import { useEffect } from "react";
 import { formatBirthdate } from "../../modules/dateAndTimeFunctions";
+import ButtonRegular from "../../components/buttons/ButtonRegular";
+import Card from "../../components/Card";
 
 
 async function getEvent(eventId) {
@@ -15,28 +18,46 @@ async function getEvent(eventId) {
 }
 
 
-export default function EventRecap({navigation, route}) {
+export default function EventRecap({ navigation, route }) {
 
-const [infos, setInfos] = useState(null);
-//const truc = route.params.data
+    const [infos, setInfos] = useState(null);
+    const [type, setType] = useState(null)
 
-useEffect(() => {
-    const setEvent = async () => {
-        const event = await getEvent('675efd391362eda697850b20')
-        setInfos(event)
-    }
-    setEvent()
-}, [])
+    const { id } = route.params
 
-console.log(infos)
+    useEffect(() => {
+        const setEvent = async () => {
+            const event = await getEvent(id)
+            setInfos(event)
+            setType(event.event.type)
+        }
+        setEvent()
+    }, [])
 
+
+
+    console.log(infos?.event.date)
     return (
         <MainContainer>
-        <View style={styles.container}>
-            <Text style={styles.title}>Récap sommeil</Text>
-            {infos && infos.event && <Text style={styles.title2}>du {formatBirthdate(new Date(infos.event.date))}</Text>}
-            <SleepRecap eventInfos={infos}/>
-        </View>
+
+            <View style={styles.container}>
+                <Text style={styles.title}>Récap {type === 'mood' ? "humeur" : 'sommeil'} du {infos?.event && formatBirthdate(new Date(infos.event.date))}</Text>
+
+
+
+
+                {type === 'mood' &&
+                    <MoodRecap eventInfos={infos} />}
+
+                {type === 'sleep' && <SleepRecap eventInfos={infos} />}
+
+
+
+
+            </View>
+                <ButtonRegular type='buttonStroke' text='Retour' orientation="left" onPress={() => navigation.navigate('PatientTabNavigator')} />
+
+
         </MainContainer>
     )
 }
@@ -44,30 +65,24 @@ console.log(infos)
 
 const styles = StyleSheet.create({
     container: {
-        flex : 1,
-        justifyContent: 'center',
+        flex: 1,
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        width: '100%',
-        },
+        width : '100%'
+    },
     title: {
         fontFamily: 'Heading',
         fontWeight: 'bold',
-        justifyContent:'center',
+        justifyContent: 'center',
         fontSize: 30,
-        width: 400,
         textAlign: 'center',
+        marginBottom : 16
     },
-    title2:{
+    title2: {
         fontFamily: 'Heading',
         fontWeight: 'bold',
         fontSize: 30,
-        width: 400,
         textAlign: 'center',
     },
-    component:{
 
-        width:'80%',
-
-
-    }
 })

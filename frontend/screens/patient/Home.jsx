@@ -1,10 +1,14 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native"
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
+import { useIsFocused } from '@react-navigation/native';
+
 
 
 import MainContainer from "../../components/MainContainer";
 import FullButton from "../../components/buttons/FullButton";
+
+
 import { URL } from "../../data/globalVariables";
 import Card from "../../components/Card";
 import { COLOR_PURPLE } from "../../data/styleGlobal";
@@ -51,40 +55,67 @@ export default function HomeScreen({ navigation }) {
     const [currentInfos, setCurrentInfos] = useState([])
     const [isCompleteMood, setIsCompleteMood] = useState(false)
     const [isCompleteSleep, setIsCompleteSleep] = useState(false)
+    const [moodId, setMoodId] = useState(null)
+    const [sleepId, setSleepId] = useState(null)
+
+    const isFocused = useIsFocused();
+
 
     const patientToken = useSelector(state => state.user.token)
 
     
     useEffect(() => {
-        const fetchDates = async () => {
-            const dates = await getDates(startDate, patientToken); 
-            setArrDates(dates); 
-        };
-        fetchDates();
-        setSelectedDate(startDate);
+        if (isFocused) {
 
-    }, [startDate]);
+            const fetchDates = async () => {
+                const dates = await getDates(startDate, patientToken); 
+                setArrDates(dates); 
+            };
+            fetchDates();
+            setSelectedDate(startDate);
+        }
+
+    }, [startDate, isFocused]);
 
     useEffect(() => {
-        (async () => {
-            const infos = getCurrentInfos(selectedDate, arrDates); 
-            setCurrentInfos(infos); 
-            setIsCompleteMood(infos?.events?.some((e) => e.type === 'mood') || false);
-            setIsCompleteSleep(infos?.events?.some((e) => e.type === 'sleep') || false);
-        })();
-    }, [selectedDate, arrDates]); 
+        if (isFocused) {
+
+            (async () => {
+                const infos = getCurrentInfos(selectedDate, arrDates);
+                setCurrentInfos(infos);
+                if (infos?.events) {
+                    const mood = infos.events.find((e) => e.type === 'mood');
+                    const sleep = infos.events.find((e) => e.type === 'sleep');
+                    setMoodId(mood?._id);
+                    setSleepId(sleep?._id);
+                    setIsCompleteMood(mood ? true : false);
+                    setIsCompleteSleep(sleep ? true : false);
+                    
+                } else {
+                    setIsCompleteMood(false);
+                    setIsCompleteSleep(false);
+                }
+            })();
+        }
+    }, [selectedDate, arrDates, isFocused]);
+    
+    
     
 
-
     const datesDisplay = arrDates.map((date, i) => {
-        const isChecked = date?.events?.length >= 2 ? true : false
-
+        const isChecked = () => {
+            if (date?.events?.length >= 2) {
+                return 2
+            } else if (date?.events?.length === 1) {
+                return 1
+            } else {
+                return 0
+            }}
 
         return <TouchableOpacity key={i} onPress={() => setSelectedDate(date.date)}>
-            <DateCheck text={date.formattedDate} select={isEqualDates(date.date, selectedDate)} check={isChecked}/>
+            <DateCheck text={date.formattedDate} select={isEqualDates(date.date, selectedDate)} check={isChecked()}/>
         </TouchableOpacity>
     })
-
 
 
 
@@ -130,7 +161,7 @@ export default function HomeScreen({ navigation }) {
                     <FullButton type='fullButton'
                         text='Faire mon récap sommeil'
                         illustration={require('../../assets/avatars/avatar1.png')}
-                        onPress={() => navigation.navigate('SleepForm')}
+                        onPress={() => navigation.navigate('SleepForm', {date : selectedDate.toISOString()})}
                     />
                     }
                     {
@@ -138,8 +169,8 @@ export default function HomeScreen({ navigation }) {
                         <FullButton type='emptyButton'
                         text='Voir mon récap sommeil'
                         illustration={require('../../assets/avatars/avatar1.png')}
-                        onPress={() => navigation.navigate('SleepForm')}
-                    />  
+                        onPress={() => navigation.navigate('EventRecap', {id : sleepId})}
+                        />  
                     }
 
 
@@ -160,14 +191,14 @@ export default function HomeScreen({ navigation }) {
                     <FullButton type='fullButton'
                         text='Faire mon récap mood'
                         illustration={require('../../assets/avatars/avatar1.png')}
-                        onPress={() => navigation.navigate('MoodForm')}
+                        onPress={() => navigation.navigate('MoodForm', {date : selectedDate.toISOString()})}
 
                     />}
                     {isCompleteMood && 
                     <FullButton type='emptyButton'
                     text='Voir mon récap mood'
                     illustration={require('../../assets/avatars/avatar1.png')}
-                    onPress={() => navigation.navigate('EventRecap', {data : currentInfos})}
+                    onPress={() => navigation.navigate('EventRecap', {id : moodId})}
 
                 />
                     }
