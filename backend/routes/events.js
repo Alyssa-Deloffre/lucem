@@ -37,6 +37,7 @@ router.post("/addSleepGlobal", (req, res) => {
           user: patientId,
           type: "sleep",
           ref: newSleep._id,
+          refModel : 'sleep_globals',
           date: date,
         });
         newEvent.save().then(() => {
@@ -70,6 +71,7 @@ router.post("/addMoodGlobal", (req, res) => {
             user: patientId,
             type: "mood",
             ref: newMood._id,
+            refModel : 'mood_globals',
             date: date,
           })
           newEvent.save().then(() => {
