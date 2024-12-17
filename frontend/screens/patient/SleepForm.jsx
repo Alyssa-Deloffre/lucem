@@ -19,7 +19,7 @@ const setDefaultHour = (date, hours, minutes) => {
     return date;
 };
 
-export default function SleepFormScreen({ navigation }) {
+export default function SleepFormScreen({ navigation, route }) {
     const [infos, setInfos] = useState({
         sleepTime: setDefaultHour(new Date(), 21, 0),
         wakeTime: setDefaultHour(new Date(), 8, 0),
@@ -36,6 +36,7 @@ export default function SleepFormScreen({ navigation }) {
     const [currentScreen, setCurrentScreen] = useState(1)
     const [isModalVisible, setIsModalVisible] = useState(false)
     const patientToken = useSelector(state => state.user.token)
+    const selectedDate = route.params.date
 
 
     const navigationButtons = () => {
@@ -79,21 +80,22 @@ export default function SleepFormScreen({ navigation }) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                token: patientToken, date: new Date(), data: infos
+                token: patientToken, date: new Date(selectedDate), data: infos
             })
         })
         const data = await resp.json()
         if (data.result) {
             console.log('form validé')
-            navigation.navigate('PatientTabNavigator')
-
+navigateToHome()
         } else {
             console.log('problème')
-            navigation.navigate('PatientTabNavigator')
-        }
+navigateToHome()        }
     }
 
- console.log(infos)
+    const navigateToHome = async () => {
+        return await navigation.navigate('PatientTabNavigator', {screen: 'Accueil',  params: {date: selectedDate}})
+    }
+
     return (
         <MainContainer>
             <View style={styles.container}>
@@ -107,7 +109,6 @@ export default function SleepFormScreen({ navigation }) {
                             <Card label='Heure de coucher'>
                                 <TimePickerInput 
                                     value={infos.sleepTime} onChange={(event, selectedTime) => {
-                                        console.log('frDate : ', typeof selectedTime)
                                         selectedTime.toLocaleString("fr-FR", {timezone: "Europe/Paris"})
                                     setInfos(prev => ({ ...prev, sleepTime: selectedTime }))}} />
                             </Card>
@@ -174,7 +175,7 @@ export default function SleepFormScreen({ navigation }) {
             
             <View>
                 {navigationButtons()}
-                <ButtonRegular text="Retour à l'accueil" type='buttonLittleStroke' orientation="left" onPress={() => navigation.navigate('PatientTabNavigator')} />
+                <ButtonRegular text="Retour à l'accueil" type='buttonLittleStroke' orientation="left" onPress={() => navigateToHome()} />
             </View>
         </MainContainer>
     )

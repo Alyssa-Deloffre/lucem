@@ -6,18 +6,25 @@ import { View, StyleSheet, Text } from "react-native";
 
 export default function DateCheck({
     text,
-    check = false,
-    select = false
+    check = 0,
+    select = false,
+    total = false,
 }) {
 
-    let dateCheck = <FontAwesome name='circle-thin' size={40} style={{color : COLOR_GREEN[600]}} />
+    let dateCheck = <FontAwesome name='circle-o' size={40} style={{color : COLOR_GREEN[600]}} />
 
-    if (check && select) {
+    if (check >= 2 && select) {
         dateCheck = <FontAwesome name='check-circle' size={40} style={{color : COLOR_PURPLE[600]}}/>
-    } else if (check && !select) {
+    } else if (check >= 2 && !select) {
         dateCheck = <FontAwesome name='check-circle' size={40} style={{color : COLOR_GREEN[600]}}/>
-    } else if (!check && select) {
-        dateCheck = <FontAwesome name='circle-thin' size={40} style={{color : COLOR_PURPLE[600]}}/>
+    } else if (check === 0 && select) {
+        dateCheck = <FontAwesome name='circle-o' size={40} style={{color : COLOR_PURPLE[600]}}/>
+    } else if(check === 1 && select) {
+        dateCheck = <FontAwesome name='dot-circle-o' size={40} style={{color : COLOR_PURPLE[600]}}/>
+
+    } else if (check === 1 && ! select) {
+        dateCheck = <FontAwesome name='dot-circle-o' size={40} style={{color : COLOR_GREEN[600]}}/>
+
     }
 
     return (

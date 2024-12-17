@@ -1,16 +1,17 @@
-import { Text, View, StyleSheet, Image } from "react-native"
+import { Text, View, StyleSheet, Image, Dimensions, ScrollView } from "react-native"
 import { useState, useEffect } from "react"
 import { URL } from "../../data/globalVariables"
 
 import ButtonRegular from "../../components/buttons/ButtonRegular"
 import MainContainer from "../../components/MainContainer"
 import Card from "../../components/Card"
+import { LineChart } from "react-native-chart-kit"
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import { avatarImages } from "../../data/imageSource"
 import { formatBirthdate, getUserAge } from '../../modules/dateAndTimeFunctions'
-import { COLOR_PURPLE } from "../../data/styleGlobal"
+import { COLOR_GREEN, COLOR_PURPLE } from "../../data/styleGlobal"
 
 export default function Patient({ navigation, route }) {
     const [patientInfos, setPatientInfos] = useState({})
@@ -69,9 +70,152 @@ export default function Patient({ navigation, route }) {
         <Text>Récap</Text>
     </>
 
-    const stats = <>
-        <Text>Stats</Text>
-    </>
+    const stats = (
+        
+<ScrollView style={styles.scrollView}>
+  <Text style={styles.titre}>Récap sommeil</Text>
+    <LineChart
+    data={{
+      labels: ["11/12","12/12", "13/12", "14/12", "15/12", "16/12", "Today"],
+      datasets: [
+        {
+          data: [
+            Math.random() * 1000,
+            Math.random() * 1000,
+            Math.random() * 1000,
+            Math.random() * 1000,
+            Math.random() * 1000,
+            Math.random() * 1000,
+            Math.random() * 1000,
+          ]
+        }
+      ]
+    }}
+    width={Dimensions.get("window").width-80} // from react-native
+    height={200}
+    yAxisInterval={1} // optional, defaults to 1
+    chartConfig={{
+      backgroundGradientFrom: COLOR_GREEN[100],
+      backgroundGradientTo: COLOR_GREEN[100],
+      decimalPlaces: 2, // optional, defaults to 2dp
+      color: () => COLOR_GREEN[600],
+      labelColor: () => COLOR_GREEN[1000],
+      style: {
+        borderRadius: 16
+      },
+      propsForDots: {
+        r: "6",
+        strokeWidth: "2",
+        stroke: COLOR_GREEN[800]
+      }
+    }}
+    bezier
+    style={{
+      marginVertical: 8,
+      borderRadius: 16
+    }}
+  />
+  
+<Text style={styles.titre}>Récap humeur</Text>
+<LineChart
+    data={{
+      labels: ["11/12","12/12", "13/12", "14/12", "15/12", "16/12", "Today"],
+      datasets: [
+        {
+          data: [
+            Math.random() * 1000,
+            Math.random() * 1000,
+            Math.random() * 1000,
+            Math.random() * 1000,
+            Math.random() * 1000,
+            Math.random() * 1000,
+            Math.random() * 1000
+          ]
+        }
+      ]
+    }}
+    width={Dimensions.get("window").width-80} // from react-native
+    height={200}
+    yAxisInterval={1} // optional, defaults to 1
+    chartConfig={{
+        backgroundGradientFrom: COLOR_GREEN[100],
+        backgroundGradientTo: COLOR_GREEN[100],
+        decimalPlaces: 2, // optional, defaults to 2dp
+        color: () => COLOR_GREEN[600],
+        labelColor: () => COLOR_GREEN[1000],
+        style: {
+          borderRadius: 16
+        },
+        propsForDots: {
+          r: "6",
+          strokeWidth: "2",
+          stroke: COLOR_GREEN[800]
+        }
+      }}
+      bezier
+      style={{
+        marginVertical: 8,
+        borderRadius: 16
+      }}
+  />
+
+<Text style={styles.titre}>Cumul</Text>
+<LineChart
+    data={{
+      labels: ["11/12","12/12", "13/12", "14/12", "15/12", "16/12", "Today"],
+      datasets: [
+        {
+          data: [
+            Math.random() * 1000,
+            Math.random() * 1000,
+            Math.random() * 1000,
+            Math.random() * 1000,
+            Math.random() * 1000,
+            Math.random() * 1000,
+            Math.random() * 1000,
+          ], 
+          svg: {fill: COLOR_GREEN[600]}
+        },
+        {
+            data: [
+              Math.random() * 1000,
+              Math.random() * 1000,
+              Math.random() * 1000,
+              Math.random() * 1000,
+              Math.random() * 1000,
+              Math.random() * 1000,
+              Math.random() * 1000,
+            ],
+            color: () => COLOR_PURPLE[600],
+            
+          }
+      ]
+    }}
+    width={Dimensions.get("window").width-80} // from react-native
+    height={200}
+    yAxisInterval={1} // optional, defaults to 1
+    chartConfig={{
+        backgroundGradientFrom: COLOR_GREEN[100],
+        backgroundGradientTo: COLOR_GREEN[100],
+        decimalPlaces: 2, // optional, defaults to 2dp
+        color: () => COLOR_GREEN[600],
+        labelColor: () => COLOR_GREEN[1000],
+        style: {
+          borderRadius: 16
+        },
+        propsForDots: {
+          r: "6",
+          strokeWidth: "2",
+          stroke: COLOR_GREEN[800]
+        }
+      }}
+      bezier
+      style={{
+        marginVertical: 8,
+        borderRadius: 16
+      }}
+  />
+</ScrollView>)
 
 
     return (
@@ -133,5 +277,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 600,
         color: COLOR_PURPLE[600]
+    },
+    scrollView: {
+        height : 400,
+    },
+    titre: {
+        fontWeight: 'bold',
     }
 })

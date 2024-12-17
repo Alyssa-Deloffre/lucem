@@ -14,17 +14,17 @@ import { moods, moodQualityValues, influenceFactors } from "../../data/mood"
 import ButtonRegular from "../../components/buttons/ButtonRegular"
 import { URL } from "../../data/globalVariables"
 
-export default function MoodFormScreen({ navigation }) {
+export default function MoodFormScreen({ navigation, route }) {
     const [moodInfos, setMoodInfos] = useState({
-        moodQuality: 2,
+        quality: 2,
         emotions: [],
         influence: []
     })
-    console.log(moodInfos)
 
     const [showmore, setShowMore] = useState(false)
     const [currentScreen, setCurrentScreen] = useState(1)
     const patientToken = useSelector(state => state.user.token)
+    const selectedDate = route.params.date
 
 
 
@@ -50,7 +50,7 @@ export default function MoodFormScreen({ navigation }) {
 
     const moodsToDisplay = moods.sort((a, b) => a.mood > b.mood).map((mood, i) => {
         const isChecked = moodInfos.emotions.some((item) => item.mood === mood.mood)
-        if (mood.value === moodInfos.moodQuality) {
+        if (mood.value === moodInfos.quality) {
 
             return <CheckButton
                 key={i}
@@ -114,22 +114,22 @@ export default function MoodFormScreen({ navigation }) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                token: patientToken, date: new Date(), data: moodInfos
+                token: patientToken, date: new Date(selectedDate), data: moodInfos
             })
         })
         const data = await resp.json()
         if (data.result) {
             console.log('form validé')
-            navigation.navigate('PatientTabNavigator')
-
+navigateToHome()
         } else {
             console.log('problème')
-            navigation.navigate('PatientTabNavigator')
-        }
+navigateToHome()        }
 
-        console.log('ok')
     }
 
+    const navigateToHome = async () => {
+        return await navigation.navigate('PatientTabNavigator', {screen: 'Accueil',  params: {date: selectedDate}})
+    }
 
 
     return (
@@ -141,7 +141,7 @@ export default function MoodFormScreen({ navigation }) {
                     <View style={{rowGap : 6}}>
                         <Card label='Humeur du jour'>
                             <Text>Comment était votre humeur aujourd'hui ?</Text>
-                            <CustomSlider data={moodQualityValues} value={moodInfos.moodQuality} onValueChange={(newValue) => setMoodInfos(prev => ({ ...prev, moodQuality: newValue }))} />
+                            <CustomSlider data={moodQualityValues} value={moodInfos.quality} onValueChange={(newValue) => setMoodInfos(prev => ({ ...prev, quality: newValue }))} />
                         </Card>
                         <Card >
                             <Text>Quelles émotions avez-vous ressenties ?</Text>
@@ -191,7 +191,7 @@ export default function MoodFormScreen({ navigation }) {
 </ScrollView>
                 <View>
                     {navigationButtons()}
-                    <ButtonRegular text="Retour à l'accueil" type='buttonLittleStroke' orientation="left" onPress={() => navigation.navigate('PatientTabNavigator')} />
+                    <ButtonRegular text="Retour à l'accueil" type='buttonLittleStroke' orientation="left" onPress={() => navigateToHome()} />
                 </View>
             </View>
         </MainContainer>
