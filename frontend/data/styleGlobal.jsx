@@ -1,4 +1,32 @@
+
+
 // FONTS
+const FONTS = {
+  Heading1 : {
+    fontFamily : 'Montserrat',
+    fontSize : 32,
+    fontWeight : 'bold',
+    letterSpacing : -1.5,
+
+  },
+  Heading2 : {
+    fontFamily : 'Montserrat',
+    fontSize : 28,
+    letterSpacing : -1.5,
+  },  
+  Heading3: {
+    fontFamily : 'Montserrat',
+    fontSize : 20,
+    letterSpacing : -1.5,
+  },
+  Body : {
+    fontFamily : 'Quicksand',
+    fontSize : 18,
+
+  }
+}
+
+
 
 // COLORS
 
@@ -54,4 +82,4 @@ const COLOR_RED = {
     1000: '#640707',
 };
 
-export { COLOR_GREEN, COLOR_PURPLE, COLOR_RED };
+export { COLOR_GREEN, COLOR_PURPLE, COLOR_RED, FONTS };

@@ -5,6 +5,7 @@ import MainContainer from "../components/MainContainer";
 import { useDispatch } from "react-redux";
 import { addUserType } from "../reducers/user";
 import LogoLucem from "../assets/lucem-logo";
+import { FONTS } from "../data/styleGlobal";
 
 export default function LandingScreen({ navigation }) {
 
@@ -14,6 +15,8 @@ export default function LandingScreen({ navigation }) {
         dispatch(addUserType(userType))
         navigation.navigate('Signin')
     }
+
+
 
     const navigateToTest = () => {
         navigation.navigate('Test')
@@ -53,11 +56,16 @@ const styles = StyleSheet.create({
     title: {
         fontWeight: 800,
         fontSize: 32,
+    bienvenue: {
+        ...FONTS.Heading3,
         alignItems: 'center',
         maxWidth: 300,
         textAlign: "center"
     },
     description: {
+        textAlign: "center",}
+    ,
+    merci: {
         fontSize: 16,
         textAlign: "center",
         fontWeight: 300
