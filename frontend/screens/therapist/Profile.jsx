@@ -1,137 +1,148 @@
-import { Text, View, StyleSheet, Image } from 'react-native';
+import {
+    Text,
+    View,
+    StyleSheet,
+    Image,
+    Linking,
+    TouchableOpacity,
+    Alert,
+} from 'react-native';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { URL } from '../../data/globalVariables';
 
 import ButtonRegular from '../../components/buttons/ButtonRegular';
-import MainContainer from '../../components/MainContainer';
 import Card from '../../components/Card';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { avatarImages } from '../../data/imageSource';
-import { formatBirthdate } from '../../modules/dateAndTimeFunctions';
+import { COLOR_PURPLE } from '../../data/styleGlobal';
+import MainContainerWithScroll from '../../components/MainContainerWithScroll';
+import UserAutocomplete from '../../components/inputs/UserAutocomplete';
+import DeconnectUserButton from '../../components/DeconnectUserButton';
+import Button from '../../components/buttons/Button';
 
-const getPatient = async (token) => {
-    const resp = await fetch(`${URL}/patients/getPatient/${token}`);
-    const infos = await resp.json();
-    return infos.data;
+const getTherapist = async (token) => {
+    const resp = await fetch(`${URL}/therapists/getTherapist/${token}`);
+    const json = await resp.json();
+    if (json.result) {
+        return json.therapist;
+    }
+    return json
 };
 
-export default function TherapistProfileScreen() {
-    const [patientInfos, setPatientInfos] = useState({});
-    const [menuItem, setMenuItem] = useState('Récap');
+export default function TherapistProfileScreen({ navigation }) {
+    const [therapistInfos, setTherapistInfos] = useState({});
 
-    const patientToken = useSelector((state) => state.user.token);
+    const therapistToken = useSelector((state) => state.user.token);
 
     useEffect(() => {
-        const fetchPatient = async () => {
-            const infos = await getPatient(patientToken);
-            setPatientInfos(infos);
-        };
-        fetchPatient();
+        (async () => {
+            const infos = await getTherapist(therapistToken);
+            setTherapistInfos(infos);
+        })();
     }, []);
 
-    const buttonStyle = (name) => {
-        if (name === menuItem) {
-            return 'buttonLittleRegular';
-        } else {
-            return 'buttonLittleStroke';
-        }
-    };
-
-    const contact = (
-        <>
-            <Text>Adresse e-mail</Text>
-            <FontAwesome name='envelope-o' />
-            <Text>{patientInfos.email}</Text>
-            <Text>Téléphone</Text>
-            <FontAwesome name='phone' />
-            <Text>{patientInfos.phone}</Text>
-        </>
-    );
-
-    const recap = (
-        <>
-            <Text>Récap</Text>
-        </>
-    );
-
-    const stats = (
-        <>
-            <Text>Stats</Text>
-        </>
-    );
-
     return (
-        <MainContainer>
-            <View style={styles.container}>
-                <View
-                    style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: '100%',
-                        rowGap: 20,
-                    }}
-                >
-                    <View style={styles.header}>
-                        <Image
-                            source={avatarImages[patientInfos.avatar]}
-                            style={{ width: 100, height: 100 }}
-                        />
-                        <Text>
-                            {patientInfos.firstname} {patientInfos.name}
+        <MainContainerWithScroll>
+            <View style={[styles.container]}>
+                <View style={styles.header}>
+                    <Image
+                        source={avatarImages[therapistInfos.avatar]}
+                        style={styles.header_image}
+                    />
+                    <View style={styles.header_infos}>
+                        <Text style={styles.therapistName}>
+                            {therapistInfos.firstname}{' '}
+                            {therapistInfos?.name?.toUpperCase()}
                         </Text>
-                        <Text>{formatBirthdate(new Date(patientInfos.birthdate))}</Text>
                     </View>
-                    <View style={styles.menu}>
-                        <ButtonRegular
-                            text='Récap'
-                            type={buttonStyle('Récap')}
-                            orientation='none'
-                            onPress={() => setMenuItem('Récap')}
-                        />
-                        <ButtonRegular
-                            text='Stats'
-                            type={buttonStyle('Stats')}
-                            orientation='none'
-                            onPress={() => setMenuItem('Stats')}
-                        />
-                        <ButtonRegular
-                            text='Contact'
-                            type={buttonStyle('Contact')}
-                            orientation='none'
-                            onPress={() => setMenuItem('Contact')}
-                        />
-                    </View>
-                    <Card>
-                        {menuItem === 'Contact' && contact}
-                        {menuItem === 'Récap' && recap}
-                        {menuItem === 'Stats' && stats}
-                    </Card>
                 </View>
+                <Card>
+                    {therapistInfos.description && (
+                        <View style={styles.infosBlock}>
+                            <Text style={styles.infosBlock_label}>Desciption</Text>
+                            <View style={styles.infosBlock_infos}>
+                                <Text style={styles.infosBlock_infos_description}>
+                                    {therapistInfos.description}
+                                </Text>
+                            </View>
+                        </View>
+                    )}
+                    <View style={styles.infosBlock}>
+                        <Text style={styles.infosBlock_label}>Adresse e-mail</Text>
+                        <View style={styles.infosBlock_infos}>
+                            <FontAwesome
+                                style={styles.infosBlock_infos_texts}
+                                name='envelope-o'
+                            />
+                            <Text style={styles.infosBlock_infos_texts}>
+                                {therapistInfos.email}
+                            </Text>
+                        </View>
+                    </View>
+                    {therapistInfos.phone && (
+                        <View style={styles.infosBlock}>
+                            <Text style={styles.infosBlock_label}>Téléphone</Text>
+                            <View style={styles.infosBlock_infos}>
+                                <FontAwesome
+                                    style={styles.infosBlock_infos_texts}
+                                    name='phone'
+                                />
+                                <Text style={styles.infosBlock_infos_texts}>
+                                    {therapistInfos.phone}
+                                </Text>
+                            </View>
+                        </View>
+                    )}
+                </Card>
+                <DeconnectUserButton navigation={navigation} />
             </View>
-        </MainContainer>
+        </MainContainerWithScroll>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'space-between',
         alignItems: 'center',
+        gap: 16,
     },
     header: {
-        justifyContent: 'center',
         alignItems: 'center',
-        rowGap: 5,
+        gap: 8,
         marginBottom: 16,
         width: '100%',
     },
-    menu: {
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
+    header_image: {
+        width: 112,
+        height: 112,
+    },
+    header_infos: {
         alignItems: 'center',
-        width: '100%',
+        gap: 2,
+    },
+    therapistName: {
+        fontSize: 20,
+        fontWeight: 700,
+        color: COLOR_PURPLE[1000],
+    },
+    infosBlock: {
+        gap: 2,
+    },
+    infosBlock_infos: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+    },
+    infosBlock_infos_texts: {
+        fontSize: 20,
+        fontWeight: 600,
+        color: COLOR_PURPLE[600],
+    },
+    infosBlock_infos_description: {
+        fontSize: 18,
+        fontWeight: 500,
     },
 });

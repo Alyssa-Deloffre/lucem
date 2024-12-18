@@ -95,4 +95,15 @@ router.post('/patients', (req, res) => {
         });
 });
 
+// ----- Get theratpist by token
+router.get('/getTherapist/:token', (req, res) => {
+    Therapist.findOne({ token: req.params.token }).then((therapist) => {
+        if (therapist) {
+            res.json({ result: true, therapist: therapist });
+        } else {
+            res.json({ result: false, message: 'Therapist not found' });
+        }
+    });
+});
+
 module.exports = router;

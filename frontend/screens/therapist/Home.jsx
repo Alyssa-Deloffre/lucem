@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { URL } from "../../data/globalVariables";
 import MainContainer from "../../components/MainContainer";
 import PatientButton from "../../components/buttons/PatientButton";
+import { FONTS } from "../../data/styleGlobal";
 
 
 
@@ -25,7 +26,6 @@ export default function TherapistHomeScreen({ navigation }) {
 
     useEffect(() => {
         (async () => {
-            //const patients = await getAllPatient("vb-H2GnVCWyzdfhz6tVHHk6Xe-cr-p7a")
             const patients = await getAllPatient(userToken)
             setPatientList(patients)
         })()
@@ -61,11 +61,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        fontFamily: 'Heading',
-        fontWeight: 'bold',
-        fontSize: 30,
-        alignItems: 'center',
-        width: "30%",
+        ...FONTS.Heading1,
     },
     patientButton: {
         justifyContent: 'space-between',

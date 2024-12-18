@@ -5,9 +5,11 @@ import {
     Text,
     View,
     StatusBar,
+    ActivityIndicator
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { COLOR_GREEN, COLOR_PURPLE } from './data/styleGlobal';
+import {useFonts} from 'expo-font'
 
 //redux imports
 import { Provider } from 'react-redux';
@@ -33,12 +35,14 @@ import PatientExchangesScreen from './screens/patient/Exchanges';
 import PatientProfileScreen from './screens/patient/Profile';
 import SleepFormScreen from './screens/patient/SleepForm';
 import MoodFormScreen from './screens/patient/MoodForm';
-import EventRecap from './screens/patient/EventRecap';
+import EventRecapPatient from './screens/patient/EventRecap';
 
 // Therapist screens
 import TherapistHomeScreen from './screens/therapist/Home';
 import TherapistProfileScreen from './screens/therapist/Profile';
 import TherapistPatientScreen from './screens/therapist/Patient';
+import EventRecapTherapist from './screens/therapist/EventRecap';
+
 
 // SCREEN TO DELETE
 import Test from './screens/Test';
@@ -178,10 +182,7 @@ const TherapistTabNavigator = () => {
                     name='Accueil'
                     component={TherapistHomeScreen}
                 />
-                <Tab.Screen
-                    name='Patient'
-                    component={TherapistPatientScreen}
-                />
+
                 <Tab.Screen
                     name='Profil'
                     component={TherapistProfileScreen}
@@ -192,6 +193,32 @@ const TherapistTabNavigator = () => {
 };
 
 export default function App() {
+    const [fontsLoaded] = useFonts({
+        "Montserrat": require('./assets/fonts/MontserratAlternates-Regular.ttf'),
+        "Montserrat-Black": require('./assets/fonts/MontserratAlternates-Black.ttf'),
+        "Montserrat-Bold": require('./assets/fonts/MontserratAlternates-Bold.ttf'),
+        "Montserrat-ExtraLight": require('./assets/fonts/MontserratAlternates-ExtraLight.ttf'),
+        "Montserrat-Light": require('./assets/fonts/MontserratAlternates-Light.ttf'),
+        "Montserrat-Medium": require('./assets/fonts/MontserratAlternates-Medium.ttf'),
+        "Montserrat-SemiBold": require('./assets/fonts/MontserratAlternates-SemiBold.ttf'),
+        "Montserrat-Thin": require('./assets/fonts/MontserratAlternates-Thin.ttf'),
+        "Quicksand" : require('./assets/fonts/Quicksand-Regular.ttf'),
+        "Quicksand-Bold" : require('./assets/fonts/Quicksand-Bold.ttf'),
+        "Quicksand-Light" : require('./assets/fonts/Quicksand-Light.ttf'),
+        "Quicksand-Medium" : require('./assets/fonts/Quicksand-Medium.ttf'),
+        "Quicksand-SemiBold" : require('./assets/fonts/Quicksand-SemiBold.ttf'),
+      
+      });
+
+      if (!fontsLoaded) {
+        return (
+          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <ActivityIndicator size="large" color="#0000ff" />
+            <Text>Chargement des polices...</Text>
+          </View>
+        );
+      }
+
     return (
         <Provider store={store}>
             <PersistGate persistor={persistor}>
@@ -218,8 +245,8 @@ export default function App() {
                             component={MoodFormScreen}
                         />
                         <Stack.Screen
-                            name='EventRecap'
-                            component={EventRecap}
+                            name='EventRecapPatient'
+                            component={EventRecapPatient}
                         />
                         <Stack.Screen
                             name='ProfilPatient'
@@ -229,7 +256,11 @@ export default function App() {
                             name='ProfilTherapist'
                             component={TherapistProfileScreen}
                         />
-                        {/* <Stack.Screen name="TherapistPatientScreen" component={TherapistPatientScreen}/> */}
+                        <Stack.Screen
+                            name='EventRecapTherapist'
+                            component={EventRecapTherapist}
+                        />
+                        <Stack.Screen name="Patient" component={TherapistPatientScreen}/>
                         <Stack.Screen
                             name='PatientTabNavigator'
                             component={PatientTabNavigator}

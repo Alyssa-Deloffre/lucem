@@ -17,8 +17,7 @@ import Card from '../../components/Card';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { avatarImages } from '../../data/imageSource';
-import { getUserAge } from '../../modules/dateAndTimeFunctions';
-import { COLOR_PURPLE, COLOR_RED } from '../../data/styleGlobal';
+import { COLOR_PURPLE } from '../../data/styleGlobal';
 import MainContainerWithScroll from '../../components/MainContainerWithScroll';
 import UserAutocomplete from '../../components/inputs/UserAutocomplete';
 import DeconnectUserButton from '../../components/DeconnectUserButton';
@@ -26,8 +25,11 @@ import Button from '../../components/buttons/Button';
 
 const getPatient = async (token) => {
     const resp = await fetch(`${URL}/patients/getPatient/${token}`);
-    const infos = await resp.json();
-    return infos.data;
+    const json = await resp.json();
+    if (json.result) {
+        return json.data;
+    }
+    return json
 };
 
 const unlinkTherapist = async (tokenPatient, tokenTherapist) => {
@@ -140,7 +142,6 @@ export default function PatientProfileScreen({ navigation }) {
         setIsAddPsyVisible(false);
     };
 
-    const getPatientAge = getUserAge(patientInfos.birthdate);
     const isTherapistAlreadyLink = patientInfos.therapist.some(therapist => therapist.token === selectedTherapist.token)
 
     const infos = (
@@ -298,7 +299,6 @@ export default function PatientProfileScreen({ navigation }) {
                             {patientInfos.firstname}{' '}
                             {patientInfos?.name?.toUpperCase()}
                         </Text>
-                        <Text>{getPatientAge} ans</Text>
                     </View>
                 </View>
                 <View style={styles.menu}>
@@ -345,19 +345,24 @@ export default function PatientProfileScreen({ navigation }) {
                                 }
                             />
                             <View style={styles.addPsy_buttons}>
-                                <ButtonRegular
-                                    text='Annuler'
-                                    type='buttonStroke'
+                                <Button
+                                    label='Annuler'
+                                    iconLocation='none'
+                                    type='stroke'
                                     onPress={() =>
                                         setIsAddPsyVisible(false)
                                     }
                                 />
-                                {selectedTherapist.token && !isTherapistAlreadyLink && <ButtonRegular
-                                    text='Ajouter'
-                                    onPress={() =>
-                                        handleLinkTherapist(patientToken, selectedTherapist.token)
-                                    }
-                                />}
+                                {selectedTherapist.token && !isTherapistAlreadyLink &&
+                                    <Button
+                                        label='Ajouter'
+                                        icon="plus-circle"
+                                        iconSize={20}
+                                        onPress={() =>
+                                            handleLinkTherapist(patientToken, selectedTherapist.token)
+                                        }
+                                    />
+                                }
                             </View>
                         </Card>}
                     </>
@@ -460,6 +465,7 @@ const styles = StyleSheet.create({
     },
     addPsy_buttons: {
         flexDirection: 'row',
+        justifyContent: "space-between",
         gap: 8,
     },
 });
