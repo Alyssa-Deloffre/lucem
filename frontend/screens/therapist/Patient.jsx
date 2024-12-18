@@ -179,7 +179,7 @@ export default function Patient({ navigation, route }) {
     {isCompleteMood &&
       <FullButton
         text='Voir le récap mood'
-        illustration={require('../../assets/avatars/avatar1.png')}
+        illustration={require('../../assets/icons/mood-star-icon.png')}
         onPress={() => navigation.navigate('EventRecapTherapist', { id: moodId, token: token })}
 
       />
@@ -189,7 +189,7 @@ export default function Patient({ navigation, route }) {
       <FullButton
         text='Voir le récap sommeil'
         type='stroke'
-        illustration={require('../../assets/avatars/avatar1.png')}
+        illustration={require('../../assets/icons/sleep-star-icon.png.png')}
         onPress={() => navigation.navigate('EventRecapTherapist', { id: sleepId, token: token })}
       />
     }

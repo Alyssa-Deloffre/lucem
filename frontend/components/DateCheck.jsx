@@ -43,15 +43,13 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     texte: {
-        fontWeight: 'bold',
+        fontFamily : 'Montserrat-SemiBold',
+
     },
     dateLoading: {
         flex: 1,
         flexDirection: "row",
         alignItems: "center",
+    },
 
-    txt: {
-    fontFamily : 'Montserrat',
-
-    }
 })
