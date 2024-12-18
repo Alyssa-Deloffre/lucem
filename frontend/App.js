@@ -194,8 +194,19 @@ const TherapistTabNavigator = () => {
 
 export default function App() {
     const [fontsLoaded] = useFonts({
-        "Montserrat": require('./assets/fonts/MontserratAlternates-Bold.ttf'),
-        "Quicksand" : require('./assets/fonts/Quicksand-Regular.ttf')
+        "Montserrat": require('./assets/fonts/MontserratAlternates-Regular.ttf'),
+        "Montserrat-Black": require('./assets/fonts/MontserratAlternates-Black.ttf'),
+        "Montserrat-Bold": require('./assets/fonts/MontserratAlternates-Bold.ttf'),
+        "Montserrat-ExtraLight": require('./assets/fonts/MontserratAlternates-ExtraLight.ttf'),
+        "Montserrat-Light": require('./assets/fonts/MontserratAlternates-Light.ttf'),
+        "Montserrat-Medium": require('./assets/fonts/MontserratAlternates-Medium.ttf'),
+        "Montserrat-SemiBold": require('./assets/fonts/MontserratAlternates-SemiBold.ttf'),
+        "Montserrat-Thin": require('./assets/fonts/MontserratAlternates-Thin.ttf'),
+        "Quicksand" : require('./assets/fonts/Quicksand-Regular.ttf'),
+        "Quicksand-Bold" : require('./assets/fonts/Quicksand-Bold.ttf'),
+        "Quicksand-Light" : require('./assets/fonts/Quicksand-Light.ttf'),
+        "Quicksand-Medium" : require('./assets/fonts/Quicksand-Medium.ttf'),
+        "Quicksand-SemiBold" : require('./assets/fonts/Quicksand-SemiBold.ttf'),
       
       });
 

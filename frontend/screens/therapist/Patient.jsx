@@ -17,7 +17,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import { avatarImages } from "../../data/imageSource"
 import { formatBirthdate, getUserAge } from '../../modules/dateAndTimeFunctions'
-import { COLOR_GREEN, COLOR_PURPLE } from "../../data/styleGlobal"
+import { COLOR_GREEN, COLOR_PURPLE, FONTS } from "../../data/styleGlobal"
 import { dateFormat } from "../../modules/dateAndTimeFunctions";
 
 
@@ -135,7 +135,7 @@ export default function Patient({ navigation, route }) {
     }
 
     return <TouchableOpacity key={i} onPress={() => setSelectedDate(date.date)}>
-      <DateCheck text={date.formattedDate} select={isEqualDates(date.date, selectedDate)} check={isChecked()} />
+      <DateCheck text={date.formattedDate} select={isEqualDates(date.date, selectedDate)} check={isChecked()}/>
     </TouchableOpacity>
   })
 
@@ -364,8 +364,8 @@ export default function Patient({ navigation, route }) {
 
           <View style={styles.header}>
             <Image source={avatarImages[patientInfos.avatar]} style={{ width: 100, height: 100 }} />
-            <Text>{patientInfos.firstname} {patientInfos.name}</Text>
-            <Text>{getPatientAge} ans</Text>
+            <Text style={styles.name}>{patientInfos.firstname} {patientInfos.name}</Text>
+            <Text style={FONTS.Body}>{getPatientAge} ans</Text>
           </View>
           <View style={styles.menu}>
             <ButtonRegular text='Récap' type={buttonStyle('Récap')} orientation="none" onPress={() => setMenuItem('Récap')} />
@@ -413,10 +413,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
   },
+  infosBlock_label : {
+    fontFamily : 'Quicksand'
+  },
   infosBlock_infos_texts: {
     fontSize: 20,
     fontWeight: 600,
-    color: COLOR_PURPLE[600]
+    color: COLOR_PURPLE[600],
+    fontFamily : 'Quicksand'
   },
   scrollView: {
     height: 400,
@@ -435,4 +439,11 @@ dateCheck: {
   flexDirection: 'row',
   justifyContent: 'space-between',
 },
+name : {
+  fontFamily : 'Montserrat-SemiBold',
+  fontSize : 28,
+  letterSpacing : -1.5,
+}
+
+
 })

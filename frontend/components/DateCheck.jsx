@@ -2,6 +2,7 @@ import React from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { COLOR_GREEN, COLOR_PURPLE } from "../data/styleGlobal";
 import { View, StyleSheet, Text } from "react-native";
+import { FONTS } from "../data/styleGlobal";
 
 
 export default function DateCheck({
@@ -39,6 +40,7 @@ export default function DateCheck({
 const styles = StyleSheet.create({
 
     txt: {
-        fontWeight: 'bold',
+    fontFamily : 'Montserrat',
+
     }
 })

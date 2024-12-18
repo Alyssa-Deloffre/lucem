@@ -5,7 +5,6 @@ const FONTS = {
   Heading1 : {
     fontFamily : 'Montserrat',
     fontSize : 32,
-    fontWeight : 'bold',
     letterSpacing : -1.5,
 
   },
@@ -22,7 +21,6 @@ const FONTS = {
   Body : {
     fontFamily : 'Quicksand',
     fontSize : 18,
-
   }
 }
 

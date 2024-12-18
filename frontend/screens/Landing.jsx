@@ -54,10 +54,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        fontWeight: 800,
-        fontSize: 32,
-    bienvenue: {
-        ...FONTS.Heading3,
+        ...FONTS.Heading1,
         alignItems: 'center',
         maxWidth: 300,
         textAlign: "center"
@@ -71,6 +68,6 @@ const styles = StyleSheet.create({
         fontWeight: 300
     },
     buttonsBlock: {
-        rowGap: 16
+        rowGap: 16,
     }
 })
