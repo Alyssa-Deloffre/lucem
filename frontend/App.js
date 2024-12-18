@@ -5,9 +5,11 @@ import {
     Text,
     View,
     StatusBar,
+    ActivityIndicator
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { COLOR_GREEN, COLOR_PURPLE } from './data/styleGlobal';
+import {useFonts} from 'expo-font'
 
 //redux imports
 import { Provider } from 'react-redux';
@@ -191,6 +193,21 @@ const TherapistTabNavigator = () => {
 };
 
 export default function App() {
+    const [fontsLoaded] = useFonts({
+        "Montserrat": require('./assets/fonts/MontserratAlternates-Bold.ttf'),
+        "Quicksand" : require('./assets/fonts/Quicksand-Regular.ttf')
+      
+      });
+
+      if (!fontsLoaded) {
+        return (
+          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <ActivityIndicator size="large" color="#0000ff" />
+            <Text>Chargement des polices...</Text>
+          </View>
+        );
+      }
+
     return (
         <Provider store={store}>
             <PersistGate persistor={persistor}>

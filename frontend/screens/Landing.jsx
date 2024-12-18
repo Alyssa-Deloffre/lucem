@@ -4,6 +4,7 @@ import FullButton from "../components/buttons/FullButton";
 import MainContainer from "../components/MainContainer";
 import { useDispatch } from "react-redux";
 import { addUserType } from "../reducers/user";
+import { FONTS } from "../data/styleGlobal";
 
 export default function LandingScreen({ navigation }) {
 
@@ -13,6 +14,8 @@ export default function LandingScreen({ navigation }) {
         dispatch(addUserType(userType))
         navigation.navigate('Signin')
     }
+
+
 
     const navigateToTest = () => {
         navigation.navigate('Test')
@@ -65,12 +68,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     bienvenue: {
-        fontWeight: 800,
-        fontSize: 32,
+        ...FONTS.Heading3,
         alignItems: 'center',
         maxWidth: 300,
-        textAlign: "center"
-    },
+        textAlign: "center",}
+    ,
     merci: {
         fontSize: 16,
         textAlign: "center",
