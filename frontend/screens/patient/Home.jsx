@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     recapPatientBlock: {
         flex: 1,
         alignItems: "center",
-        rowGap: 16
+        rowGap: 16,
     },
     chevrons: {
         fontSize: 20,
