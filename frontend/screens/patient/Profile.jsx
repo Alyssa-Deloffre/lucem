@@ -5,7 +5,7 @@ import {
     Image,
     Linking,
     TouchableOpacity,
-    Modal,
+    Alert,
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -22,6 +22,7 @@ import { COLOR_PURPLE, COLOR_RED } from '../../data/styleGlobal';
 import MainContainerWithScroll from '../../components/MainContainerWithScroll';
 import UserAutocomplete from '../../components/inputs/UserAutocomplete';
 import DeconnectUserButton from '../../components/DeconnectUserButton';
+import Button from '../../components/buttons/Button';
 
 const getPatient = async (token) => {
     const resp = await fetch(`${URL}/patients/getPatient/${token}`);
@@ -65,7 +66,6 @@ export default function PatientProfileScreen({ navigation }) {
     const [patientInfos, setPatientInfos] = useState({ therapist: [] });
     const [menuItem, setMenuItem] = useState('infos');
     const [showTherapistInfos, setShowTherapistInfos] = useState(null);
-    const [isModalUnlinkVisible, setIsModalUnlinkVisible] = useState(null);
     const [isAddPsyVisible, setIsAddPsyVisible] = useState(false);
     const [selectedTherapist, setSelectedTherapist] = useState({ photo: "", fullname: "", token: "" })
     const [therapistsList, setTherapistsList] = useState([])
@@ -96,11 +96,27 @@ export default function PatientProfileScreen({ navigation }) {
         }
     };
 
-    const handleUnlinkTherapist = async (patientToken, therapistToken) => {
+    const alertUnlinkTherapist = (therapist) => {
+        Alert.alert(
+            ` Étes-vous sûr de vouloir retirer ${therapist.firstname} ${therapist.name.toUpperCase()} de vos psychologues ?`,
+            "",
+            [
+                {
+                    text: "Annuler",
+                    style: "cancel"
+                },
+                {
+                    text: "Confirmer",
+                    onPress: () => handleUnlinkTherapist(therapist.token)
+                }
+            ]
+        )
+    }
+
+    const handleUnlinkTherapist = async (therapistToken) => {
         await unlinkTherapist(patientToken, therapistToken);
         const infos = await getPatient(patientToken);
         setPatientInfos(infos);
-        setIsModalUnlinkVisible(null);
     };
 
     const handleAddPsy = async () => {
@@ -253,47 +269,18 @@ export default function PatientProfileScreen({ navigation }) {
                                 </TouchableOpacity>
                             </View>
                         )}
-                        <View>
-                            <ButtonRegular
-                                text='Retirer ce psychologue'
-                                onPress={() => setIsModalUnlinkVisible(therapist.token)}
+                        <View style={styles.psyBlock_actionsBlock}>
+                            <Button
+                                label='Retirer'
+                                type='red'
+                                size='s'
+                                icon='unlink'
+                                iconSize={14}
+                                onPress={() => alertUnlinkTherapist(therapist)}
                             />
                         </View>
                     </>
                 )}
-                <Modal
-                    visible={isModalUnlinkVisible === therapist.token}
-                    transparent={true}
-                >
-                    <View style={styles.modalOverlay}>
-                        <View style={styles.modalContainer}>
-                            <Text style={styles.modalContainer_text}>
-                                Étes-vous sûr de vouloir retirer{' '}
-                                {therapist.firstname}{' '}
-                                {therapist.name.toUpperCase()} de vos
-                                psychologues ?
-                            </Text>
-                            <View style={styles.modalContainer_buttons}>
-                                <ButtonRegular
-                                    text='Annuler'
-                                    onPress={() =>
-                                        setIsModalUnlinkVisible(null)
-                                    }
-                                />
-                                <ButtonRegular
-                                    text='Confirmer'
-                                    type='buttonStroke'
-                                    onPress={() =>
-                                        handleUnlinkTherapist(
-                                            patientToken,
-                                            therapist.token
-                                        )
-                                    }
-                                />
-                            </View>
-                        </View>
-                    </View>
-                </Modal>
             </View>
         );
     });
@@ -336,9 +323,10 @@ export default function PatientProfileScreen({ navigation }) {
                     <>
                         {!isAddPsyVisible && (<>
                             {psys}
-                            <ButtonRegular
-                                text='Ajouter un psychologue'
-                                orientation='plus-right'
+                            <Button
+                                label='Ajouter un psychologue'
+                                icon='plus-circle'
+                                iconSize={20}
                                 onPress={() => handleAddPsy()}
                             />
                         </>)}
@@ -356,7 +344,7 @@ export default function PatientProfileScreen({ navigation }) {
                                     isTherapistAlreadyLink ? "Vous êtes déjà relié à ce psychologue" : ""
                                 }
                             />
-                            <View style={styles.modalContainer_buttons}>
+                            <View style={styles.addPsy_buttons}>
                                 <ButtonRegular
                                     text='Annuler'
                                     type='buttonStroke'
@@ -463,28 +451,14 @@ const styles = StyleSheet.create({
         color: COLOR_PURPLE[1000],
         marginRight: 8,
     },
-    modalOverlay: {
+    psyBlock_actionsBlock: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Overlay sombre
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        paddingTop: 8
     },
-    modalContainer: {
-        alignItems: 'center',
-        backgroundColor: '#FFF',
-        borderRadius: 10,
-        padding: 20,
-        width: '90%',
-        gap: 24,
-    },
-    modalContainer_text: {
-        fontSize: 20,
-        fontWeight: 600,
-        textAlign: 'center',
-        lineHeight: 32,
-        width: '90%',
-    },
-    modalContainer_buttons: {
+    addPsy_buttons: {
         flexDirection: 'row',
         gap: 8,
     },

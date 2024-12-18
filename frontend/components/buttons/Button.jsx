@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
 import { COLOR_GREEN, COLOR_PURPLE, COLOR_RED } from '../../data/styleGlobal';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -10,10 +10,19 @@ export default function Button({
     size = 'm',
     icon = 'chevron-right',
     iconLocation = 'right',
+    iconSize = 12
 }) {
     const typeList = ['default', 'stroke', 'red', 'redStroke'];
     const sizeList = ['s', 'm', 'full'];
     const iconLocationList = ['right', 'left', 'none'];
+
+    if (label === "" || !label) {
+        return (
+            <Text style={{ fontSize: 20, color: 'red' }}>
+                Label must be defined.
+            </Text>
+        )
+    }
 
     if (
         !typeList.includes(type) ||
@@ -27,6 +36,8 @@ export default function Button({
         );
     }
 
+    const textColor = type === "redStroke" ? "redText" : type === "red" ? "whiteText" : "blackText"
+
     return (
         <TouchableOpacity
             onPress={onPress}
@@ -39,13 +50,18 @@ export default function Button({
         >
             <Text
                 style={
-                    styles[size === "s" ? "sText" : "mText"]
+                    [
+                        styles[size === "s" ? "sText" : "mText"],
+                        styles[textColor]
+                    ]
                 }>
                 {label}
             </Text>
             {iconLocation !== "none" && (
                 <FontAwesome
                     name={icon}
+                    style={styles[textColor]}
+                    size={iconSize}
                 />
             )}
         </TouchableOpacity>
@@ -79,13 +95,11 @@ const styles = StyleSheet.create({
     s: {
         paddingVertical: 6,
         paddingHorizontal: 16,
-        width: 'fit-content',
         gap: 8,
     },
     m: {
         paddingVertical: 12,
         paddingHorizontal: 32,
-        width: 'fit-content',
         gap: 16,
     },
     full: {
@@ -100,6 +114,7 @@ const styles = StyleSheet.create({
     },
     mText: {
         fontSize: 16,
+        fontWeight: 600
     },
     blackText: {
         color: COLOR_PURPLE[1000]

@@ -11,6 +11,6 @@ export default function DeconnectUserButton({ navigation }) {
     }
 
     return (
-        <Button label="Me déconnecter" type="redStroke" icon="chevron-left" iconLocation="left" onPress={() => handleDisconnectUser()} />
+        <Button label="Me déconnecter" type="redStroke" icon="sign-out" iconSize={20} onPress={() => handleDisconnectUser()} />
     )
 }
