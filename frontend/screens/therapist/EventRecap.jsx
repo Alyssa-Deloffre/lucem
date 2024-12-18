@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { formatBirthdate } from "../../modules/dateAndTimeFunctions";
 import ButtonRegular from "../../components/buttons/ButtonRegular";
 import Card from "../../components/Card";
+import { FONTS } from "../../data/styleGlobal";
 
 
 async function getEvent(eventId) {
@@ -70,18 +71,11 @@ const styles = StyleSheet.create({
         width : '100%'
     },
     title: {
-        fontFamily: 'Heading',
-        fontWeight: 'bold',
+        ...FONTS.Heading2,
         justifyContent: 'center',
-        fontSize: 30,
         textAlign: 'center',
         marginBottom : 16
     },
-    title2: {
-        fontFamily: 'Heading',
-        fontWeight: 'bold',
-        fontSize: 30,
-        textAlign: 'center',
-    },
+
 
 })
