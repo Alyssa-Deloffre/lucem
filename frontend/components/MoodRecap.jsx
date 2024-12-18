@@ -43,13 +43,26 @@ export default function MoodRecap({eventInfos}){
                 <Text style={{fontWeight : 'bold'}}>
                 {event && quality}
                 </Text>
+                            <View style={styles.line} />
+                
         
                 <Text>Emotions ressenties : </Text>
                 <Text>{emotionsToDisplay}</Text>
+                            <View style={styles.line} />
+                
                 <Text>Facteurs d'influence actuels : </Text>
 
                 <Text>{influenceToDisplay}</Text>
+
+                {event && event.ref.details !== '' || null &&
+                <>
+                <View style={styles.line} />
+
+                <Text>Détails : </Text>
+
                 <Text>{event && event.ref.details}</Text>
+                </>
+                }
             </Card>
 
     )
@@ -65,5 +78,10 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         paddingVertical: 6,
         paddingHorizontal: 16,
-    }
+    },
+    line : {
+        height: 1,
+        backgroundColor: 'grey',
+        marginVertical: 15,
+    },
 })

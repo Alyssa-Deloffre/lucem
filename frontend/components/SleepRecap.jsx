@@ -33,9 +33,6 @@ export default function SleepRecap({eventInfos}){
     const wakeQualityValue = event && wakeQuality.find(item => item.value === event.ref.wakingquality).text
 
 
-    console.log('truc : ', eventInfos.event.ref.nightwaking)
-
-
 //PB : ON PERD 1H sur la start et end 
     return (
         <Card>
@@ -61,17 +58,17 @@ export default function SleepRecap({eventInfos}){
                 <Text style={styles.titre}>Etat de forme au réveil : </Text>
                 <Text style={styles.bold}>{wakeQualityValue}</Text>
             </View>
-            <View style={styles.line} />
             {event && event.ref.details !== '' && 
+            <>
+            <View style={styles.line} />
             
-            <View>
                 <Text>Détails : </Text>
                 <ScrollView>
 
                 <Text>{event && event.ref.details}</Text>
                 </ScrollView>
 
-            </View>
+            </>
             
             }
     
@@ -93,7 +90,8 @@ const styles = StyleSheet.create({
         borderWidth : 1,
         borderColor : 'grey',
         flexDirection : 'row',
-        paddingVertical : '10',
-        paddingHorizontal : 8
+        paddingVertical : 10,
+        paddingHorizontal : 8,
+        marginTop : 8,
     },
 })

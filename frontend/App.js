@@ -26,12 +26,14 @@ import PatientExchangesScreen from './screens/patient/Exchanges';
 import PatientProfileScreen from './screens/patient/Profile';
 import SleepFormScreen from './screens/patient/SleepForm';
 import MoodFormScreen from './screens/patient/MoodForm';
-import EventRecap from './screens/patient/EventRecap';
+import EventRecapPatient from './screens/patient/EventRecap';
 
 // Therapist screens
 import TherapistHomeScreen from './screens/therapist/Home';
 import TherapistProfileScreen from './screens/therapist/Profile';
 import TherapistPatientScreen from './screens/therapist/Patient';
+import EventRecapTherapist from './screens/therapist/EventRecap';
+
 
 // SCREEN TO DELETE
 import Test from './screens/Test';
@@ -171,10 +173,7 @@ const TherapistTabNavigator = () => {
                     name='Accueil'
                     component={TherapistHomeScreen}
                 />
-                <Tab.Screen
-                    name='Patient'
-                    component={TherapistPatientScreen}
-                />
+
                 <Tab.Screen
                     name='Profil'
                     component={TherapistProfileScreen}
@@ -211,8 +210,8 @@ export default function App() {
                             component={MoodFormScreen}
                         />
                         <Stack.Screen
-                            name='EventRecap'
-                            component={EventRecap}
+                            name='EventRecapPatient'
+                            component={EventRecapPatient}
                         />
                         <Stack.Screen
                             name='ProfilPatient'
@@ -222,7 +221,11 @@ export default function App() {
                             name='ProfilTherapist'
                             component={TherapistProfileScreen}
                         />
-                        {/* <Stack.Screen name="TherapistPatientScreen" component={TherapistPatientScreen}/> */}
+                        <Stack.Screen
+                            name='EventRecapTherapist'
+                            component={EventRecapTherapist}
+                        />
+                        <Stack.Screen name="Patient" component={TherapistPatientScreen}/>
                         <Stack.Screen
                             name='PatientTabNavigator'
                             component={PatientTabNavigator}
