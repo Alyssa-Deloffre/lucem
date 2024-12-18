@@ -194,8 +194,8 @@ export default function SignupPatient({ navigation }) {
                         value={inputs.password}
                         isSubmitToggle={isSubmit}
                         autoCapitalize='none'
-                        autoComplete={false}
-
+                        autoComplete="off"
+                        secureTextEntry={true}
                     />
                     <InputField
                         placeholder='Confirmez votre mot de passe'
@@ -204,8 +204,8 @@ export default function SignupPatient({ navigation }) {
                         forcedErrorMessage={passwordError}
                         isSubmitToggle={isSubmit}
                         autoCapitalize='none'
-                        autoComplete={false}
-
+                        autoComplete="off"
+                        secureTextEntry={true}
                     />
                     <ButtonRegular text='Suivant' onPress={() => handleMandatory()} />
 
