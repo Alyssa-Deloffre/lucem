@@ -7,6 +7,7 @@ import ButtonRegular from "../components/buttons/ButtonRegular"
 import MainContainer from "../components/MainContainer"
 
 import Card from "../components/Card"
+import LogoLucem from "../assets/lucem-logo"
 
 
 export default function SignupScreen({ navigation }) {
@@ -14,9 +15,7 @@ export default function SignupScreen({ navigation }) {
     return (
         <MainContainer>
             <View style={styles.container}>
-                <Text>
-                    M'inscrire
-                </Text>
+                <LogoLucem width={120} />
                 <Card>
 
                     {userType === 'patient' && <SignupPatient navigation={navigation} />}

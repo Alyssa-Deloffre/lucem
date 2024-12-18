@@ -73,6 +73,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 100,
+        shadowColor: COLOR_PURPLE[1000],
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
     },
     default: {
         backgroundColor: COLOR_GREEN[600],

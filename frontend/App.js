@@ -1,11 +1,4 @@
-import {
-    Platform,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    View,
-    StatusBar,
-} from 'react-native';
+import { Platform, SafeAreaView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { COLOR_GREEN, COLOR_PURPLE } from './data/styleGlobal';
 

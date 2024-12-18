@@ -13,6 +13,7 @@ import { URL } from '../data/globalVariables';
 import Card from '../components/Card';
 import MainContainer from '../components/MainContainer';
 import { COLOR_RED } from '../data/styleGlobal';
+import LogoLucem from '../assets/lucem-logo';
 
 
 const connectUser = async (email, password, userType) => {
@@ -59,9 +60,7 @@ export default function SigninScreen({ navigation }) {
     return (
         <MainContainer>
             <View style={styles.container}>
-                <View>
-                    <Text>{userType}</Text>
-                </View>
+                <LogoLucem width={120} />
                 <Card label="Me connecter">
                     <InputField
                         label="Email"
