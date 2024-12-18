@@ -35,8 +35,8 @@ export default function LandingScreen({ navigation }) {
                     <Text style={styles.description}>
                         Merci d'indiquer si vous êtes un patient ou un psychologue.
                     </Text>
-                    <FullButton text='Je suis un patient' onPress={() => navigateToUserSignIn("patient")} type='fullButton' />
-                    <FullButton text='Je suis un psychologue' onPress={() => navigateToUserSignIn("psy")} type='emptyButton' />
+                    <FullButton text='Je suis un patient' onPress={() => navigateToUserSignIn("patient")} type='default' />
+                    <FullButton text='Je suis un psychologue' onPress={() => navigateToUserSignIn("psy")} type='white' />
                 </View>
                 <ButtonRegular text='Test' onPress={() => navigation.navigate('Test')} />
             </View>

@@ -1,11 +1,11 @@
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native"
+import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native"
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useIsFocused } from '@react-navigation/native';
 
 
 
-import MainContainer from "../../components/MainContainer";
+import MainContainerWithScroll from "../../components/MainContainerWithScroll";
 import FullButton from "../../components/buttons/FullButton";
 
 
@@ -57,6 +57,7 @@ export default function HomeScreen({ navigation, route }) {
     const [isCompleteSleep, setIsCompleteSleep] = useState(false)
     const [moodId, setMoodId] = useState(null)
     const [sleepId, setSleepId] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
 
     const isFocused = useIsFocused();
 
@@ -67,10 +68,11 @@ export default function HomeScreen({ navigation, route }) {
 
     useEffect(() => {
         if (isFocused) {
-
             const fetchDates = async () => {
+                setIsLoading(true)
                 const dates = await getDates(startDate, patientToken);
                 setArrDates(dates);
+                setIsLoading(false)
             };
             fetchDates();
             if (!route?.params?.date) {
@@ -118,16 +120,20 @@ export default function HomeScreen({ navigation, route }) {
             }
         }
 
-        return <TouchableOpacity key={i} onPress={() => setSelectedDate(date.date)}>
-            <DateCheck text={date.formattedDate} select={isEqualDates(date.date, selectedDate)} check={isChecked()} />
-        </TouchableOpacity>
+        return (
+            <TouchableOpacity key={i} onPress={() => setSelectedDate(date.date)}>
+                <DateCheck
+                    text={date.formattedDate}
+                    select={isEqualDates(date.date, selectedDate)}
+                    check={isChecked()}
+                    isLoading={isLoading}
+                />
+            </TouchableOpacity>
+        )
     })
 
-
-
-
     return (
-        <MainContainer >
+        <MainContainerWithScroll >
             <View style={styles.container}>
                 <View>
                     <Text style={styles.title}>
@@ -137,89 +143,99 @@ export default function HomeScreen({ navigation, route }) {
                         Marie
                     </Text>
                 </View>
-                <View style={styles.dateCheck}>
-                    <TouchableOpacity onPress={() => setStartDate(new Date(startDate.setDate(startDate.getDate() - 5)))}>
+                <View style={styles.recapPatientBlock}>
+                    <View style={styles.dateCheck}>
+                        <TouchableOpacity onPress={() => setStartDate(new Date(startDate.setDate(startDate.getDate() - 5)))}>
 
-                        <FontAwesome style={styles.chevronLeft} name='chevron-left' />
-                    </TouchableOpacity>
-                    {datesDisplay}
-                    {!isEqualDates(startDate, new Date()) && <TouchableOpacity onPress={() => setStartDate(new Date(startDate.setDate(startDate.getDate() + 5)))}>
+                            <FontAwesome style={styles.chevrons} name='chevron-left' />
+                        </TouchableOpacity>
+                        {datesDisplay}
+                        {!isEqualDates(startDate, new Date()) && <TouchableOpacity onPress={() => setStartDate(new Date(startDate.setDate(startDate.getDate() + 5)))}>
 
-                        <FontAwesome style={styles.chevronLeft} name='chevron-right' />
-                    </TouchableOpacity>}
-                </View>
-                <Card>
-                    <View style={styles.text}>
-                        <View style={styles.text1}>
-                            <Text style={styles.textRecap}>Récap sommeil</Text>
-                            {!isCompleteSleep &&
-                                <Text style={styles.textAFaire}> - À faire</Text>
+                            <FontAwesome style={styles.chevrons} name='chevron-right' />
+                        </TouchableOpacity>}
+                    </View>
+                    {/* {isLoading && <Card><View style={styles.loadingBlock}>
+                        <ActivityIndicator size="large" color={COLOR_PURPLE[600]} />
+                        <Text style={styles.loadingBlock_text}>Chargement des données</Text>
+                    </View></Card>}
+                    {!isLoading && ( */}
+                    <Card>
+                        <View style={styles.text}>
+                            <View style={styles.text1}>
+                                <Text style={styles.textRecap}>Récap sommeil</Text>
+                                {!isCompleteSleep &&
+                                    <Text style={styles.textAFaire}> - À faire</Text>
+                                }
+                            </View>
+                            {
+                                !isCompleteSleep &&
+                                <Text style={styles.textHeure}>8h</Text>
                             }
                         </View>
+
                         {
                             !isCompleteSleep &&
-                            <Text style={styles.textHeure}>8h</Text>
+                            <FullButton
+                                text='Faire mon récap sommeil'
+                                illustration={require('../../assets/avatars/avatar1.png')}
+                                onPress={() => navigation.navigate('SleepForm', { date: selectedDate.toISOString() })}
+                            />
                         }
-                    </View>
-
-                    {
-                        !isCompleteSleep &&
-                        <FullButton type='fullButton'
-                            text='Faire mon récap sommeil'
-                            illustration={require('../../assets/avatars/avatar1.png')}
-                            onPress={() => navigation.navigate('SleepForm', { date: selectedDate.toISOString() })}
-                        />
-                    }
-                    {
-                        isCompleteSleep &&
-                        <FullButton type='emptyButton'
-                            text='Voir mon récap sommeil'
-                            illustration={require('../../assets/avatars/avatar1.png')}
-                            onPress={() => navigation.navigate('EventRecapPatient', { id: sleepId })}
-                        />
-                    }
+                        {
+                            isCompleteSleep &&
+                            <FullButton
+                                text='Voir mon récap sommeil'
+                                type='stroke'
+                                illustration={require('../../assets/avatars/avatar1.png')}
+                                onPress={() => navigation.navigate('EventRecapPatient', { id: sleepId })}
+                            />
+                        }
 
 
 
-                    <View style={styles.text}>
-                        <View style={styles.text1}>
-                            <Text style={styles.textRecap}>Récap mood</Text>
-                            {!isCompleteMood &&
-                                <Text style={styles.textAFaire}> - À faire</Text>
+                        <View style={styles.text}>
+                            <View style={styles.text1}>
+                                <Text style={styles.textRecap}>Récap mood</Text>
+                                {!isCompleteMood &&
+                                    <Text style={styles.textAFaire}> - À faire</Text>
+                                }
+                            </View>
+                            {
+                                !isCompleteMood &&
+                                <Text style={styles.textHeure}>18h</Text>
                             }
                         </View>
-                        {
-                            !isCompleteMood &&
-                            <Text style={styles.textHeure}>18h</Text>
+                        {!isCompleteMood &&
+                            <FullButton
+                                text='Faire mon récap mood'
+                                illustration={require('../../assets/avatars/avatar1.png')}
+                                onPress={() => navigation.navigate('MoodForm', { date: selectedDate.toISOString() })}
+
+                            />}
+                        {isCompleteMood &&
+                            <FullButton
+                                text='Voir mon récap mood'
+                                type='stroke'
+                                illustration={require('../../assets/avatars/avatar1.png')}
+                                onPress={() => navigation.navigate('EventRecapPatient', { id: moodId })}
+
+                            />
                         }
-                    </View>
-                    {!isCompleteMood &&
-                        <FullButton type='fullButton'
-                            text='Faire mon récap mood'
-                            illustration={require('../../assets/avatars/avatar1.png')}
-                            onPress={() => navigation.navigate('MoodForm', { date: selectedDate.toISOString() })}
-
-                        />}
-                    {isCompleteMood &&
-                        <FullButton type='emptyButton'
-                            text='Voir mon récap mood'
-                            illustration={require('../../assets/avatars/avatar1.png')}
-                            onPress={() => navigation.navigate('EventRecapPatient', { id: moodId })}
-
-                        />
-                    }
-                    <Text style={styles.dateDuJour}>{dateFormat(selectedDate)}</Text>
-                </Card>
+                        <Text style={styles.dateDuJour}>{dateFormat(selectedDate)}</Text>
+                    </Card>
+                </View>
             </View>
-        </MainContainer>
+        </MainContainerWithScroll>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
+        paddingTop: 24,
         flex: 1,
-        justifyContent: 'space-evenly',
         alignItems: 'center',
+        rowGap: 48
     },
     title: {
         fontFamily: 'Heading',
@@ -238,10 +254,14 @@ const styles = StyleSheet.create({
     text1: {
         flexDirection: 'row',
     },
-    chevronLeft: {
+    recapPatientBlock: {
+        flex: 1,
+        alignItems: "center",
+        rowGap: 16
+    },
+    chevrons: {
         fontSize: 20,
-        color: 'grey',
-        paddingVertical: '20',
+        color: COLOR_PURPLE[400],
     },
     textRecap: {
         fontWeight: 'bold',
@@ -257,8 +277,9 @@ const styles = StyleSheet.create({
     },
     dateCheck: {
         flexDirection: 'row',
-        width: '80%',
+        width: '100%',
         justifyContent: 'space-between',
+        alignItems: "center"
     },
     dateDuJour: {
         color: COLOR_PURPLE[500],
@@ -266,6 +287,15 @@ const styles = StyleSheet.create({
         width: '100%',
         textAlign: 'right',
         fontSize: 15,
-    }
+    },
+    loadingBlock: {
+        flex: 1,
+        gap: 4,
+        width: "100%",
+    },
+    loadingBlock_text: {
+        fontSize: 18,
+        fontWeight: 600
+    },
 })
 
