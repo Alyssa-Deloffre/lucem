@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import ButtonRegular from "./buttons/ButtonRegular";
 import { disconnectUser } from "../reducers/user";
+import Button from "./buttons/Button";
 
 export default function DeconnectUserButton({ navigation }) {
     const dispatch = useDispatch()
@@ -11,6 +11,6 @@ export default function DeconnectUserButton({ navigation }) {
     }
 
     return (
-        <ButtonRegular text="Me déconnecter" onPress={() => handleDisconnectUser()} />
+        <Button label="Me déconnecter" type="redStroke" icon="sign-out" iconSize={20} onPress={() => handleDisconnectUser()} />
     )
 }
