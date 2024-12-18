@@ -18,12 +18,10 @@ async function getEvent(eventId) {
 }
 
 
-export default function EventRecapPatient({ navigation, route }) {
-
+export default function EventRecapTherapist({ navigation, route }) {
     const [infos, setInfos] = useState(null);
     const [type, setType] = useState(null)
-
-    const { id } = route.params
+    const { id, token } = route.params
 
     useEffect(() => {
         const setEvent = async () => {
@@ -34,10 +32,10 @@ export default function EventRecapPatient({ navigation, route }) {
         setEvent()
     }, [])
 
-
     const navigateToHome = async () => {
-        return await navigation.navigate('PatientTabNavigator', {screen: 'Accueil',  params: {date: infos.event.date}})
+        return await navigation.navigate('Patient',  {data : {date: infos.event.date, token : token}})
     }
+
     return (
         <MainContainer>
 

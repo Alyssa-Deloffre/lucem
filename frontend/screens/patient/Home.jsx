@@ -175,7 +175,7 @@ export default function HomeScreen({ navigation, route }) {
                         <FullButton type='emptyButton'
                             text='Voir mon récap sommeil'
                             illustration={require('../../assets/avatars/avatar1.png')}
-                            onPress={() => navigation.navigate('EventRecap', { id: sleepId })}
+                            onPress={() => navigation.navigate('EventRecapPatient', { id: sleepId })}
                         />
                     }
 
@@ -204,7 +204,7 @@ export default function HomeScreen({ navigation, route }) {
                         <FullButton type='emptyButton'
                             text='Voir mon récap mood'
                             illustration={require('../../assets/avatars/avatar1.png')}
-                            onPress={() => navigation.navigate('EventRecap', { id: moodId })}
+                            onPress={() => navigation.navigate('EventRecapPatient', { id: moodId })}
 
                         />
                     }

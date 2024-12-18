@@ -33,9 +33,6 @@ export default function SleepRecap({eventInfos}){
     const wakeQualityValue = event && wakeQuality.find(item => item.value === event.ref.wakingquality).text
 
 
-    console.log('truc : ', eventInfos.event.ref.nightwaking)
-
-
 //PB : ON PERD 1H sur la start et end 
     return (
         <Card>
