@@ -38,8 +38,8 @@ const getCurrentInfos = (date, arr) => {
 export default function Patient({ navigation, route }) {
   const [patientInfos, setPatientInfos] = useState({})
   const [menuItem, setMenuItem] = useState('Récap')
-  
-  
+
+
   const [startDate, setStartDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState(startDate)
   const [arrDates, setArrDates] = useState([])
@@ -48,7 +48,7 @@ export default function Patient({ navigation, route }) {
   const [isCompleteSleep, setIsCompleteSleep] = useState(false)
   const [moodId, setMoodId] = useState(null)
   const [sleepId, setSleepId] = useState(null)
-  
+
   const isFocused = useIsFocused();
   const token = route.params.data.token
 
@@ -70,9 +70,9 @@ export default function Patient({ navigation, route }) {
       })
       const data = await resp.json()
       dates.unshift({ formattedDate: dateFormat(newDay), date: newDay, ...data });
-  
+
     }
-    
+
     return dates;
   };
 
@@ -176,37 +176,38 @@ export default function Patient({ navigation, route }) {
 
 
   const recap = <>
-                      {isCompleteMood &&
-                          <FullButton type='emptyButton'
-                              text='Voir le récap mood'
-                              illustration={require('../../assets/avatars/avatar1.png')}
-                              onPress={() => navigation.navigate('EventRecapTherapist', { id: moodId, token : token })}
-  
-                          />
-                      }
-                    {
-                        isCompleteSleep &&
-                        <FullButton type='emptyButton'
-                            text='Voir le récap sommeil'
-                            illustration={require('../../assets/avatars/avatar1.png')}
-                            onPress={() => navigation.navigate('EventRecapTherapist', { id: sleepId, token : token })}
-                        />
-                    }
+    {isCompleteMood &&
+      <FullButton
+        text='Voir le récap mood'
+        illustration={require('../../assets/avatars/avatar1.png')}
+        onPress={() => navigation.navigate('EventRecapTherapist', { id: moodId, token: token })}
+
+      />
+    }
+    {
+      isCompleteSleep &&
+      <FullButton
+        text='Voir le récap sommeil'
+        type='stroke'
+        illustration={require('../../assets/avatars/avatar1.png')}
+        onPress={() => navigation.navigate('EventRecapTherapist', { id: sleepId, token: token })}
+      />
+    }
   </>
 
   const datesMenu = <>
-                      <View style={styles.dateCheck}>
-                        <TouchableOpacity onPress={() => setStartDate(new Date(startDate.setDate(startDate.getDate() - 5)))}>
-    
-                            <FontAwesome style={styles.chevron} activeOpacity={1} name='chevron-left' />
-                        </TouchableOpacity>
-                        {datesDisplay}
-                        {!isEqualDates(startDate, new Date()) && <TouchableOpacity activeOpacity={1} onPress={() => setStartDate(new Date(startDate.setDate(startDate.getDate() + 5)))}>
-    
-                            <FontAwesome style={styles.chevron} name='chevron-right' />
-                        </TouchableOpacity>}
-                    </View>
-  
+    <View style={styles.dateCheck}>
+      <TouchableOpacity onPress={() => setStartDate(new Date(startDate.setDate(startDate.getDate() - 5)))}>
+
+        <FontAwesome style={styles.chevron} activeOpacity={1} name='chevron-left' />
+      </TouchableOpacity>
+      {datesDisplay}
+      {!isEqualDates(startDate, new Date()) && <TouchableOpacity activeOpacity={1} onPress={() => setStartDate(new Date(startDate.setDate(startDate.getDate() + 5)))}>
+
+        <FontAwesome style={styles.chevron} name='chevron-right' />
+      </TouchableOpacity>}
+    </View>
+
   </>
 
   const stats = (
@@ -374,7 +375,7 @@ export default function Patient({ navigation, route }) {
           </View>
           <Card>
 
-          {menuItem === 'Récap' && datesMenu}
+            {menuItem === 'Récap' && datesMenu}
             {menuItem === 'Contact' && contact}
             {menuItem === 'Récap' && recap}
             {menuItem === 'Stats' && stats}
@@ -432,8 +433,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'grey',
     paddingVertical: '20',
-    paddingHorizontal : 10,
-},
+    paddingHorizontal: 10,
+  },
 
 dateCheck: {
   flexDirection: 'row',

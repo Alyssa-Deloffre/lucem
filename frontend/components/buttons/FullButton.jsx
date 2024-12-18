@@ -4,7 +4,7 @@ import { COLOR_GREEN, COLOR_PURPLE } from "../../data/styleGlobal";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
-export default function FullButton({ text, onPress, type, illustration }) {
+export default function FullButton({ text, onPress, type = "default", illustration }) {
 
     return (
         <TouchableOpacity onPress={onPress} style={[styles.button, styles[type]]}>
@@ -17,28 +17,35 @@ export default function FullButton({ text, onPress, type, illustration }) {
 
 const styles = StyleSheet.create({
     button: {
-        paddingVertical: 20,
-        paddingHorizontal: 24,
+        paddingVertical: 18,
+        paddingHorizontal: 18,
+        minHeight: 64,
         width: '100%',
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
+        gap: 4,
         borderRadius: 16,
         shadowColor: COLOR_PURPLE[1000],
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 10,
     },
-    fullButton: {
+    default: {
         backgroundColor: COLOR_GREEN[600],
     },
-    emptyButton: {
+    white: {
         backgroundColor: "white",
+    },
+    stroke: {
+        borderWidth: 1,
+        borderColor: COLOR_PURPLE[1000]
     },
     buttonTxt: {
         fontFamily: 'Quicksand',
         fontWeight: 700,
-        fontSize: 16
+        fontSize: 16,
+        color: COLOR_PURPLE[1000]
     },
     image: {
         width: 60,
