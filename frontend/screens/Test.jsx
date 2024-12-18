@@ -7,6 +7,7 @@ import { sleepQuality } from "../data/sleep";
 import { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import { COLOR_GREEN, COLOR_PURPLE } from "../data/styleGlobal";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import {
   LineChart,
@@ -70,50 +71,89 @@ export default function Test() {
     })()
   }, [])
 
-
+  const formatYLabel = (label) => {
+    const truncLabel = Math.trunc(label)
+    if (truncLabel === 0) {
+        return 'Médiocre'
+    }
+    if (truncLabel === 1) {
+        return 'Mauvais'
+    }
+    if (truncLabel === 2) {
+        return 'Moyen'
+    }
+    if (truncLabel === 3) {
+        return 'Bien'
+    }
+    if (truncLabel === 4) {
+        return 'Très bien'
+    }
+  }
   return (
     <MainContainer>
 
       <Card>
         <ScrollView style={styles.scrollView}>
-          <Text style={styles.titre}>Récap sommeil</Text>
-          {dateSleepArr.length > 0 &&
-            <LineChart
-              data={{
-                labels: dateSleepArr.map(date => dateFormat(date)),
-                datasets: [
-                  {
-                    data: eventSleepArr.map(event => event.ref.sleepquality)
-                  }
-                ]
-              }}
-              width={Dimensions.get("window").width - 80} // from react-native
-              height={200}
-              fromZero={true}
-              fromNumber={4}
-              chartConfig={{
-                backgroundGradientFrom: COLOR_GREEN[100],
-                backgroundGradientTo: COLOR_GREEN[100],
-                decimalPlaces: 2, // optional, defaults to 2dp
-                color: () => COLOR_GREEN[600],
-                labelColor: () => COLOR_GREEN[1000],
-                style: {
-                  borderRadius: 16
-                },
-                propsForDots: {
-                  r: "6",
-                  strokeWidth: "2",
-                  stroke: COLOR_GREEN[800]
-                }
-              }}
-              bezier
-              style={{
-                marginVertical: 8,
-                borderRadius: 16
-              }}
-            />}
 
-          <Text style={styles.titre}>Récap humeur</Text>
+<Text style={styles.titre}>Qualité du sommeil et Humeur au réveil</Text>
+        {dateSleepArr.length > 0 &&
+          <LineChart
+            data={{
+                labels: dateSleepArr.map(date => dateFormat(date)),
+              datasets: [
+                {
+                    data: eventSleepArr.map(event => event.ref.sleepquality),
+                    svg: { fill: COLOR_GREEN[100]},
+                    strokeWidth : 3,
+                },
+                {
+                    data: eventSleepArr.map(event => event.ref.wakingquality),
+                    color: () => COLOR_PURPLE[600],
+                    strokeWidth : 3,
+                },
+              ]
+            }}
+            //Style graphique dans son ensemble 
+            width={Dimensions.get("window").width - 80} 
+            height={200}
+            fromZero={true}
+            fromNumber={4}
+            chartConfig={{
+              backgroundGradientFrom: COLOR_GREEN[100],
+              backgroundGradientTo: COLOR_GREEN[100],
+              decimalPlaces: 2, 
+              color: () => COLOR_GREEN[600],
+              labelColor: () => COLOR_GREEN[1000],
+              style: {
+                borderRadius: 16
+              },
+              //Style des points
+              propsForDots: {
+                r: "7",
+                strokeWidth: "0",
+                stroke: 'black',
+              }
+            }}
+            //Style fond 
+            bezier
+            style={{
+              marginVertical: 8,
+              borderRadius: 16
+            }}
+            formatYLabel={formatYLabel}
+          />}
+          <View style={styles.legende1}>
+          <FontAwesome style={styles.rond1} name='circle'/>
+            <Text style={styles.qualite}>Qualité du sommeil</Text>
+            </View>
+            <View style={styles.legende1}>
+            <FontAwesome style={styles.rond2} name='circle'/>
+            <Text style={styles.humeur}>Humeur au réveil</Text>
+            </View>
+         
+
+          <Text style={styles.titre}>Etat émotionnel des 6 derniers jours</Text>
+        
           {dateMoodArr.length > 0 &&
             <LineChart
               data={{
@@ -124,22 +164,22 @@ export default function Test() {
                   }
                 ]
               }}
-              width={Dimensions.get("window").width - 80} // from react-native
+              width={Dimensions.get("window").width - 80} 
               height={200}
               fromZero={true}
               fromNumber={4}
               chartConfig={{
                 backgroundGradientFrom: COLOR_GREEN[100],
                 backgroundGradientTo: COLOR_GREEN[100],
-                decimalPlaces: 2, // optional, defaults to 2dp
+                decimalPlaces: 2,
                 color: () => COLOR_GREEN[600],
                 labelColor: () => COLOR_GREEN[1000],
                 style: {
                   borderRadius: 16
                 },
                 propsForDots: {
-                  r: "6",
-                  strokeWidth: "2",
+                  r: "7",
+                  strokeWidth: "0",
                   stroke: COLOR_GREEN[800]
                 }
               }}
@@ -148,64 +188,8 @@ export default function Test() {
                 marginVertical: 8,
                 borderRadius: 16
               }}
+              formatYLabel={formatYLabel}
             />}
-
-          <Text style={styles.titre}>Cumul</Text>
-          <LineChart
-            data={{
-              labels: ["11/12", "12/12", "13/12", "14/12", "15/12", "16/12", "Today"],
-              datasets: [
-                {
-                  data: [
-                    Math.random() * 1000,
-                    Math.random() * 1000,
-                    Math.random() * 1000,
-                    Math.random() * 1000,
-                    Math.random() * 1000,
-                    Math.random() * 1000,
-                    Math.random() * 1000,
-                  ],
-                  svg: { fill: COLOR_GREEN[600] }
-                },
-                {
-                  data: [
-                    Math.random() * 1000,
-                    Math.random() * 1000,
-                    Math.random() * 1000,
-                    Math.random() * 1000,
-                    Math.random() * 1000,
-                    Math.random() * 1000,
-                    Math.random() * 1000,
-                  ],
-                  color: () => COLOR_PURPLE[600],
-
-                }
-              ]
-            }}
-            width={Dimensions.get("window").width - 80} // from react-native
-            height={200}
-            yAxisInterval={1} // optional, defaults to 1
-            chartConfig={{
-              backgroundGradientFrom: COLOR_GREEN[100],
-              backgroundGradientTo: COLOR_GREEN[100],
-              decimalPlaces: 2, // optional, defaults to 2dp
-              color: () => COLOR_GREEN[600],
-              labelColor: () => COLOR_GREEN[1000],
-              style: {
-                borderRadius: 16
-              },
-              propsForDots: {
-                r: "6",
-                strokeWidth: "2",
-                stroke: COLOR_GREEN[800]
-              }
-            }}
-            bezier
-            style={{
-              marginVertical: 8,
-              borderRadius: 16
-            }}
-          />
         </ScrollView>
       </Card>
     </MainContainer>
@@ -227,5 +211,29 @@ const styles = StyleSheet.create({
   },
   titre: {
     fontWeight: 'bold',
-  }
+    padding : 10,
+  },
+  qualite: {
+    color : COLOR_GREEN[700],
+  },
+  humeur: {
+    color : COLOR_PURPLE[600],
+  },
+  legende1: {
+    paddingHorizontal : 10,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  rond1: {
+    width: 17,
+    color : COLOR_GREEN[600],
+    alignContent : 'center',
+    fontSize : 15,
+  },
+  rond2: {
+    width: 17,
+    color : COLOR_PURPLE[600],
+    alignContent : 'center',
+    fontSize : 15,
+  },
 })
