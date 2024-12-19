@@ -79,7 +79,6 @@ export default function HomeScreen({ navigation, route }) {
                 setArrDates(dates);
                 setIsLoading(false)
                 const truc = await getPatientInfos(patientToken)
-                console.log(truc.data.firstname)
                 setPatientInfos(truc)
             };
             fetchDates();
@@ -174,7 +173,7 @@ export default function HomeScreen({ navigation, route }) {
                                 </View>
                                 {
                                     !isCompleteSleep &&
-                                    <Text style={styles.textHeure}>8h</Text>
+                                    <Text style={styles.textRecap}>8h</Text>
                                 }
                             </View>
 
@@ -207,7 +206,7 @@ export default function HomeScreen({ navigation, route }) {
                                 </View>
                                 {
                                     !isCompleteMood &&
-                                    <Text style={styles.textHeure}>18h</Text>
+                                    <Text style={styles.textRecap}>18h</Text>
                                 }
                             </View>
                             {!isCompleteMood &&
@@ -226,7 +225,10 @@ export default function HomeScreen({ navigation, route }) {
 
                                 />
                             }
+                            <View>
+
                             <Text style={styles.dateDuJour}>{dateFormat(selectedDate)}</Text>
+                            </View>
                         </Card>
                         {isLoading && <View style={styles.loadingBlock}>
                             <ActivityIndicator size="large" color={COLOR_PURPLE[600]} />
@@ -256,7 +258,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
-        width: 300,
     },
     text1: {
         flexDirection: 'row',
@@ -271,10 +272,12 @@ const styles = StyleSheet.create({
         color: COLOR_PURPLE[400],
     },
     textRecap: {
-        fontWeight: 'bold',
+        fontFamily: 'Quicksand-SemiBold',
+
     },
     textAFaire: {
         color: COLOR_PURPLE[500],
+        fontFamily: 'Quicksand'
     },
     check: {
         width: '100%',
@@ -290,7 +293,7 @@ const styles = StyleSheet.create({
     },
     dateDuJour: {
         color: COLOR_PURPLE[500],
-        fontWeight: 'bold',
+        fontFamily: 'Montserrat-SemiBold',
         width: '100%',
         textAlign: 'right',
         fontSize: 15,
@@ -311,7 +314,8 @@ const styles = StyleSheet.create({
     },
     loadingBlock_text: {
         fontSize: 18,
-        fontWeight: 600
+        fontWeight: 600,
+        fontFamily: 'Quicksand'
     },
 })
 

@@ -1,4 +1,4 @@
-import { SafeAreaView, Text, View, StyleSheet, FlatList } from "react-native";
+import { SafeAreaView, Text, View, StyleSheet, FlatList, ScrollView } from "react-native";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -28,11 +28,12 @@ export default function TherapistHomeScreen({ navigation }) {
     useEffect(() => {
         (async () => {
             const patients = await getAllPatient(userToken)
+            console.log(patients)
             setPatientList(patients)
         })()
     }, [])
 
-    const patientDisplay = patientList.map((patient, i) => {
+    const patientDisplay = patientList.sort((a, b) => a.name < b.name).map((patient, i) => {
         return <PatientButton key={i} firstname={patient.firstname} name={patient.name} avatar={avatarImages[patient.avatar]} onPress={() => goToPatient(patient)} />;
     })
 
@@ -47,9 +48,12 @@ export default function TherapistHomeScreen({ navigation }) {
                         Mes patients
                     </Text>
                 </View>
+                <ScrollView>
+
                 <View style={styles.patientButton}>
                     {patientDisplay}
                 </View>
+                </ScrollView>
             </View>
         </MainContainer>
     )
@@ -58,15 +62,12 @@ export default function TherapistHomeScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'space-evenly',
         alignItems: 'center',
     },
     title: {
         ...FONTS.Heading1,
     },
     patientButton: {
-        justifyContent: 'space-between',
-
     }
 })
 

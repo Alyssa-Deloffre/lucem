@@ -17,7 +17,7 @@ import Card from '../../components/Card';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { avatarImages } from '../../data/imageSource';
-import { COLOR_PURPLE } from '../../data/styleGlobal';
+import { COLOR_PURPLE, FONTS } from '../../data/styleGlobal';
 import MainContainerWithScroll from '../../components/MainContainerWithScroll';
 import UserAutocomplete from '../../components/inputs/UserAutocomplete';
 import DeconnectUserButton from '../../components/DeconnectUserButton';
@@ -393,9 +393,7 @@ const styles = StyleSheet.create({
         gap: 2,
     },
     patientName: {
-        fontSize: 20,
-        fontWeight: 700,
-        color: COLOR_PURPLE[1000],
+        ...FONTS.Heading2
     },
     menu: {
         flexDirection: 'row',
@@ -413,12 +411,16 @@ const styles = StyleSheet.create({
     },
     infosBlock_infos_texts: {
         fontSize: 20,
-        fontWeight: 600,
         color: COLOR_PURPLE[600],
+        fontFamily : 'Quicksand-SemiBold'
     },
     infosBlock_infos_description: {
-        fontSize: 18,
-        fontWeight: 60,
+        ...FONTS.Body,
+        fontFamily : 'Quicksand-SemiBold',
+    },
+    infosBlock_label : {
+        ...FONTS.Body
+
     },
     psyBlock: {
         width: '100%',
@@ -450,6 +452,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 700,
         color: COLOR_PURPLE[1000],
+        ...FONTS.Body
     },
     psyBlock_head_icon: {
         fontSize: 16,

@@ -114,6 +114,7 @@ const PatientTabNavigator = () => {
                 <Tab.Screen
                     name='Accueil'
                     component={PatientHomeScreen}
+
                 />
                 <Tab.Screen
                     name='Profil'
