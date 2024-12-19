@@ -93,7 +93,10 @@ export default function InputField({
 
     return (
         <View style={styles.inputContainer}>
+            {label && 
+            
             <Text style={error ? styles.labelError : styles.label} >{label}</Text>
+            }
             <TextInput
                 style={[styles.input, inputStyle]}
                 placeholder={placeholder}

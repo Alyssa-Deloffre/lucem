@@ -89,8 +89,8 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     label: {
-        fontSize: 14,
-        fontWeight: 600,
+        fontFamily : 'Quicksand-SemiBold',
+        fontSize: 16,
         color: COLOR_PURPLE[1000],
     },
     labelError: {

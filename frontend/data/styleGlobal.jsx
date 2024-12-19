@@ -1,29 +1,5 @@
 
 
-// FONTS
-const FONTS = {
-  Heading1 : {
-    fontFamily : 'Montserrat-Bold',
-    fontSize : 32,
-    letterSpacing : -1.5,
-
-  },
-  Heading2 : {
-    fontFamily : 'Montserrat-SemiBold',
-    fontSize : 28,
-    letterSpacing : -1.5,
-  },  
-  Heading3: {
-    fontFamily : 'Montserrat',
-    fontSize : 20,
-    letterSpacing : -1.5,
-  },
-  Body : {
-    fontFamily : 'Quicksand',
-    fontSize : 18,
-  }
-}
-
 
 
 // COLORS
@@ -79,5 +55,39 @@ const COLOR_RED = {
     900: '#7f0909',
     1000: '#640707',
 };
+
+
+
+// FONTS
+const FONTS = {
+  Heading1 : {
+    fontFamily : 'Montserrat-Bold',
+    fontSize : 32,
+    letterSpacing : -1.5,
+    color : COLOR_PURPLE[1000]
+
+
+  },
+  Heading2 : {
+    fontFamily : 'Montserrat-SemiBold',
+    fontSize : 28,
+    letterSpacing : -1.5,
+    color : COLOR_PURPLE[1000]
+
+  },  
+  Heading3: {
+    fontFamily : 'Montserrat',
+    fontSize : 20,
+    letterSpacing : -1.5,
+    color : COLOR_PURPLE[1000]
+
+    
+  },
+  Body : {
+    fontFamily : 'Quicksand',
+    fontSize : 18,
+    color : COLOR_PURPLE[1000]
+  }
+}
 
 export { COLOR_GREEN, COLOR_PURPLE, COLOR_RED, FONTS };

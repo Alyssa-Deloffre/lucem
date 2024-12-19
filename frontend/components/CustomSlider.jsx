@@ -24,7 +24,7 @@ export default function CustomSlider ({
         value={2}
         step={1}
         />
-        <Text style={{textAlign : 'center', fontSize : 16}}>{data[value].text}</Text>
+        <Text style={{textAlign : 'center', fontSize : 16, fontFamily : 'Quicksand-SemiBold', color : COLOR_PURPLE[1000]}}>{data[value].text}</Text>
 
         </>
     )

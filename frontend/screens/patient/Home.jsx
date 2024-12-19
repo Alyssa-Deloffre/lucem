@@ -9,7 +9,7 @@ import FullButton from "../../components/buttons/FullButton";
 
 import { URL } from "../../data/globalVariables";
 import Card from "../../components/Card";
-import { COLOR_PURPLE } from "../../data/styleGlobal";
+import { COLOR_PURPLE, FONTS } from "../../data/styleGlobal";
 import DateCheck from "../../components/DateCheck";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { dateFormat } from "../../modules/dateAndTimeFunctions";
@@ -46,6 +46,12 @@ const getCurrentInfos = (date, arr) => {
     return arr[index]
 }
 
+const getPatientInfos = async (token) => {
+    const resp = await fetch(`${URL}/patients/getPatient/${token}`)
+    const patient = await resp.json()
+    return patient
+}
+
 export default function HomeScreen({ navigation, route }) {
     const [startDate, setStartDate] = useState(new Date())
     const [selectedDate, setSelectedDate] = useState(startDate)
@@ -56,6 +62,7 @@ export default function HomeScreen({ navigation, route }) {
     const [moodId, setMoodId] = useState(null)
     const [sleepId, setSleepId] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+    const [patientInfos, setPatientInfos] = useState('')
 
     const isFocused = useIsFocused();
 
@@ -71,6 +78,9 @@ export default function HomeScreen({ navigation, route }) {
                 const dates = await getDates(startDate, patientToken);
                 setArrDates(dates);
                 setIsLoading(false)
+                const truc = await getPatientInfos(patientToken)
+                console.log(truc.data.firstname)
+                setPatientInfos(truc)
             };
             fetchDates();
             if (!route?.params?.date) {
@@ -78,6 +88,7 @@ export default function HomeScreen({ navigation, route }) {
             } else {
                 setSelectedDate(new Date(route.params.date))
             }
+
         }
 
     }, [startDate, isFocused]);
@@ -137,20 +148,20 @@ export default function HomeScreen({ navigation, route }) {
                         Bonjour
                     </Text>
                     <Text style={styles.title}>
-                        Marie
+                        {patientInfos && patientInfos.data.firstname}
                     </Text>
                 </View>
                 <View style={styles.recapPatientBlock}>
                     <View style={styles.dateCheck}>
                         <TouchableOpacity onPress={() => setStartDate(new Date(startDate.setDate(startDate.getDate() - 5)))}>
 
-                            <FontAwesome style={styles.chevrons} name='chevron-left' />
+                            <FontAwesome style={styles.chevron} name='chevron-left' />
                         </TouchableOpacity>
                         {datesDisplay}
-                        {!isEqualDates(startDate, new Date()) && <TouchableOpacity onPress={() => setStartDate(new Date(startDate.setDate(startDate.getDate() + 5)))}>
+                        <TouchableOpacity onPress={() => setStartDate(new Date(startDate.setDate(startDate.getDate() + 5)))}>
 
-                            <FontAwesome style={styles.chevrons} name='chevron-right' />
-                        </TouchableOpacity>}
+                            <FontAwesome style={[styles.chevron, { opacity: isEqualDates(startDate, new Date()) ? 0 : 1 }]} name='chevron-right' />
+                        </TouchableOpacity>
                     </View>
                     <View>
                         <Card>
@@ -236,11 +247,9 @@ const styles = StyleSheet.create({
         rowGap: 48
     },
     title: {
-        fontFamily: 'Heading',
-        fontWeight: 'bold',
+        ...FONTS.Heading1,
         justifyContent: 'center',
-        fontSize: 30,
-        width: 120,
+
         textAlign: 'center',
     },
     text: {
@@ -257,7 +266,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         rowGap: 16,
     },
-    chevrons: {
+    chevron: {
         fontSize: 20,
         color: COLOR_PURPLE[400],
     },

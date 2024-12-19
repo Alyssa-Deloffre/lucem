@@ -14,7 +14,7 @@ import { moods, moodQualityValues, influenceFactors } from "../../data/mood"
 import ButtonRegular from "../../components/buttons/ButtonRegular"
 import { URL } from "../../data/globalVariables"
 
-import { COLOR_PURPLE } from "../../data/styleGlobal"
+import { COLOR_PURPLE, FONTS } from "../../data/styleGlobal"
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
@@ -148,11 +148,11 @@ navigateToHome()        }
                 {currentScreen === 1 &&
                     <View style={{rowGap : 6}}>
                         <Card label='Humeur du jour'>
-                            <Text>Comment était votre humeur aujourd'hui ?</Text>
+                            <Text style={styles.body}>Comment était votre humeur aujourd'hui ?</Text>
                             <CustomSlider data={moodQualityValues} value={moodInfos.quality} onValueChange={(newValue) => setMoodInfos(prev => ({ ...prev, quality: newValue }))} />
                         </Card>
                         <Card >
-                            <Text>Quelles émotions avez-vous ressenties ?</Text>
+                            <Text style={styles.body}>Quelles émotions avez-vous ressenties ?</Text>
                                     {!showmore && <ButtonRegular text="Voir tout" type='buttonLittleRegular' orientation='plus-left' onPress={() => setShowMore(!showmore)} />}
                                     {showmore && <ButtonRegular text="Voir moins d'émotions" type='buttonLittleRegular' orientation='minus-left' onPress={() => setShowMore(!showmore)} />}
                             <ScrollView style={{ }}>
@@ -180,7 +180,7 @@ navigateToHome()        }
                 {currentScreen === 2 &&
                     <>
                     <Card label="Facteurs d'influence">
-                        <Text>Quels sont le(s) élément(s) qui influencent votre vie en ce moment ?</Text>
+                        <Text style={styles.body}>Quels sont les éléments qui influencent votre vie en ce moment ?</Text>
                         <View style={styles.flatlist}>{influenceToDisplay}</View>
 
                     </Card>
@@ -217,6 +217,13 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         gap: 6,
     },
+    body : {
+        fontFamily : 'Quicksand-SemiBold',
+        fontSize : 16,
+        color : COLOR_PURPLE[1000]
+        
+ 
+    }
 
 })
 

@@ -29,7 +29,9 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-...FONTS.Heading3        
+        fontFamily : 'Montserrat-SemiBold',
+        letterSpacing : -1.5,
+        color : COLOR_PURPLE[1000]
     },
     card: {
         width: "100%",
