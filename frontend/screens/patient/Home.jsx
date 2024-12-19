@@ -155,75 +155,76 @@ export default function HomeScreen({ navigation, route }) {
                             <FontAwesome style={styles.chevrons} name='chevron-right' />
                         </TouchableOpacity>}
                     </View>
-                    {/* {isLoading && <Card><View style={styles.loadingBlock}>
-                        <ActivityIndicator size="large" color={COLOR_PURPLE[600]} />
-                        <Text style={styles.loadingBlock_text}>Chargement des données</Text>
-                    </View></Card>}
-                    {!isLoading && ( */}
-                    <Card>
-                        <View style={styles.text}>
-                            <View style={styles.text1}>
-                                <Text style={styles.textRecap}>Récap sommeil</Text>
-                                {!isCompleteSleep &&
-                                    <Text style={styles.textAFaire}> - À faire</Text>
+                    <View>
+                        <Card>
+                            <View style={styles.text}>
+                                <View style={styles.text1}>
+                                    <Text style={styles.textRecap}>Récap sommeil</Text>
+                                    {!isCompleteSleep &&
+                                        <Text style={styles.textAFaire}> - À faire</Text>
+                                    }
+                                </View>
+                                {
+                                    !isCompleteSleep &&
+                                    <Text style={styles.textHeure}>8h</Text>
                                 }
                             </View>
+
                             {
                                 !isCompleteSleep &&
-                                <Text style={styles.textHeure}>8h</Text>
+                                <FullButton
+                                    text='Faire mon récap sommeil'
+                                    illustration={require('../../assets/avatars/avatar1.png')}
+                                    onPress={() => navigation.navigate('SleepForm', { date: selectedDate.toISOString() })}
+                                />
                             }
-                        </View>
-
-                        {
-                            !isCompleteSleep &&
-                            <FullButton
-                                text='Faire mon récap sommeil'
-                                illustration={require('../../assets/avatars/avatar1.png')}
-                                onPress={() => navigation.navigate('SleepForm', { date: selectedDate.toISOString() })}
-                            />
-                        }
-                        {
-                            isCompleteSleep &&
-                            <FullButton
-                                text='Voir mon récap sommeil'
-                                type='stroke'
-                                illustration={require('../../assets/avatars/avatar1.png')}
-                                onPress={() => navigation.navigate('EventRecapPatient', { id: sleepId })}
-                            />
-                        }
+                            {
+                                isCompleteSleep &&
+                                <FullButton
+                                    text='Voir mon récap sommeil'
+                                    type='stroke'
+                                    illustration={require('../../assets/avatars/avatar1.png')}
+                                    onPress={() => navigation.navigate('EventRecapPatient', { id: sleepId })}
+                                />
+                            }
 
 
 
-                        <View style={styles.text}>
-                            <View style={styles.text1}>
-                                <Text style={styles.textRecap}>Récap mood</Text>
-                                {!isCompleteMood &&
-                                    <Text style={styles.textAFaire}> - À faire</Text>
+                            <View style={styles.text}>
+                                <View style={styles.text1}>
+                                    <Text style={styles.textRecap}>Récap mood</Text>
+                                    {!isCompleteMood &&
+                                        <Text style={styles.textAFaire}> - À faire</Text>
+                                    }
+                                </View>
+                                {
+                                    !isCompleteMood &&
+                                    <Text style={styles.textHeure}>18h</Text>
                                 }
                             </View>
-                            {
-                                !isCompleteMood &&
-                                <Text style={styles.textHeure}>18h</Text>
+                            {!isCompleteMood &&
+                                <FullButton
+                                    text='Faire mon récap mood'
+                                    illustration={require('../../assets/avatars/avatar1.png')}
+                                    onPress={() => navigation.navigate('MoodForm', { date: selectedDate.toISOString() })}
+
+                                />}
+                            {isCompleteMood &&
+                                <FullButton
+                                    text='Voir mon récap mood'
+                                    type='stroke'
+                                    illustration={require('../../assets/avatars/avatar1.png')}
+                                    onPress={() => navigation.navigate('EventRecapPatient', { id: moodId })}
+
+                                />
                             }
-                        </View>
-                        {!isCompleteMood &&
-                            <FullButton
-                                text='Faire mon récap mood'
-                                illustration={require('../../assets/avatars/avatar1.png')}
-                                onPress={() => navigation.navigate('MoodForm', { date: selectedDate.toISOString() })}
-
-                            />}
-                        {isCompleteMood &&
-                            <FullButton
-                                text='Voir mon récap mood'
-                                type='stroke'
-                                illustration={require('../../assets/avatars/avatar1.png')}
-                                onPress={() => navigation.navigate('EventRecapPatient', { id: moodId })}
-
-                            />
-                        }
-                        <Text style={styles.dateDuJour}>{dateFormat(selectedDate)}</Text>
-                    </Card>
+                            <Text style={styles.dateDuJour}>{dateFormat(selectedDate)}</Text>
+                        </Card>
+                        {isLoading && <View style={styles.loadingBlock}>
+                            <ActivityIndicator size="large" color={COLOR_PURPLE[600]} />
+                            <Text style={styles.loadingBlock_text}>Chargement des données</Text>
+                        </View>}
+                    </View>
                 </View>
             </View>
         </MainContainerWithScroll>
@@ -289,9 +290,18 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     loadingBlock: {
+        backgroundColor: "white",
         flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
         gap: 4,
         width: "100%",
+        height: "100%",
+        position: "absolute",
+        zIndex: 100,
+        bottom: 0,
+        right: 0,
+        borderRadius: 16
     },
     loadingBlock_text: {
         fontSize: 18,

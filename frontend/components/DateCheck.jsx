@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     texte: {
-        fontFamily : 'Montserrat-SemiBold',
+        fontFamily: 'Montserrat-SemiBold',
 
     },
     dateLoading: {
