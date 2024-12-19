@@ -51,7 +51,7 @@ export default function DatePickerInput({ value, onChange, label }) {
         <DateTimePicker
           mode='date'
           value={value}
-          display="calendar"
+          display="spinner"
           onChange={(event, selectedDate) => {
             setIsModalVisible(false);
             if (selectedDate) onChange(event, selectedDate);

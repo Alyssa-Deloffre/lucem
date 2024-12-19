@@ -36,6 +36,7 @@ export default function UserAutocomplete({
     }, [suggestions, value])
 
     const filterSuggestions = (value) => {
+        console.log(value)
         if (value.length > 0) {
             const valueWithoutAccent = value.normalize('NFD').replace(/\p{Diacritic}/gu, '')
             const pattern = new RegExp(valueWithoutAccent, "gi")
@@ -44,8 +45,11 @@ export default function UserAutocomplete({
                 return pattern.test(suggestionWithoutAccent)
             })
             setSuggestions(filterSuggestion)
+            console.log("prout")
         } else {
             setSuggestions(users)
+            console.log("test")
+
         }
     }
 

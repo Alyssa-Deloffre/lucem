@@ -53,7 +53,10 @@ export default function TimePickerInput({
                     value={value}
                     textColor={COLOR_PURPLE[1000]}
                     display="spinner"
-                    onChange={onChange}
+                    onChange={(event, selectedDate) => {
+                        setIsModalVisible(false);
+                        if (selectedDate) onChange(event, selectedDate);
+                    }}
                     locale='fr'
                     minuteInterval={minuteInterval}
 
