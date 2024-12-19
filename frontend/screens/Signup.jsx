@@ -19,7 +19,7 @@ export default function SignupScreen({ navigation }) {
     return (
         <MainContainer>
             <TouchableOpacity onPress={() => navigation.navigate('Signin')} activeOpacity={2} style={{ position: 'absolute', zIndex: 3, margin: 20 }}>
-                <FontAwesome name='chevron-circle-left' size={35} style={{color : COLOR_PURPLE[700]}}/>
+                <FontAwesome name='chevron-circle-left' size={35} style={{ color: COLOR_PURPLE[700] }} />
             </TouchableOpacity>
 
             <View style={styles.container}>
@@ -39,7 +39,7 @@ export default function SignupScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'space-between',
-        alignItems: "center"
+        alignItems: "center",
+        gap: 32,
     }
 })

@@ -124,7 +124,6 @@ export default function SignupTherapist({ navigation }) {
     return (
 
         <>
-            <Text>THERAPIST</Text>
             {currentScreen === 1 &&
                 <>
                     <InputField
@@ -133,6 +132,7 @@ export default function SignupTherapist({ navigation }) {
                         onChangeText={(value) => setInputs(prev => ({ ...prev, firstname: value }))}
                         value={inputs.firstname}
                         isSubmitToggle={isSubmit}
+                        autoComplete="given-name"
                     />
                     <InputField
                         label='Nom'
@@ -140,6 +140,7 @@ export default function SignupTherapist({ navigation }) {
                         onChangeText={(value) => setInputs(prev => ({ ...prev, name: value }))}
                         value={inputs.name}
                         isSubmitToggle={isSubmit}
+                        autoComplete="family-name"
                     />
                     <InputField
                         label='Adresse email'
@@ -150,7 +151,7 @@ export default function SignupTherapist({ navigation }) {
                         forcedErrorMessage={emailError}
                         isSubmitToggle={isSubmit}
                         autoCapitalize="none"
-
+                        autoComplete="email"
                     />
                     <InputField
                         label='Mot de passe'
@@ -158,8 +159,9 @@ export default function SignupTherapist({ navigation }) {
                         onChangeText={(value) => setInputs(prev => ({ ...prev, password: value }))}
                         value={inputs.password}
                         isSubmitToggle={isSubmit}
-                        autoCapitalize="none"
-
+                        autoCapitalize='none'
+                        autoComplete="off"
+                        secureTextEntry={true}
                     />
                     <InputField
                         placeholder='Confirmez votre mot de passe'
@@ -167,8 +169,9 @@ export default function SignupTherapist({ navigation }) {
                         value={inputs.passwordConfirmation}
                         forcedErrorMessage={passwordError}
                         isSubmitToggle={isSubmit}
-                        autoCapitalize="none"
-
+                        autoCapitalize='none'
+                        autoComplete="off"
+                        secureTextEntry={true}
                     />
                     <ButtonRegular text='Suivant' onPress={() => handleMandatory()} />
                 </>
@@ -187,6 +190,7 @@ export default function SignupTherapist({ navigation }) {
                     onChangeText={(value) => setPhone(value)}
                     forcedErrorMessage={phoneError}
                     require={false}
+                    autoComplete="tel"
                 />
                 <TextArea label='Description' onChangeText={(value) => setDescription(value)} />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>

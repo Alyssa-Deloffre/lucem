@@ -93,9 +93,9 @@ export default function InputField({
 
     return (
         <View style={styles.inputContainer}>
-            {label && 
-            
-            <Text style={error ? styles.labelError : styles.label} >{label}</Text>
+            {label &&
+
+                <Text style={error ? styles.labelError : styles.label} >{label}</Text>
             }
             <TextInput
                 style={[styles.input, inputStyle]}
@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         width: "100%",
         padding: 12,
+        overflow: "hidden",
     },
     inputNotFocused: {
         borderColor: COLOR_PURPLE[1000],
