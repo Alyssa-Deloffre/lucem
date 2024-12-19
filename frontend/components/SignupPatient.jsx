@@ -120,7 +120,7 @@ export default function SignupPatient({ navigation }) {
             phone: phone,
             birthdate: birthdate,
             therapist: token,
-            avatar: avatarImages[imageIndex].toString(),
+            avatar: imageIndex,
         }
         const resp = await fetch(`${URL}/patients/signup`, {
             method: "POST",

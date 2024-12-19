@@ -101,7 +101,7 @@ export default function SignupTherapist({ navigation }) {
             email: inputs.email,
             password: inputs.password,
             phone: phone,
-            avatar: avatarImages[imageIndex].toString(),
+            avatar: imageIndex,
             description: description,
         }
         console.log(newTherapist)

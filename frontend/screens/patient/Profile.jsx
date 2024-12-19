@@ -142,7 +142,7 @@ export default function PatientProfileScreen({ navigation }) {
         setIsAddPsyVisible(false);
     };
 
-    const isTherapistAlreadyLink = patientInfos.therapist.some(therapist => therapist.token === selectedTherapist.token)
+    const isTherapistAlreadyLink = patientInfos.therapist.length > 0 ? patientInfos.therapist.some(therapist => therapist.token === selectedTherapist.token) : false
 
     const infos = (
         <>
@@ -178,7 +178,7 @@ export default function PatientProfileScreen({ navigation }) {
         </>
     );
 
-    const psys = patientInfos.therapist.map((therapist) => {
+    const psys = patientInfos.therapist.length > 0 && patientInfos.therapist.map((therapist) => {
         const image = avatarImages[therapist.avatar];
         const isShow = therapist.token === showTherapistInfos;
         return (
@@ -322,7 +322,7 @@ export default function PatientProfileScreen({ navigation }) {
                 {menuItem === 'psys' && (
                     <>
                         {!isAddPsyVisible && (<>
-                            {psys}
+                            {therapistsList.length > 0 && psys}
                             <Button
                                 label='Ajouter un psychologue'
                                 icon='plus-circle'
@@ -412,13 +412,13 @@ const styles = StyleSheet.create({
     infosBlock_infos_texts: {
         fontSize: 20,
         color: COLOR_PURPLE[600],
-        fontFamily : 'Quicksand-SemiBold'
+        fontFamily: 'Quicksand-SemiBold'
     },
     infosBlock_infos_description: {
         ...FONTS.Body,
-        fontFamily : 'Quicksand-SemiBold',
+        fontFamily: 'Quicksand-SemiBold',
     },
-    infosBlock_label : {
+    infosBlock_label: {
         ...FONTS.Body
 
     },

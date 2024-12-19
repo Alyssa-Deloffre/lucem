@@ -32,9 +32,9 @@ router.post('/signup', (req, res) => {
         if (data === null) {
             const hash = bcrypt.hashSync(req.body.password, 10);
 
-            const therapistId = await Therapist.findOne({
+            const therapist = await Therapist.findOne({
                 token: req.body.therapist,
-            }).then((data) => data._id);
+            }).then((data) => data);
 
             const newPatient = new Patient({
                 firstname: req.body.firstname,
@@ -44,7 +44,7 @@ router.post('/signup', (req, res) => {
                 token: uid2(32),
                 phone: req.body.phone,
                 birthdate: req.body.birthdate,
-                therapist: therapistId && [therapistId],
+                therapist: therapist ? [therapist._id] : [],
                 avatar: req.body.avatar,
             });
 
