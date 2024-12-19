@@ -128,7 +128,6 @@ export default function SignupPatient({ navigation }) {
             body: JSON.stringify(newPatient)
         })
         const data = await resp.json()
-        console.log(data)
 
         if (data.result) {
             dispatch(addUserToken(data.token))

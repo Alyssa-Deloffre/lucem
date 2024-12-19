@@ -18,7 +18,6 @@ const formatDuration = (date) => {
 }
 
 export default function MoodRecap({eventInfos}){
-    // console.log('test : ', eventInfos?.event)
     const event = eventInfos?.event
 
     const quality = event && moodQualityValues.find(item => item.value === event.ref.quality).text

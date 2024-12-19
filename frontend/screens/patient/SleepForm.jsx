@@ -92,10 +92,8 @@ export default function SleepFormScreen({ navigation, route }) {
         })
         const data = await resp.json()
         if (data.result) {
-            console.log('form validé')
             navigateToHome()
         } else {
-            console.log('problème')
             navigateToHome()
         }
     }

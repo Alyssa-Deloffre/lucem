@@ -104,7 +104,6 @@ export default function SignupTherapist({ navigation }) {
             avatar: imageIndex,
             description: description,
         }
-        console.log(newTherapist)
         const resp = await fetch(`${URL}/therapists/signup`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -114,7 +113,6 @@ export default function SignupTherapist({ navigation }) {
 
         if (data.result) {
             dispatch(addUserToken(data.token))
-            console.log(data.result)
             navigation.navigate('TherapistTabNavigator')
         } else {
             setValidationError('Une erreur a eu lieu lors de la création de compte, veuillez recommencer')

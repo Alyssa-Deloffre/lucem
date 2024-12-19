@@ -28,7 +28,6 @@ export default function TherapistHomeScreen({ navigation }) {
     useEffect(() => {
         (async () => {
             const patients = await getAllPatient(userToken)
-            console.log(patients)
             setPatientList(patients)
         })()
     }, [])
