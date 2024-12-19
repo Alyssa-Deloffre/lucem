@@ -26,6 +26,9 @@ export default function DatePickerInput({
   return <>
     <InputField label={label} inputMode="none" value={formatDate(value)} onFocus={() => setIsModalVisible(true)} />
 
+    
+    {Platform.OS === 'ios' ? (
+    //Vue pour iOS
     <Modal visible={isModalVisible} >
       <View style={styles.modalOverlay}>
         <View style={styles.pickerContainer}>
@@ -34,7 +37,7 @@ export default function DatePickerInput({
             mode='date'
             value={value}
             textColor={COLOR_PURPLE[1000]}
-            display={Platform.OS === 'android' ? 'calendar' : "spinner"}
+            display="spinner"
             onChange={onChange}
             locale='fr'
 
@@ -47,7 +50,29 @@ export default function DatePickerInput({
           </View>
         </View>
       </View>
-    </Modal>
+    </Modal> 
+    ) : (
+
+// Vue pour Android
+      <>
+        <DateTimePicker
+          mode='date'
+          value={value}
+          display="default"
+          onChange={(event, date) => {
+            setIsModalVisible(false);
+            if (date) onChange(event, date); //Sur Android, le onChange peut renvoyer un undefined, condition pour éviter cela
+          }}
+          locale='fr'
+        />
+    </>
+
+
+    )
+  
+  
+  
+  }
 
   </>
 }
