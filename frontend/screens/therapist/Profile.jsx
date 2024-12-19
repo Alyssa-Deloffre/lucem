@@ -62,7 +62,7 @@ export default function TherapistProfileScreen({ navigation }) {
                 <Card>
                     {therapistInfos.description && (
                         <View style={styles.infosBlock}>
-                            <Text style={styles.infosBlock_label}>Desciption</Text>
+                            <Text style={styles.infosBlock_label}>Description</Text>
                             <View style={styles.infosBlock_infos}>
                                 <Text style={styles.infosBlock_infos_description}>
                                     {therapistInfos.description}
