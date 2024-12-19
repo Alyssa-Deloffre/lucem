@@ -3,6 +3,7 @@ import {
     Text,
     View,
     StyleSheet,
+    TouchableOpacity
 } from "react-native";
 import { useDispatch, useSelector } from 'react-redux';
 import { addUserToken } from '../reducers/user';
@@ -12,8 +13,9 @@ import { checkEmail } from '../modules/checkConnectionInputs';
 import { URL } from '../data/globalVariables';
 import Card from '../components/Card';
 import MainContainer from '../components/MainContainer';
-import { COLOR_RED } from '../data/styleGlobal';
+import { COLOR_RED, COLOR_PURPLE } from '../data/styleGlobal';
 import LogoLucem from '../assets/lucem-logo';
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
 const connectUser = async (email, password, userType) => {
@@ -59,6 +61,9 @@ export default function SigninScreen({ navigation }) {
 
     return (
         <MainContainer>
+                            <TouchableOpacity onPress={() => navigation.navigate('Landing')} activeOpacity={2} style={{position : 'absolute', zIndex : 3, margin : 20}}>
+                            <FontAwesome name='chevron-circle-left' size={35} style={{color : COLOR_PURPLE[700]}}/>
+                            </TouchableOpacity>
             <View style={styles.container}>
                 <LogoLucem width={120} />
                 <Card label="Me connecter">
@@ -84,19 +89,12 @@ export default function SigninScreen({ navigation }) {
                     <ButtonRegular text='Me connecter' onPress={() => handleConnected()} />
                 </Card>
 
-                <View style={{ flexDirection: 'row' }}>
-                    <ButtonRegular
-                        text='Retour'
-                        type="buttonStroke"
-                        orientation='left'
-                        onPress={() => navigation.navigate('Landing')}
-                    />
+
                     <ButtonRegular
                         text='Créer mon compte'
                         type="buttonStroke"
                         onPress={() => navigation.navigate('Signup')}
                     />
-                </View>
             </View>
         </MainContainer>
     )

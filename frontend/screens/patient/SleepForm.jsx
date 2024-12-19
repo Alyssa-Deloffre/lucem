@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Modal, FlatList, ScrollView } from "react-native"
+import { Text, View, StyleSheet, Modal, FlatList, ScrollView, TouchableOpacity } from "react-native"
 import { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
 
@@ -13,6 +13,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { formatTime } from "../../modules/dateAndTimeFunctions"
 import { sleepQuality, wakeQuality } from "../../data/sleep"
 import { URL } from "../../data/globalVariables"
+import { COLOR_PURPLE } from "../../data/styleGlobal"
 
 const setDefaultHour = (date, hours, minutes) => {
     date.setHours(hours + 1, minutes, 0, 0);
@@ -86,96 +87,101 @@ export default function SleepFormScreen({ navigation, route }) {
         const data = await resp.json()
         if (data.result) {
             console.log('form validé')
-navigateToHome()
+            navigateToHome()
         } else {
             console.log('problème')
-navigateToHome()        }
+            navigateToHome()
+        }
     }
 
     const navigateToHome = async () => {
-        return await navigation.navigate('PatientTabNavigator', {screen: 'Accueil',  params: {date: selectedDate}})
+        return await navigation.navigate('PatientTabNavigator', { screen: 'Accueil', params: { date: selectedDate } })
     }
 
     return (
         <MainContainer>
+            <TouchableOpacity onPress={() => navigateToHome()} activeOpacity={2} style={{ position: 'absolute', zIndex: 3, margin: 20, flexDirection: 'row', alignItems: 'center' }}>
+                <FontAwesome name='chevron-circle-left' size={25} color={COLOR_PURPLE[700]} />
+                <Text style={{ paddingLeft: 6, fontFamily: 'Quicksand-SemiBold', color: COLOR_PURPLE[700] }}>Accueil</Text>
+            </TouchableOpacity>
             <View style={styles.container}>
                 <ScrollView>
 
-                <View style={{
-                    rowGap: 16,
-                }}>
-                    {currentScreen === 1 &&
-                        <>
-                            <Card label='Heure de coucher'>
-                                <TimePickerInput 
-                                    value={infos.sleepTime} onChange={(event, selectedTime) => {
-                                        selectedTime.toLocaleString("fr-FR", {timezone: "Europe/Paris"})
-                                    setInfos(prev => ({ ...prev, sleepTime: selectedTime }))}} />
-                            </Card>
-                            <Card label='Heure de lever'>
-                                <TimePickerInput 
-                                value={infos.wakeTime} 
-                                onChange={(event, selectedTime) => setInfos(prev => ({ ...prev, wakeTime: selectedTime}))} />
-                            </Card>
-                            <ButtonRegular text='Ajouter un réveil nocturne' orientation='plus-left' onPress={() => setIsModalVisible(true)} />
-                            {
-                                infos.nightWake.length > 0 &&
-                                <FlatList
-                                    data={infos.nightWake}
-                                    renderItem={displayNightWake}
-                                    keyExtractor={(item) => item.id}
-                                    style={{ height: '30%' }}
-                                />
-                            }
+                    <View style={{
+                        rowGap: 16,
+                    }}>
+                        {currentScreen === 1 &&
+                            <>
+                                <Card label='Heure de coucher'>
+                                    <TimePickerInput
+                                        value={infos.sleepTime} onChange={(event, selectedTime) => {
+                                            selectedTime.toLocaleString("fr-FR", { timezone: "Europe/Paris" })
+                                            setInfos(prev => ({ ...prev, sleepTime: selectedTime }))
+                                        }} />
+                                </Card>
+                                <Card label='Heure de lever'>
+                                    <TimePickerInput
+                                        value={infos.wakeTime}
+                                        onChange={(event, selectedTime) => setInfos(prev => ({ ...prev, wakeTime: selectedTime }))} />
+                                </Card>
+                                <ButtonRegular text='Ajouter un réveil nocturne' orientation='plus-left' onPress={() => setIsModalVisible(true)} />
+                                {
+                                    infos.nightWake.length > 0 &&
+                                    <FlatList
+                                        data={infos.nightWake}
+                                        renderItem={displayNightWake}
+                                        keyExtractor={(item) => item.id}
+                                        style={{ height: '30%' }}
+                                    />
+                                }
 
-                            <Modal visible={isModalVisible}>
-                                <View style={styles.modalOverlay}>
-                                    <View style={styles.modalContainer}>
-                                        <Text>Début</Text>
-                                        <TimePickerInput value={nightWaking.start} onChange={(event, selectedTime) => setNightWaking(prev => ({ ...prev, start: selectedTime }))} />
-                                        <Text>Durée</Text>
-                                        <TimePickerInput
-                                            value={nightWaking.duration}
-                                            onChange={(event, selectedTime) => setNightWaking(prev => ({ ...prev, duration: selectedTime }))}
-                                            minuteInterval={5}
-                                        />
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Modal visible={isModalVisible}>
+                                    <View style={styles.modalOverlay}>
+                                        <View style={styles.modalContainer}>
+                                            <Text>Début</Text>
+                                            <TimePickerInput value={nightWaking.start} onChange={(event, selectedTime) => setNightWaking(prev => ({ ...prev, start: selectedTime }))} />
+                                            <Text>Durée</Text>
+                                            <TimePickerInput
+                                                value={nightWaking.duration}
+                                                onChange={(event, selectedTime) => setNightWaking(prev => ({ ...prev, duration: selectedTime }))}
+                                                minuteInterval={5}
+                                            />
+                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
-                                            <ButtonRegular text='Annuler' type='buttonLittleStroke' onPress={() => setIsModalVisible(false)} orientation="left" />
-                                            <ButtonRegular text='Valider' type='buttonLittleRegular' onPress={() => addNightWake()} />
+                                                <ButtonRegular text='Annuler' type='buttonLittleStroke' onPress={() => setIsModalVisible(false)} orientation="left" />
+                                                <ButtonRegular text='Valider' type='buttonLittleRegular' onPress={() => addNightWake()} />
+                                            </View>
                                         </View>
+
                                     </View>
 
-                                </View>
+                                </Modal>
+                            </>
+                        }
 
-                            </Modal>
-                        </>
-                    }
+                        {currentScreen === 2 &&
+                            <>
 
-                    {currentScreen === 2 &&
-                        <>
-
-                            <Card>
-                                <Text>Comment était votre sommeil cette nuit ?</Text>
-                                <CustomSlider data={sleepQuality} value={infos.sleepQuality} onValueChange={(newValue) => setInfos(prev => ({ ...prev, sleepQuality: newValue }))} />
-                            </Card>
-                            <Card>
-                                <Text>Quel est votre niveau de forme ce matin ?</Text>
-                                <CustomSlider data={wakeQuality} value={infos.wakeQuality} onValueChange={(newValue) => setInfos(prev => ({ ...prev, wakeQuality: newValue }))} />
-                            </Card>
-                            <Card>
-                                <TextArea label='Avez-vous des détails à noter sur votre nuit ?' onChangeText={(newValue) => setInfos(prev => ({ ...prev, details: newValue }))} />
-                            </Card>
-                        </>
-                    }
-                </View>
+                                <Card>
+                                    <Text>Comment était votre sommeil cette nuit ?</Text>
+                                    <CustomSlider data={sleepQuality} value={infos.sleepQuality} onValueChange={(newValue) => setInfos(prev => ({ ...prev, sleepQuality: newValue }))} />
+                                </Card>
+                                <Card>
+                                    <Text>Quel est votre niveau de forme ce matin ?</Text>
+                                    <CustomSlider data={wakeQuality} value={infos.wakeQuality} onValueChange={(newValue) => setInfos(prev => ({ ...prev, wakeQuality: newValue }))} />
+                                </Card>
+                                <Card>
+                                    <TextArea label='Avez-vous des détails à noter sur votre nuit ?' onChangeText={(newValue) => setInfos(prev => ({ ...prev, details: newValue }))} />
+                                </Card>
+                            </>
+                        }
+                    </View>
                 </ScrollView>
 
             </View>
-            
+
             <View>
                 {navigationButtons()}
-                <ButtonRegular text="Retour à l'accueil" type='buttonLittleStroke' orientation="left" onPress={() => navigateToHome()} />
             </View>
         </MainContainer>
     )
@@ -185,7 +191,8 @@ navigateToHome()        }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        marginTop: 25
     },
     modalOverlay: {
         flex: 1,

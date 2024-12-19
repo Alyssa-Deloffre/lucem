@@ -1,5 +1,5 @@
 import { View, StyleSheet, Text, KeyboardAvoidingView, Platform } from "react-native";
-import { COLOR_PURPLE } from "../data/styleGlobal";
+import { COLOR_PURPLE, FONTS } from "../data/styleGlobal";
 
 export default function Card({ children, label }) {
     return (
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        fontWeight: 600
+...FONTS.Heading3        
     },
     card: {
         width: "100%",

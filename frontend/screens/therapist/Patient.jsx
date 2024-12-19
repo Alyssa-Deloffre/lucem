@@ -360,13 +360,19 @@ export default function Patient({ navigation, route }) {
 
   return (
     <MainContainer>
+                      <TouchableOpacity onPress={() => returnToHome()} activeOpacity={2} style={{position : 'absolute', zIndex : 3, margin : 20}}>
+                <FontAwesome name='chevron-circle-left' size={35} style={{color : COLOR_PURPLE[700]}}/>
+                      </TouchableOpacity>
       <View style={styles.container}>
         <View style={{ justifyContent: 'center', alignItems: 'center', width: '100%', rowGap: 20 }}>
 
           <View style={styles.header}>
             <Image source={avatarImages[patientInfos.avatar]} style={{ width: 100, height: 100 }} />
+            <View>
+
             <Text style={styles.name}>{patientInfos.firstname} {patientInfos.name}</Text>
             <Text style={FONTS.Body}>{getPatientAge} ans</Text>
+            </View>
           </View>
           <View style={styles.menu}>
             <ButtonRegular text='Récap' type={buttonStyle('Récap')} orientation="none" onPress={() => setMenuItem('Récap')} />
@@ -382,7 +388,6 @@ export default function Patient({ navigation, route }) {
           </Card>
         </View>
 
-        <ButtonRegular text='Retourner à la liste des patients' onPress={() => returnToHome()} type='buttonLittleStroke' orientation="left" />
       </View>
     </MainContainer>
   )
@@ -398,9 +403,10 @@ const styles = StyleSheet.create({
   header: {
     justifyContent: 'center',
     alignItems: 'center',
-    rowGap: 5,
+    columnGap: 25,
     marginBottom: 16,
-    width: '100%'
+    width: '100%',
+    flexDirection : 'row'
 
   },
   menu: {

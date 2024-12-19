@@ -1,9 +1,9 @@
 import React from "react";
-import { SafeAreaView, Text, StyleSheet, View } from 'react-native'
+import { SafeAreaView, Text, StyleSheet, View, ScrollView } from 'react-native'
 import Card from "./Card";
 import { formatTime, dateFormat } from "../modules/dateAndTimeFunctions";
 import { moodQualityValues } from "../data/mood";
-import { COLOR_PURPLE } from "../data/styleGlobal";
+import { COLOR_PURPLE, FONTS } from "../data/styleGlobal";
 
 const formatDuration = (date) => {
     let hours = date.getHours()
@@ -25,52 +25,58 @@ export default function MoodRecap({eventInfos}){
 
     const emotionsToDisplay = event && event.ref.emotions.map((emotion, i) => {
         return <View  key={i} style={styles.button}> 
-        <Text>{emotion.mood} </Text>
+        <Text style={styles.buttonText}>{emotion.mood} </Text>
         </View>
     })
 
     const influenceToDisplay = event && event.ref.influence.map((influenceFactor, i) => {
         return <View key={i} style={styles.button}>
-            <Text >{influenceFactor}</Text>
+            <Text style={styles.buttonText}>{influenceFactor}</Text>
             </View>
             
     })
     return ( 
         <Card>
-                <Text>
+            <ScrollView >
+
+                <Text style={styles.label}>
                 Humeur de la journée : 
                 </Text>
-                <Text style={{fontWeight : 'bold'}}>
+                <Text style={styles.body}>
                 {event && quality}
                 </Text>
-                            <View style={styles.line} />
+                <View style={styles.line} />
                 
         
-                <Text>Emotions ressenties : </Text>
-                <Text>{emotionsToDisplay}</Text>
-                            <View style={styles.line} />
+                <Text style={styles.label}>Emotions ressenties : </Text>
+                <View style={styles.buttonContainer}>{emotionsToDisplay}</View>
                 
-                <Text>Facteurs d'influence actuels : </Text>
+                <View style={styles.line} />
+                
+                <Text style={styles.label}>Facteurs d'influence actuels : </Text>
 
-                <Text>{influenceToDisplay}</Text>
+                <View style={styles.buttonContainer}>{influenceToDisplay}</View>
 
-                {event && event.ref.details !== '' || null &&
+                {event && event.ref.details !== '' &&
                 <>
                 <View style={styles.line} />
 
-                <Text>Détails : </Text>
+                <Text style={styles.label}>Détails : </Text>
 
-                <Text>{event && event.ref.details}</Text>
+                <Text style={styles.body}>{event && event.ref.details}</Text>
                 </>
                 }
+            </ScrollView>
             </Card>
 
     )
 }
 
 const styles = StyleSheet.create({
-    buttonView : {
-
+    buttonContainer : {
+        flexDirection : 'row',
+        flexWrap : 'wrap',
+        gap : 6,
     },
     button : {
         borderRadius: 100,
@@ -79,9 +85,25 @@ const styles = StyleSheet.create({
         paddingVertical: 6,
         paddingHorizontal: 16,
     },
+    buttonText : {
+        fontFamily : 'Quicksand'
+    },
     line : {
         height: 1,
         backgroundColor: 'grey',
         marginVertical: 15,
     },
+    body: {
+        ...FONTS.Body
+    },
+    bodyBold : {
+        fontFamily : 'Quicksand-Bold',
+        fontSize : 18,
+    },
+    label: {
+        fontFamily: 'Montserrat-SemiBold',
+        fontSize: 18,
+        marginBottom : 6,
+
+    }
 })

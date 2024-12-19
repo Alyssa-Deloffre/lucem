@@ -6,6 +6,7 @@ import { URL } from "../../data/globalVariables";
 import MainContainer from "../../components/MainContainer";
 import PatientButton from "../../components/buttons/PatientButton";
 import { FONTS } from "../../data/styleGlobal";
+import { avatarImages } from "../../data/imageSource";
 
 
 
@@ -32,7 +33,7 @@ export default function TherapistHomeScreen({ navigation }) {
     }, [])
 
     const patientDisplay = patientList.map((patient, i) => {
-        return <PatientButton key={i} firstname={patient.firstname} name={patient.name} onPress={() => goToPatient(patient)} />;
+        return <PatientButton key={i} firstname={patient.firstname} name={patient.name} avatar={avatarImages[patient.avatar]} onPress={() => goToPatient(patient)} />;
     })
 
     const goToPatient = (patientdata) => {

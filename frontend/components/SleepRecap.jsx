@@ -42,6 +42,8 @@ export default function SleepRecap({ eventInfos }) {
     //PB : ON PERD 1H sur la start et end 
     return (
         <Card>
+            <ScrollView >
+
             <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.body}>Sommeil de </Text>
                 {event && <Text style={styles.bodyBold}>{formatTime(new Date(event.ref.start))}</Text>}
@@ -69,14 +71,13 @@ export default function SleepRecap({ eventInfos }) {
                     <View style={styles.line} />
 
                     <Text style={styles.label}>Détails : </Text>
-                    <ScrollView>
 
-                        <Text>{event && event.ref.details}</Text>
-                    </ScrollView>
+                        <Text style={styles.body}>{event && event.ref.details}</Text>
 
                 </>
 
             }
+            </ScrollView>
 
         </Card>
     )
@@ -105,6 +106,7 @@ const styles = StyleSheet.create({
     },
     label: {
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 18
+        fontSize: 18,
+        marginBottom : 6,
     }
 })
