@@ -158,7 +158,6 @@ export default function SignupPatient({ navigation }) {
     return (
 
         <>
-            <Text>PATIENT</Text>
             {currentScreen === 1 &&
 
                 <>
@@ -168,6 +167,7 @@ export default function SignupPatient({ navigation }) {
                         onChangeText={(value) => setInputs(prev => ({ ...prev, firstname: value }))}
                         value={inputs.firstname}
                         isSubmitToggle={isSubmit}
+                        autoComplete="given-name"
                     />
                     <InputField
                         label='Nom'
@@ -175,6 +175,7 @@ export default function SignupPatient({ navigation }) {
                         onChangeText={(value) => setInputs(prev => ({ ...prev, name: value }))}
                         value={inputs.name}
                         isSubmitToggle={isSubmit}
+                        autoComplete="family-name"
                     />
                     <InputField
                         label='Adresse email'
@@ -185,7 +186,7 @@ export default function SignupPatient({ navigation }) {
                         forcedErrorMessage={emailError}
                         isSubmitToggle={isSubmit}
                         autoCapitalize='none'
-
+                        autoComplete="email"
                     />
                     <InputField
                         label='Mot de passe'
@@ -228,6 +229,7 @@ export default function SignupPatient({ navigation }) {
                     onChangeText={(value) => setPhone(value)}
                     forcedErrorMessage={phoneError}
                     require={false}
+                    autoComplete="tel"
                 />
 
                 <DatePickerInput

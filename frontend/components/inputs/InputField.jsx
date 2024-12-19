@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         width: "100%",
         padding: 12,
+        overflow: "hidden",
     },
     inputNotFocused: {
         borderColor: COLOR_PURPLE[1000],

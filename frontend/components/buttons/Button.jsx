@@ -13,7 +13,7 @@ export default function Button({
     iconSize = 12
 }) {
     const typeList = ['default', 'stroke', 'red', 'redStroke'];
-    const sizeList = ['s', 'm', 'full'];
+    const sizeList = ['s', 'm', 'sFull', 'full'];
     const iconLocationList = ['right', 'left', 'none'];
 
     if (label === "" || !label) {
@@ -51,7 +51,7 @@ export default function Button({
             <Text
                 style={
                     [
-                        styles[size === "s" ? "sText" : "mText"],
+                        styles[size === "s" || size === "sFull" ? "sText" : "mText"],
                         styles[textColor]
                     ]
                 }>
@@ -105,6 +105,13 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         paddingHorizontal: 32,
         gap: 16,
+    },
+    sFull: {
+        paddingVertical: 6,
+        paddingHorizontal: 16,
+        width: '100%',
+        gap: 8,
+        justifyContent: 'space-between',
     },
     full: {
         paddingVertical: 12,
