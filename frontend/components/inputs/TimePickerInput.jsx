@@ -11,7 +11,7 @@ import { formatTime } from "../../modules/dateAndTimeFunctions";
 export default function TimePickerInput({
     value,
     onChange,
-    minuteInterval=1
+    minuteInterval = 1
 }) {
     const [isModalVisible, setIsModalVisible] = useState(false)
 
@@ -19,27 +19,49 @@ export default function TimePickerInput({
         <>
             <InputField inputMode="none" value={formatTime(value)} onFocus={() => setIsModalVisible(true)} />
 
-            <Modal visible={isModalVisible} >
-                <View style={styles.modalOverlay}>
-                    <View style={styles.pickerContainer}>
 
-                        <DateTimePicker
-                            mode='time'
-                            value={value}
-                            textColor={COLOR_PURPLE[1000]}
-                            display="spinner"
-                            onChange={onChange}
-                            locale='fr'
-                            minuteInterval={minuteInterval}
-                        />
+            {Platform.OS === 'ios' && (
 
-                        <View style={{flexDirection : 'row', justifyContent : 'space-between', width : '100%'}}>
-                        <ButtonRegular text='Retour' onPress={() => setIsModalVisible(false)} type='buttonLittleStroke' orientation="left"/>
-                        <ButtonRegular text='Valider' onPress={() => setIsModalVisible(false)} />
+                <Modal visible={isModalVisible} >
+                    <View style={styles.modalOverlay}>
+                        <View style={styles.pickerContainer}>
+
+                            <DateTimePicker
+                                mode='time'
+                                value={value}
+                                textColor={COLOR_PURPLE[1000]}
+                                display="spinner"
+                                onChange={onChange}
+                                locale='fr'
+                                minuteInterval={minuteInterval}
+                            />
+
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+                                <ButtonRegular text='Retour' onPress={() => setIsModalVisible(false)} type='buttonLittleStroke' orientation="left" />
+                                <ButtonRegular text='Valider' onPress={() => setIsModalVisible(false)} />
+                            </View>
                         </View>
                     </View>
-                </View>
-            </Modal>
+                </Modal>
+            )}
+
+            {/* Pour Android */}
+            {Platform.OS === 'android' && isModalVisible && (
+
+                <DateTimePicker
+                    mode='time'
+                    value={value}
+                    textColor={COLOR_PURPLE[1000]}
+                    display="spinner"
+                    onChange={(event, selectedDate) => {
+                        setIsModalVisible(false);
+                        if (selectedDate) onChange(event, selectedDate);
+                    }}
+                    locale='fr'
+                    minuteInterval={minuteInterval}
+
+                />
+            )}
 
         </>
     )
