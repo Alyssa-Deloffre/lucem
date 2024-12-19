@@ -34,7 +34,7 @@ export default function DatePickerInput({
             mode='date'
             value={value}
             textColor={COLOR_PURPLE[1000]}
-            display="spinner"
+            display={Platform.OS === 'android' ? 'calendar' : "spinner"}
             onChange={onChange}
             locale='fr'
 
