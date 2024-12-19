@@ -306,7 +306,10 @@ export default function PatientProfileScreen({ navigation }) {
                         text='Mes informations'
                         type={buttonStyle('infos')}
                         orientation='none'
-                        onPress={() => setMenuItem('infos')}
+                        onPress={() => {
+                            setAutocompleteMargin(0)
+                            setMenuItem('infos')
+                        }}
                     />
                     <ButtonRegular
                         text='Mes psychologues'
@@ -315,6 +318,7 @@ export default function PatientProfileScreen({ navigation }) {
                         onPress={() => {
                             setMenuItem('psys')
                             setIsAddPsyVisible(false)
+                            setAutocompleteMargin(0)
                         }}
                     />
                 </View>
@@ -349,18 +353,20 @@ export default function PatientProfileScreen({ navigation }) {
                                     label='Annuler'
                                     iconLocation='none'
                                     type='stroke'
-                                    onPress={() =>
+                                    onPress={() => {
                                         setIsAddPsyVisible(false)
-                                    }
+                                        setAutocompleteMargin(0)
+                                    }}
                                 />
                                 {selectedTherapist.token && !isTherapistAlreadyLink &&
                                     <Button
                                         label='Ajouter'
                                         icon="plus-circle"
                                         iconSize={20}
-                                        onPress={() =>
+                                        onPress={() => {
+                                            setAutocompleteMargin(0)
                                             handleLinkTherapist(patientToken, selectedTherapist.token)
-                                        }
+                                        }}
                                     />
                                 }
                             </View>

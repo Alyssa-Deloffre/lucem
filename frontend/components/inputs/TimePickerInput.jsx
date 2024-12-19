@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Modal } from "react-native";
+import { Text, View, Platform, StyleSheet, Modal } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { COLOR_GREEN, COLOR_PURPLE } from "../../data/styleGlobal";
 import InputField from "./InputField";
@@ -47,19 +47,20 @@ export default function TimePickerInput({
 
             {/* Pour Android */}
             {Platform.OS === 'android' && isModalVisible && (
-
                 <DateTimePicker
                     mode='time'
                     value={value}
-                    textColor={COLOR_PURPLE[1000]}
                     display="spinner"
                     onChange={(event, selectedDate) => {
-                        setIsModalVisible(false);
-                        if (selectedDate) onChange(event, selectedDate);
+                        setIsModalVisible(false); // Ferme la modale après interaction
+                        if (event.type === "set" && selectedDate) {
+                            // L'utilisateur a sélectionné une heure
+                            onChange(event, selectedDate);
+                        }
+                        // Sinon, aucune action nécessaire (l'utilisateur a annulé)
                     }}
                     locale='fr'
                     minuteInterval={minuteInterval}
-
                 />
             )}
 

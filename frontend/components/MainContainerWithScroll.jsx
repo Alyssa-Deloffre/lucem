@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         padding: 24,
     },
     contentContainer_padding: {
-        height: 96
+        height: 120
     },
     svg: {
         fill: COLOR_PURPLE[200],
