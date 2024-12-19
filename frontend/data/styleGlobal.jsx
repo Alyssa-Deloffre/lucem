@@ -3,13 +3,13 @@
 // FONTS
 const FONTS = {
   Heading1 : {
-    fontFamily : 'Montserrat',
+    fontFamily : 'Montserrat-Bold',
     fontSize : 32,
     letterSpacing : -1.5,
 
   },
   Heading2 : {
-    fontFamily : 'Montserrat',
+    fontFamily : 'Montserrat-SemiBold',
     fontSize : 28,
     letterSpacing : -1.5,
   },  

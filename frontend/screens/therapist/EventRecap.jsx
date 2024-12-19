@@ -1,8 +1,9 @@
 import React from "react";
+import MainContainerWithScroll from "../../components/MainContainerWithScroll";
 import MainContainer from "../../components/MainContainer";
 import SleepRecap from "../../components/SleepRecap";
 import MoodRecap from "../../components/MoodRecap";
-import { Text, View, StyleSheet } from "react-native"
+import { Text, View, StyleSheet, TouchableOpacity, Dimensions } from "react-native"
 import { URL } from "../../data/globalVariables";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -10,6 +11,8 @@ import { formatBirthdate } from "../../modules/dateAndTimeFunctions";
 import ButtonRegular from "../../components/buttons/ButtonRegular";
 import Card from "../../components/Card";
 import { FONTS } from "../../data/styleGlobal";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+
 
 
 async function getEvent(eventId) {
@@ -38,9 +41,12 @@ export default function EventRecapTherapist({ navigation, route }) {
     }
 
     return (
-        <MainContainer>
+        <MainContainerWithScroll>
 
-            <View style={styles.container}>
+
+                <TouchableOpacity onPress={() => navigateToHome()} activeOpacity={2} style={{position : 'absolute', margin : 6}}>
+                <FontAwesome name='chevron-circle-left' size={35}/>
+                </TouchableOpacity>
                 <Text style={styles.title}>Récap {type === 'mood' ? "humeur" : 'sommeil'} du {infos?.event && formatBirthdate(new Date(infos.event.date))}</Text>
 
 
@@ -54,11 +60,8 @@ export default function EventRecapTherapist({ navigation, route }) {
 
 
 
-            </View>
-                <ButtonRegular type='buttonStroke' text='Retour' orientation="left" onPress={() => navigateToHome()} />
 
-
-        </MainContainer>
+        </MainContainerWithScroll>
     )
 }
 
@@ -68,7 +71,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        width : '100%'
+        width : '100%',
     },
     title: {
         ...FONTS.Heading2,

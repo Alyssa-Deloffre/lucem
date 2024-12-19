@@ -365,8 +365,11 @@ export default function Patient({ navigation, route }) {
 
           <View style={styles.header}>
             <Image source={avatarImages[patientInfos.avatar]} style={{ width: 100, height: 100 }} />
+            <View>
+
             <Text style={styles.name}>{patientInfos.firstname} {patientInfos.name}</Text>
             <Text style={FONTS.Body}>{getPatientAge} ans</Text>
+            </View>
           </View>
           <View style={styles.menu}>
             <ButtonRegular text='Récap' type={buttonStyle('Récap')} orientation="none" onPress={() => setMenuItem('Récap')} />
@@ -398,9 +401,10 @@ const styles = StyleSheet.create({
   header: {
     justifyContent: 'center',
     alignItems: 'center',
-    rowGap: 5,
+    columnGap: 25,
     marginBottom: 16,
-    width: '100%'
+    width: '100%',
+    flexDirection : 'row'
 
   },
   menu: {
