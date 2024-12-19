@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TextInput, View, Text, StyleSheet } from 'react-native'
-import { COLOR_GREEN, COLOR_PURPLE, COLOR_RED } from "../../data/styleGlobal";
+import { COLOR_GREEN, COLOR_PURPLE, COLOR_RED, FONTS } from "../../data/styleGlobal";
 import { checkEmail } from "../../modules/checkConnectionInputs";
 
 export default function InputField({
@@ -123,17 +123,16 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 14,
-        fontWeight: 600,
+        fontFamily : 'Quicksand-SemiBold',
         color: COLOR_PURPLE[1000],
     },
     labelError: {
         fontSize: 14,
-        fontWeight: 600,
+        fontFamily : 'Quicksand-SemiBold',
         color: COLOR_RED[600],
     },
     input: {
-        fontSize: 18,
-        color: COLOR_PURPLE[1000],
+        ...FONTS.Body,
         borderWidth: 1,
         borderRadius: 8,
         width: "100%",
@@ -153,6 +152,7 @@ const styles = StyleSheet.create({
     },
     errorMessage: {
         fontSize: 12,
+        fontFamily : 'Quicksand',
         color: COLOR_RED[600]
     }
 })

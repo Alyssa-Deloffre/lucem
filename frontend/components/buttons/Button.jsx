@@ -122,10 +122,11 @@ const styles = StyleSheet.create({
     },
     sText: {
         fontSize: 14,
+        fontFamily : 'Quicksand'
     },
     mText: {
         fontSize: 16,
-        fontWeight: 600
+        fontFamily : 'Quicksand-SemiBold'
     },
     blackText: {
         color: COLOR_PURPLE[1000]

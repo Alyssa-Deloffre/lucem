@@ -17,7 +17,7 @@ import Card from '../../components/Card';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { avatarImages } from '../../data/imageSource';
-import { COLOR_PURPLE } from '../../data/styleGlobal';
+import { COLOR_PURPLE, FONTS } from '../../data/styleGlobal';
 import MainContainerWithScroll from '../../components/MainContainerWithScroll';
 import UserAutocomplete from '../../components/inputs/UserAutocomplete';
 import DeconnectUserButton from '../../components/DeconnectUserButton';
@@ -62,7 +62,7 @@ export default function TherapistProfileScreen({ navigation }) {
                 <Card>
                     {therapistInfos.description && (
                         <View style={styles.infosBlock}>
-                            <Text style={styles.infosBlock_label}>Desciption</Text>
+                            <Text style={styles.infosBlock_label}>Description</Text>
                             <View style={styles.infosBlock_infos}>
                                 <Text style={styles.infosBlock_infos_description}>
                                     {therapistInfos.description}
@@ -124,8 +124,7 @@ const styles = StyleSheet.create({
         gap: 2,
     },
     therapistName: {
-        fontSize: 20,
-        fontWeight: 700,
+...FONTS.Heading2,
         color: COLOR_PURPLE[1000],
     },
     infosBlock: {
@@ -137,12 +136,15 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     infosBlock_infos_texts: {
-        fontSize: 20,
-        fontWeight: 600,
+...FONTS.Body,
         color: COLOR_PURPLE[600],
     },
     infosBlock_infos_description: {
-        fontSize: 18,
-        fontWeight: 500,
+...FONTS.Body
     },
+    infosBlock_label : {
+        fontFamily : 'Quicksand-SemiBold',
+        fontSize : 16,
+        color : COLOR_PURPLE[1000]
+    }
 });

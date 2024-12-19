@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     },
     description: {
         textAlign: "center",
+        ...FONTS.Body
     },
     merci: {
         fontSize: 16,
