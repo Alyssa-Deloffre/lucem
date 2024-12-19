@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         gap: 16,
     },
     buttonLittleRegular: {
-        backgroundColor: COLOR_GREEN[600],
+        backgroundColor: COLOR_PURPLE[300],
         borderWidth : 1,
         borderColor : 'transparent',
         paddingVertical: 6,

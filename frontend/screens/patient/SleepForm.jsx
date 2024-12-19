@@ -13,7 +13,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { formatTime } from "../../modules/dateAndTimeFunctions"
 import { sleepQuality, wakeQuality } from "../../data/sleep"
 import { URL } from "../../data/globalVariables"
-import { COLOR_PURPLE } from "../../data/styleGlobal"
+import { COLOR_PURPLE, FONTS } from "../../data/styleGlobal"
 
 const setDefaultHour = (date, hours, minutes) => {
     date.setHours(hours + 1, minutes, 0, 0);
@@ -67,11 +67,17 @@ export default function SleepFormScreen({ navigation, route }) {
         <View style={styles.flatlist} key={index}>
             <Card >
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text>Réveil nocturne #{index + 1}</Text>
-                    <FontAwesome name='trash-o' size={20} onPress={() => deleteNightWake(index)} />
+                    <Text style={styles.wakeTitle}>Réveil nocturne #{index + 1}</Text>
+                    <FontAwesome name='trash-o' size={20} style={{color : COLOR_PURPLE[1000]}} onPress={() => deleteNightWake(index)} />
                 </View>
-                <Text>Début : {formatTime(item.start)}</Text>
-                <Text>Durée : {formatTime(item.duration)}</Text>
+                <View style={{flexDirection : 'row', alignItems :'center'}}>
+                <Text style={styles.body}>Début : </Text><Text style={styles.bodyBold}>{formatTime(item.start)}</Text>
+
+                </View>
+                <View style={{flexDirection : 'row', alignItems :'center'}}>
+
+                <Text style={styles.body}>Durée : </Text><Text style={styles.bodyBold}>{formatTime(item.duration)}</Text>
+                </View>
             </Card>
         </View>
     )
@@ -105,7 +111,6 @@ export default function SleepFormScreen({ navigation, route }) {
                 <Text style={{ paddingLeft: 6, fontFamily: 'Quicksand-SemiBold', color: COLOR_PURPLE[700] }}>Accueil</Text>
             </TouchableOpacity>
             <View style={styles.container}>
-                <ScrollView>
 
                     <View style={{
                         rowGap: 16,
@@ -131,22 +136,22 @@ export default function SleepFormScreen({ navigation, route }) {
                                         data={infos.nightWake}
                                         renderItem={displayNightWake}
                                         keyExtractor={(item) => item.id}
-                                        style={{ height: '30%' }}
+                                        style={{ height: '40%' }}
                                     />
                                 }
 
                                 <Modal visible={isModalVisible}>
                                     <View style={styles.modalOverlay}>
                                         <View style={styles.modalContainer}>
-                                            <Text>Début</Text>
+                                            <Text style={styles.label}>Début</Text>
                                             <TimePickerInput value={nightWaking.start} onChange={(event, selectedTime) => setNightWaking(prev => ({ ...prev, start: selectedTime }))} />
-                                            <Text>Durée</Text>
+                                            <Text style={styles.label}>Durée</Text>
                                             <TimePickerInput
                                                 value={nightWaking.duration}
                                                 onChange={(event, selectedTime) => setNightWaking(prev => ({ ...prev, duration: selectedTime }))}
                                                 minuteInterval={5}
                                             />
-                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop : 18 }}>
 
                                                 <ButtonRegular text='Annuler' type='buttonLittleStroke' onPress={() => setIsModalVisible(false)} orientation="left" />
                                                 <ButtonRegular text='Valider' type='buttonLittleRegular' onPress={() => addNightWake()} />
@@ -161,22 +166,26 @@ export default function SleepFormScreen({ navigation, route }) {
 
                         {currentScreen === 2 &&
                             <>
+                            <ScrollView>
+                                <View style={{rowGap : 6}}>
 
                                 <Card>
-                                    <Text>Comment était votre sommeil cette nuit ?</Text>
+                                    <Text style={styles.label}>Comment était votre sommeil cette nuit ?</Text>
                                     <CustomSlider data={sleepQuality} value={infos.sleepQuality} onValueChange={(newValue) => setInfos(prev => ({ ...prev, sleepQuality: newValue }))} />
                                 </Card>
                                 <Card>
-                                    <Text>Quel est votre niveau de forme ce matin ?</Text>
+                                    <Text style={styles.label}>Quel est votre niveau de forme ce matin ?</Text>
                                     <CustomSlider data={wakeQuality} value={infos.wakeQuality} onValueChange={(newValue) => setInfos(prev => ({ ...prev, wakeQuality: newValue }))} />
                                 </Card>
                                 <Card>
                                     <TextArea label='Avez-vous des détails à noter sur votre nuit ?' onChangeText={(newValue) => setInfos(prev => ({ ...prev, details: newValue }))} />
                                 </Card>
+
+                                </View>
+                            </ScrollView>
                             </>
                         }
                     </View>
-                </ScrollView>
 
             </View>
 
@@ -208,7 +217,27 @@ const styles = StyleSheet.create({
     },
     flatlist: {
         marginBottom: 8,
-    }
+    },
+    label : {
+        fontFamily : 'Quicksand-SemiBold',
+        color : COLOR_PURPLE[1000],
+        fontSize : 16,
+        marginVertical : 6
+    },
+    body: {
+        ...FONTS.Body,
+        fontSize : 16,
+    },
+    bodyBold : {
+        fontFamily : 'Quicksand-SemiBold',
+        color : COLOR_PURPLE[1000],
+        fontSize : 16
+    },
+    wakeTitle : {
+        fontFamily : 'Montserrat-SemiBold',
+        fontSize : 16,
+        color : COLOR_PURPLE[1000]
+    },
 })
 
 
