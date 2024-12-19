@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: Dimensions.get("window").height,
         width: Dimensions.get("window").width,
-        paddingTop: Platform.OS === "android" ? 24 : 0
+        paddingTop: Platform.OS === "android" ? 32 : 0
     },
     safeArea: {
         flex: 1,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         padding: 24,
     },
     contentContainer_padding: {
-        height: 96
+        height: 120
     },
     svg: {
         fill: COLOR_PURPLE[200],
