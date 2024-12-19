@@ -123,12 +123,12 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 14,
-        fontFamily : 'Quicksand-SemiBold',
+        fontFamily: 'Quicksand-SemiBold',
         color: COLOR_PURPLE[1000],
     },
     labelError: {
         fontSize: 14,
-        fontFamily : 'Quicksand-SemiBold',
+        fontFamily: 'Quicksand-SemiBold',
         color: COLOR_RED[600],
     },
     input: {
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     },
     errorMessage: {
         fontSize: 12,
-        fontFamily : 'Quicksand',
+        fontFamily: 'Quicksand',
         color: COLOR_RED[600]
     }
 })

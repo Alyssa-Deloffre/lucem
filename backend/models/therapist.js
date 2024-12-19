@@ -8,7 +8,7 @@ const therapistSchema = mongoose.Schema({
     email: String,
     phone: String,
     notifications: { type: Array, default: [] },
-    avatar: { type: String, default: '' },
+    avatar: Number,
     patients: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'patients',
