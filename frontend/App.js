@@ -5,11 +5,11 @@ import {
     Text,
     View,
     StatusBar,
-    ActivityIndicator
+    ActivityIndicator,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { COLOR_GREEN, COLOR_PURPLE } from './data/styleGlobal';
-import {useFonts} from 'expo-font'
+import { useFonts } from 'expo-font';
 
 //redux imports
 import { Provider } from 'react-redux';
@@ -42,10 +42,6 @@ import TherapistHomeScreen from './screens/therapist/Home';
 import TherapistProfileScreen from './screens/therapist/Profile';
 import TherapistPatientScreen from './screens/therapist/Patient';
 import EventRecapTherapist from './screens/therapist/EventRecap';
-
-
-// SCREEN TO DELETE
-import Test from './screens/Test';
 
 //Permet d'enregistrer les reducers
 const reducers = combineReducers({ user });
@@ -194,30 +190,38 @@ const TherapistTabNavigator = () => {
 
 export default function App() {
     const [fontsLoaded] = useFonts({
-        "Montserrat": require('./assets/fonts/MontserratAlternates-Regular.ttf'),
-        "Montserrat-Black": require('./assets/fonts/MontserratAlternates-Black.ttf'),
-        "Montserrat-Bold": require('./assets/fonts/MontserratAlternates-Bold.ttf'),
-        "Montserrat-ExtraLight": require('./assets/fonts/MontserratAlternates-ExtraLight.ttf'),
-        "Montserrat-Light": require('./assets/fonts/MontserratAlternates-Light.ttf'),
-        "Montserrat-Medium": require('./assets/fonts/MontserratAlternates-Medium.ttf'),
-        "Montserrat-SemiBold": require('./assets/fonts/MontserratAlternates-SemiBold.ttf'),
-        "Montserrat-Thin": require('./assets/fonts/MontserratAlternates-Thin.ttf'),
-        "Quicksand" : require('./assets/fonts/Quicksand-Regular.ttf'),
-        "Quicksand-Bold" : require('./assets/fonts/Quicksand-Bold.ttf'),
-        "Quicksand-Light" : require('./assets/fonts/Quicksand-Light.ttf'),
-        "Quicksand-Medium" : require('./assets/fonts/Quicksand-Medium.ttf'),
-        "Quicksand-SemiBold" : require('./assets/fonts/Quicksand-SemiBold.ttf'),
-      
-      });
+        Montserrat: require('./assets/fonts/MontserratAlternates-Regular.ttf'),
+        'Montserrat-Black': require('./assets/fonts/MontserratAlternates-Black.ttf'),
+        'Montserrat-Bold': require('./assets/fonts/MontserratAlternates-Bold.ttf'),
+        'Montserrat-ExtraLight': require('./assets/fonts/MontserratAlternates-ExtraLight.ttf'),
+        'Montserrat-Light': require('./assets/fonts/MontserratAlternates-Light.ttf'),
+        'Montserrat-Medium': require('./assets/fonts/MontserratAlternates-Medium.ttf'),
+        'Montserrat-SemiBold': require('./assets/fonts/MontserratAlternates-SemiBold.ttf'),
+        'Montserrat-Thin': require('./assets/fonts/MontserratAlternates-Thin.ttf'),
+        Quicksand: require('./assets/fonts/Quicksand-Regular.ttf'),
+        'Quicksand-Bold': require('./assets/fonts/Quicksand-Bold.ttf'),
+        'Quicksand-Light': require('./assets/fonts/Quicksand-Light.ttf'),
+        'Quicksand-Medium': require('./assets/fonts/Quicksand-Medium.ttf'),
+        'Quicksand-SemiBold': require('./assets/fonts/Quicksand-SemiBold.ttf'),
+    });
 
-      if (!fontsLoaded) {
+    if (!fontsLoaded) {
         return (
-          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <ActivityIndicator size="large" color="#0000ff" />
-            <Text>Chargement des polices...</Text>
-          </View>
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <ActivityIndicator
+                    size='large'
+                    color='#0000ff'
+                />
+                <Text>Chargement des polices...</Text>
+            </View>
         );
-      }
+    }
 
     return (
         <Provider store={store}>
@@ -260,7 +264,10 @@ export default function App() {
                             name='EventRecapTherapist'
                             component={EventRecapTherapist}
                         />
-                        <Stack.Screen name="Patient" component={TherapistPatientScreen}/>
+                        <Stack.Screen
+                            name='Patient'
+                            component={TherapistPatientScreen}
+                        />
                         <Stack.Screen
                             name='PatientTabNavigator'
                             component={PatientTabNavigator}
@@ -268,10 +275,6 @@ export default function App() {
                         <Stack.Screen
                             name='TherapistTabNavigator'
                             component={TherapistTabNavigator}
-                        />
-                        <Stack.Screen
-                            name='Test'
-                            component={Test}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

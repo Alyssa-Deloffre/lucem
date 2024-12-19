@@ -41,7 +41,6 @@ export default function LandingScreen({ navigation }) {
                     <FullButton text='Je suis un patient' onPress={() => navigateToUserSignIn("patient")} type='default' />
                     <FullButton text='Je suis un psychologue' onPress={() => navigateToUserSignIn("psy")} type='white' />
                 </View>
-                <ButtonRegular text='Test' onPress={() => navigation.navigate('Test')} />
             </View>
         </MainContainer>
     )
