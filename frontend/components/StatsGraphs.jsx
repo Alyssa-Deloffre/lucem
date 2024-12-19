@@ -82,109 +82,104 @@ export default function StatsGraph({ patientToken }) {
         }
     }
     return (
-        <MainContainer>
+        <ScrollView style={styles.scrollView}>
 
-            <Card>
-                <ScrollView style={styles.scrollView}>
-
-                    <Text style={styles.titre}>Qualité du sommeil et Humeur au réveil</Text>
-                    {dateSleepArr.length > 0 &&
-                        <LineChart
-                            data={{
-                                labels: dateSleepArr.map(date => dateFormat(date)),
-                                datasets: [
-                                    {
-                                        data: eventSleepArr.map(event => event.ref.sleepquality),
-                                        svg: { fill: COLOR_GREEN[100] },
-                                        strokeWidth: 3,
-                                    },
-                                    {
-                                        data: eventSleepArr.map(event => event.ref.wakingquality),
-                                        color: () => COLOR_PURPLE[600],
-                                        strokeWidth: 3,
-                                    },
-                                ]
-                            }}
-                            //Style graphique dans son ensemble 
-                            width={Dimensions.get("window").width - 80}
-                            height={200}
-                            fromZero={true}
-                            fromNumber={4}
-                            chartConfig={{
-                                backgroundGradientFrom: COLOR_GREEN[100],
-                                backgroundGradientTo: COLOR_GREEN[100],
-                                decimalPlaces: 2,
-                                color: () => COLOR_GREEN[600],
-                                labelColor: () => COLOR_GREEN[1000],
-                                style: {
-                                    borderRadius: 16
-                                },
-                                //Style des points
-                                propsForDots: {
-                                    r: "7",
-                                    strokeWidth: "0",
-                                    stroke: 'black',
-                                }
-                            }}
-                            //Style fond 
-                            bezier
-                            style={{
-                                marginVertical: 8,
-                                borderRadius: 16
-                            }}
-                            formatYLabel={formatYLabel}
-                        />}
-                    <View style={styles.legende1}>
-                        <FontAwesome style={styles.rond1} name='circle' />
-                        <Text style={styles.qualite}>Qualité du sommeil</Text>
-                    </View>
-                    <View style={styles.legende1}>
-                        <FontAwesome style={styles.rond2} name='circle' />
-                        <Text style={styles.humeur}>Humeur au réveil</Text>
-                    </View>
+            <Text style={styles.titre}>Qualité du sommeil et Humeur au réveil</Text>
+            {dateSleepArr.length > 0 &&
+                <LineChart
+                    data={{
+                        labels: dateSleepArr.map(date => dateFormat(date)),
+                        datasets: [
+                            {
+                                data: eventSleepArr.map(event => event.ref.sleepquality),
+                                svg: { fill: COLOR_GREEN[100] },
+                                strokeWidth: 3,
+                            },
+                            {
+                                data: eventSleepArr.map(event => event.ref.wakingquality),
+                                color: () => COLOR_PURPLE[600],
+                                strokeWidth: 3,
+                            },
+                        ]
+                    }}
+                    //Style graphique dans son ensemble 
+                    width={Dimensions.get("window").width - 80}
+                    height={200}
+                    fromZero={true}
+                    fromNumber={4}
+                    chartConfig={{
+                        backgroundGradientFrom: COLOR_GREEN[100],
+                        backgroundGradientTo: COLOR_GREEN[100],
+                        decimalPlaces: 2,
+                        color: () => COLOR_GREEN[600],
+                        labelColor: () => COLOR_GREEN[1000],
+                        style: {
+                            borderRadius: 16
+                        },
+                        //Style des points
+                        propsForDots: {
+                            r: "7",
+                            strokeWidth: "0",
+                            stroke: 'black',
+                        }
+                    }}
+                    //Style fond 
+                    bezier
+                    style={{
+                        marginVertical: 8,
+                        borderRadius: 16
+                    }}
+                    formatYLabel={formatYLabel}
+                />}
+            <View style={styles.legende1}>
+                <FontAwesome style={styles.rond1} name='circle' />
+                <Text style={styles.qualite}>Qualité du sommeil</Text>
+            </View>
+            <View style={styles.legende1}>
+                <FontAwesome style={styles.rond2} name='circle' />
+                <Text style={styles.humeur}>Humeur au réveil</Text>
+            </View>
 
 
-                    <Text style={styles.titre}>Etat émotionnel des 6 derniers jours</Text>
+            <Text style={styles.titre}>Etat émotionnel des 6 derniers jours</Text>
 
-                    {dateMoodArr.length > 0 &&
-                        <LineChart
-                            data={{
-                                labels: dateMoodArr.map(date => dateFormat(date)),
-                                datasets: [
-                                    {
-                                        data: eventMoodArr.map(event => event.ref.quality)
-                                    }
-                                ]
-                            }}
-                            width={Dimensions.get("window").width - 80}
-                            height={200}
-                            fromZero={true}
-                            fromNumber={4}
-                            chartConfig={{
-                                backgroundGradientFrom: COLOR_GREEN[100],
-                                backgroundGradientTo: COLOR_GREEN[100],
-                                decimalPlaces: 2,
-                                color: () => COLOR_GREEN[600],
-                                labelColor: () => COLOR_GREEN[1000],
-                                style: {
-                                    borderRadius: 16
-                                },
-                                propsForDots: {
-                                    r: "7",
-                                    strokeWidth: "0",
-                                    stroke: COLOR_GREEN[800]
-                                }
-                            }}
-                            bezier
-                            style={{
-                                marginVertical: 8,
-                                borderRadius: 16
-                            }}
-                            formatYLabel={formatYLabel}
-                        />}
-                </ScrollView>
-            </Card>
-        </MainContainer>
+            {dateMoodArr.length > 0 &&
+                <LineChart
+                    data={{
+                        labels: dateMoodArr.map(date => dateFormat(date)),
+                        datasets: [
+                            {
+                                data: eventMoodArr.map(event => event.ref.quality)
+                            }
+                        ]
+                    }}
+                    width={Dimensions.get("window").width - 80}
+                    height={200}
+                    fromZero={true}
+                    fromNumber={4}
+                    chartConfig={{
+                        backgroundGradientFrom: COLOR_GREEN[100],
+                        backgroundGradientTo: COLOR_GREEN[100],
+                        decimalPlaces: 2,
+                        color: () => COLOR_GREEN[600],
+                        labelColor: () => COLOR_GREEN[1000],
+                        style: {
+                            borderRadius: 16
+                        },
+                        propsForDots: {
+                            r: "7",
+                            strokeWidth: "0",
+                            stroke: COLOR_GREEN[800]
+                        }
+                    }}
+                    bezier
+                    style={{
+                        marginVertical: 8,
+                        borderRadius: 16
+                    }}
+                    formatYLabel={formatYLabel}
+                />}
+        </ScrollView>
     )
 }
 

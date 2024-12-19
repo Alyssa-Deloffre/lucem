@@ -1,23 +1,17 @@
-import { Text, View, StyleSheet, Dimensions, ScrollView, Image } from "react-native"
+import { Text, View, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from "react-native"
 import { URL } from "../data/globalVariables";
 import Card from '../components/Card';
 import MainContainer from "../components/MainContainer";
-import DateCheck from "../components/DateCheck";
-import { sleepQuality } from "../data/sleep";
 import { useState, useEffect } from "react";
-import { useSelector } from 'react-redux';
 import { COLOR_GREEN, COLOR_PURPLE } from "../data/styleGlobal";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import {
   LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart
 } from "react-native-chart-kit";
 import { dateFormat } from "../modules/dateAndTimeFunctions";
+import { sleepQuality, wakeQuality } from "../data/sleep";
+import { moodQualityValues } from "../data/mood";
 
 
 const getPatientEventsByDate = async (token, date) => {
@@ -32,11 +26,14 @@ const getPatientEventsByDate = async (token, date) => {
 
 export default function Test() {
 
-  const [patientData, setPatientData] = useState([]);
   const [dateSleepArr, setDateSleepArr] = useState([])
   const [eventSleepArr, setEventSleepArr] = useState([])
   const [dateMoodArr, setDateMoodArr] = useState([])
   const [eventMoodArr, setEventMoodArr] = useState([])
+
+  // Show dot infos
+  const [displayInfosSleep, setDisplayInfosSleep] = useState(null)
+  const [displayInfosMood, setDisplayInfosMood] = useState(null)
 
   const patientToken = 'QF3G7zFCM8zzBUV31eWMmmymcFh7gzLp'
 
@@ -71,128 +68,167 @@ export default function Test() {
     })()
   }, [])
 
-  const formatYLabel = (label) => {
-    const truncLabel = Math.trunc(label)
-    if (truncLabel === 0) {
-        return 'Médiocre'
+
+  const handleShowDotInfosSleep = async (value) => {
+
+    const infos = { label: "", value: "", color: "" }
+
+    if (value.dataset.type === "sleepQuality") {
+      infos.label = "Qualité du sommeil"
+      infos.value = sleepQuality.find(sleep => sleep.value === value.value).text
+      infos.color = COLOR_GREEN[700]
     }
-    if (truncLabel === 1) {
-        return 'Mauvais'
+    if (value.dataset.type === "wakingQuality") {
+      infos.label = "Forme au réveil"
+      infos.value = wakeQuality.find(wake => wake.value === value.value).text
+      infos.color = COLOR_PURPLE[600]
     }
-    if (truncLabel === 2) {
-        return 'Moyen'
-    }
-    if (truncLabel === 3) {
-        return 'Bien'
-    }
-    if (truncLabel === 4) {
-        return 'Très bien'
-    }
+
+    setDisplayInfosSleep(
+      <TouchableOpacity
+        style={[styles.showInfosCard, { borderColor: infos.color }]}
+        onPress={() => setDisplayInfosSleep(null)}
+      >
+        <Text style={[styles.showInfosCard_label, { color: infos.color }]}>{infos.label}</Text>
+        <Text style={styles.showInfosCard_value}>{infos.value}</Text>
+      </TouchableOpacity>
+    )
   }
+
+  const handleShowDotInfosMood = async (value) => {
+
+    const infos = { label: "Humeur", value: moodQualityValues.find(mood => mood.value === value.value).text, color: COLOR_GREEN[700] }
+
+    setDisplayInfosMood(
+      <TouchableOpacity
+        style={[styles.showInfosCard, { borderColor: infos.color }]}
+        onPress={() => setDisplayInfosMood(null)}
+      >
+        <Text style={[styles.showInfosCard_label, { color: infos.color }]}>{infos.label}</Text>
+        <Text style={styles.showInfosCard_value}>{infos.value}</Text>
+      </TouchableOpacity>
+    )
+  }
+
   return (
     <MainContainer>
-
       <Card>
-        <ScrollView style={styles.scrollView}>
+        <ScrollView>
+          <View style={styles.scrollView}>
+            {dateSleepArr.length > 0 &&
+              <View style={styles.chartBlock}>
 
-<Text style={styles.titre}>Qualité du sommeil et Humeur au réveil</Text>
-        {dateSleepArr.length > 0 &&
-          <LineChart
-            data={{
-                labels: dateSleepArr.map(date => dateFormat(date)),
-              datasets: [
-                {
-                    data: eventSleepArr.map(event => event.ref.sleepquality),
-                    svg: { fill: COLOR_GREEN[100]},
-                    strokeWidth : 3,
-                },
-                {
-                    data: eventSleepArr.map(event => event.ref.wakingquality),
-                    color: () => COLOR_PURPLE[600],
-                    strokeWidth : 3,
-                },
-              ]
-            }}
-            //Style graphique dans son ensemble 
-            width={Dimensions.get("window").width - 80} 
-            height={200}
-            fromZero={true}
-            fromNumber={4}
-            chartConfig={{
-              backgroundGradientFrom: COLOR_GREEN[100],
-              backgroundGradientTo: COLOR_GREEN[100],
-              decimalPlaces: 2, 
-              color: () => COLOR_GREEN[600],
-              labelColor: () => COLOR_GREEN[1000],
-              style: {
-                borderRadius: 16
-              },
-              //Style des points
-              propsForDots: {
-                r: "7",
-                strokeWidth: "0",
-                stroke: 'black',
-              }
-            }}
-            //Style fond 
-            bezier
-            style={{
-              marginVertical: 8,
-              borderRadius: 16
-            }}
-            formatYLabel={formatYLabel}
-          />}
-          <View style={styles.legende1}>
-          <FontAwesome style={styles.rond1} name='circle'/>
-            <Text style={styles.qualite}>Qualité du sommeil</Text>
-            </View>
-            <View style={styles.legende1}>
-            <FontAwesome style={styles.rond2} name='circle'/>
-            <Text style={styles.humeur}>Humeur au réveil</Text>
-            </View>
-         
+                <Text style={styles.titre}>Récap sommeil</Text>
+                <LineChart
+                  data={{
+                    labels: dateSleepArr.map(date => dateFormat(date)),
+                    datasets: [
+                      {
+                        data: eventSleepArr.map(event => event.ref.sleepquality),
+                        color: () => COLOR_GREEN[600],
+                        type: "sleepQuality"
+                      },
+                      {
+                        data: eventSleepArr.map(event => event.ref.wakingquality),
+                        color: () => COLOR_PURPLE[600],
+                        type: "wakingQuality"
+                      },
+                    ]
+                  }}
+                  //Style graphique dans son ensemble 
+                  width={Dimensions.get("window").width - 80}
+                  height={200}
+                  fromZero={true}
+                  fromNumber={4}
+                  chartConfig={{
+                    backgroundGradientFrom: COLOR_GREEN[100],
+                    backgroundGradientTo: COLOR_GREEN[100],
+                    decimalPlaces: 2,
+                    color: () => COLOR_GREEN[600],
+                    labelColor: () => COLOR_GREEN[1000],
+                    style: {
+                      borderRadius: 16
+                    },
+                    //Style des points
+                    propsForDots: {
+                      r: "7",
+                      strokeWidth: "0",
+                      stroke: 'black',
+                    }
+                  }}
+                  //Style fond 
+                  bezier
+                  style={{
+                    marginVertical: 8,
+                    borderRadius: 16
+                  }}
+                  onDataPointClick={(value) => handleShowDotInfosSleep(value)}
+                />
+                <View style={styles.legendes}>
+                  <View style={styles.legendes_legende}>
+                    <FontAwesome style={styles.rond1} name='circle' />
+                    <Text style={styles.qualite}>Qualité du sommeil</Text>
+                  </View>
+                  <View style={styles.legendes_legende}>
+                    <FontAwesome style={styles.rond2} name='circle' />
+                    <Text style={styles.humeur}>Humeur au réveil</Text>
+                  </View>
+                </View>
+                {displayInfosSleep && displayInfosSleep}
+              </View>}
 
-          <Text style={styles.titre}>Etat émotionnel des 6 derniers jours</Text>
-        
-          {dateMoodArr.length > 0 &&
-            <LineChart
-              data={{
-                labels: dateMoodArr.map(date => dateFormat(date)),
-                datasets: [
-                  {
-                    data: eventMoodArr.map(event => event.ref.quality)
-                  }
-                ]
-              }}
-              width={Dimensions.get("window").width - 80} 
-              height={200}
-              fromZero={true}
-              fromNumber={4}
-              chartConfig={{
-                backgroundGradientFrom: COLOR_GREEN[100],
-                backgroundGradientTo: COLOR_GREEN[100],
-                decimalPlaces: 2,
-                color: () => COLOR_GREEN[600],
-                labelColor: () => COLOR_GREEN[1000],
-                style: {
-                  borderRadius: 16
-                },
-                propsForDots: {
-                  r: "7",
-                  strokeWidth: "0",
-                  stroke: COLOR_GREEN[800]
-                }
-              }}
-              bezier
-              style={{
-                marginVertical: 8,
-                borderRadius: 16
-              }}
-              formatYLabel={formatYLabel}
-            />}
+
+            {dateMoodArr.length > 0 &&
+              <View style={styles.chartBlock}>
+                <Text style={styles.titre}>État émotionnel</Text>
+
+                <LineChart
+                  data={{
+                    labels: dateMoodArr.map(date => dateFormat(date)),
+                    datasets: [
+                      {
+                        data: eventMoodArr.map(event => event.ref.quality)
+                      }
+                    ]
+                  }}
+                  width={Dimensions.get("window").width - 80}
+                  height={200}
+                  fromZero={true}
+                  fromNumber={4}
+                  chartConfig={{
+                    backgroundGradientFrom: COLOR_GREEN[100],
+                    backgroundGradientTo: COLOR_GREEN[100],
+                    decimalPlaces: 2,
+                    color: () => COLOR_GREEN[600],
+                    labelColor: () => COLOR_GREEN[1000],
+                    style: {
+                      borderRadius: 16
+                    },
+                    propsForDots: {
+                      r: "7",
+                      strokeWidth: "0",
+                      stroke: COLOR_GREEN[800]
+                    }
+                  }}
+                  bezier
+                  style={{
+                    marginVertical: 8,
+                    borderRadius: 16
+                  }}
+                  onDataPointClick={(value) => handleShowDotInfosMood(value)}
+                />
+                <View style={styles.legendes}>
+                  <View style={styles.legendes_legende}>
+                    <FontAwesome style={styles.rond1} name='circle' />
+                    <Text style={styles.qualite}>Humeur</Text>
+                  </View>
+                </View>
+                {displayInfosMood && displayInfosMood}
+              </View>}
+          </View>
         </ScrollView>
       </Card>
-    </MainContainer>
+    </MainContainer >
   )
 }
 
@@ -208,32 +244,66 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     height: 500,
+    flex: 1,
+    gap: 32
+  },
+  chartBlock: {
+    rowGap: 4
   },
   titre: {
+    fontSize: 16,
     fontWeight: 'bold',
-    padding : 10,
   },
   qualite: {
-    color : COLOR_GREEN[700],
+    color: COLOR_GREEN[700],
   },
   humeur: {
-    color : COLOR_PURPLE[600],
+    color: COLOR_PURPLE[600],
   },
-  legende1: {
-    paddingHorizontal : 10,
+  legendes: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexWrap: "wrap",
+    gap: 16,
+  },
+  legendes_legende: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   rond1: {
     width: 17,
-    color : COLOR_GREEN[600],
-    alignContent : 'center',
-    fontSize : 15,
+    color: COLOR_GREEN[600],
+    alignContent: 'center',
+    fontSize: 15,
   },
   rond2: {
     width: 17,
-    color : COLOR_PURPLE[600],
-    alignContent : 'center',
-    fontSize : 15,
+    color: COLOR_PURPLE[600],
+    alignContent: 'center',
+    fontSize: 15,
+  },
+  showInfosCard: {
+    position: "absolute",
+    backgroundColor: "white",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    shadowColor: COLOR_PURPLE[1000],
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    top: 8,
+    left: "50%",
+    transform: [{ translateX: "-50%" }],
+    borderWidth: 1,
+  },
+  showInfosCard_label: {
+    textAlign: "center",
+  },
+  showInfosCard_value: {
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: 600,
+    color: COLOR_PURPLE[1000]
   },
 })
