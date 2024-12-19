@@ -3,8 +3,6 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useIsFocused } from '@react-navigation/native';
 
-
-
 import MainContainerWithScroll from "../../components/MainContainerWithScroll";
 import FullButton from "../../components/buttons/FullButton";
 
@@ -131,7 +129,6 @@ export default function HomeScreen({ navigation, route }) {
             </TouchableOpacity>
         )
     })
-
     return (
         <MainContainerWithScroll >
             <View style={styles.container}>

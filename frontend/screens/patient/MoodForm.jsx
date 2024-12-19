@@ -1,4 +1,4 @@
-import { Text, View, FlatList, StyleSheet, ScrollView } from "react-native"
+import { Text, View, FlatList, StyleSheet, ScrollView, TouchableOpacity } from "react-native"
 import { useState } from "react"
 import { useSelector } from "react-redux"
 
@@ -13,6 +13,10 @@ import TextArea from "../../components/inputs/TextArea"
 import { moods, moodQualityValues, influenceFactors } from "../../data/mood"
 import ButtonRegular from "../../components/buttons/ButtonRegular"
 import { URL } from "../../data/globalVariables"
+
+import { COLOR_PURPLE } from "../../data/styleGlobal"
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+
 
 export default function MoodFormScreen({ navigation, route }) {
     const [moodInfos, setMoodInfos] = useState({
@@ -135,6 +139,10 @@ navigateToHome()        }
     return (
 
         <MainContainer >
+                            <TouchableOpacity onPress={() => navigateToHome()} activeOpacity={2} style={{position : 'absolute', zIndex : 3, margin : 20, flexDirection : 'row', alignItems : 'center'}}>
+                            <FontAwesome name='chevron-circle-left' size={25} color={COLOR_PURPLE[700]} />
+                            <Text style={{paddingLeft : 6, fontFamily : 'Quicksand-SemiBold', color: COLOR_PURPLE[700]}}>Accueil</Text>
+                            </TouchableOpacity>
             <View style={styles.container}>
                 <ScrollView>
                 {currentScreen === 1 &&
@@ -191,7 +199,6 @@ navigateToHome()        }
 </ScrollView>
                 <View>
                     {navigationButtons()}
-                    <ButtonRegular text="Retour à l'accueil" type='buttonLittleStroke' orientation="left" onPress={() => navigateToHome()} />
                 </View>
             </View>
         </MainContainer>
@@ -202,7 +209,8 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        marginTop : 25
     },
     flatlist: {
         flexDirection: 'row',

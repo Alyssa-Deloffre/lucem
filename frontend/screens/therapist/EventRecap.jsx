@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { formatBirthdate } from "../../modules/dateAndTimeFunctions";
 import ButtonRegular from "../../components/buttons/ButtonRegular";
 import Card from "../../components/Card";
-import { FONTS } from "../../data/styleGlobal";
+import { FONTS, COLOR_PURPLE } from "../../data/styleGlobal";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
@@ -44,13 +44,10 @@ export default function EventRecapTherapist({ navigation, route }) {
         <MainContainerWithScroll>
 
 
-                <TouchableOpacity onPress={() => navigateToHome()} activeOpacity={2} style={{position : 'absolute', margin : 6}}>
-                <FontAwesome name='chevron-circle-left' size={35}/>
+                <TouchableOpacity onPress={() => navigateToHome()} activeOpacity={2} style={{position : 'absolute', zIndex : 3, margin : 6}}>
+                <FontAwesome name='chevron-circle-left' size={35} color={COLOR_PURPLE[700]} />
                 </TouchableOpacity>
                 <Text style={styles.title}>Récap {type === 'mood' ? "humeur" : 'sommeil'} du {infos?.event && formatBirthdate(new Date(infos.event.date))}</Text>
-
-
-
 
                 {type === 'mood' &&
                     <MoodRecap eventInfos={infos} />}

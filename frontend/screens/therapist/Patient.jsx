@@ -360,6 +360,9 @@ export default function Patient({ navigation, route }) {
 
   return (
     <MainContainer>
+                      <TouchableOpacity onPress={() => returnToHome()} activeOpacity={2} style={{position : 'absolute', zIndex : 3, margin : 20}}>
+                <FontAwesome name='chevron-circle-left' size={35} style={{color : COLOR_PURPLE[700]}}/>
+                      </TouchableOpacity>
       <View style={styles.container}>
         <View style={{ justifyContent: 'center', alignItems: 'center', width: '100%', rowGap: 20 }}>
 
@@ -385,7 +388,6 @@ export default function Patient({ navigation, route }) {
           </Card>
         </View>
 
-        <ButtonRegular text='Retourner à la liste des patients' onPress={() => returnToHome()} type='buttonLittleStroke' orientation="left" />
       </View>
     </MainContainer>
   )
