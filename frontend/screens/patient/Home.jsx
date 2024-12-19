@@ -181,7 +181,7 @@ export default function HomeScreen({ navigation, route }) {
                                 !isCompleteSleep &&
                                 <FullButton
                                     text='Faire mon récap sommeil'
-                                    illustration={require('../../assets/avatars/avatar1.png')}
+                                    illustration={require('../../assets/icons/sleep-star-icon.png.png')}
                                     onPress={() => navigation.navigate('SleepForm', { date: selectedDate.toISOString() })}
                                 />
                             }
@@ -190,7 +190,7 @@ export default function HomeScreen({ navigation, route }) {
                                 <FullButton
                                     text='Voir mon récap sommeil'
                                     type='stroke'
-                                    illustration={require('../../assets/avatars/avatar1.png')}
+                                    illustration={require('../../assets/icons/sleep-star-icon.png.png')}
                                     onPress={() => navigation.navigate('EventRecapPatient', { id: sleepId })}
                                 />
                             }
@@ -212,7 +212,7 @@ export default function HomeScreen({ navigation, route }) {
                             {!isCompleteMood &&
                                 <FullButton
                                     text='Faire mon récap mood'
-                                    illustration={require('../../assets/avatars/avatar1.png')}
+                                    illustration={require('../../assets/icons/mood-star-icon.png')}
                                     onPress={() => navigation.navigate('MoodForm', { date: selectedDate.toISOString() })}
 
                                 />}
@@ -220,7 +220,7 @@ export default function HomeScreen({ navigation, route }) {
                                 <FullButton
                                     text='Voir mon récap mood'
                                     type='stroke'
-                                    illustration={require('../../assets/avatars/avatar1.png')}
+                                    illustration={require('../../assets/icons/mood-star-icon.png')}
                                     onPress={() => navigation.navigate('EventRecapPatient', { id: moodId })}
 
                                 />
