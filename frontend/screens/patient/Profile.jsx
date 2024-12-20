@@ -325,6 +325,7 @@ export default function PatientProfileScreen({ navigation }) {
                 {menuItem === 'infos' && infos}
                 {menuItem === 'psys' && (
                     <>
+                    {psys.length === 0 && <Text style={[styles.infosBlock_label, {textAlign : "center"}]}>Vous n'avez pas encore ajouté de psychologue, cliquez sur le bouton ci-dessous pour le faire.</Text>}
                         {!isAddPsyVisible && (<>
                             {psys}
                             <Button

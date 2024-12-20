@@ -33,6 +33,7 @@ export default function TherapistHomeScreen({ navigation }) {
     }, [])
 
     const patientDisplay = patientList.sort((a, b) => a.name < b.name).map((patient, i) => {
+
         return <PatientButton key={i} firstname={patient.firstname} name={patient.name} avatar={avatarImages[patient.avatar]} onPress={() => goToPatient(patient)} />;
     })
 
@@ -50,7 +51,9 @@ export default function TherapistHomeScreen({ navigation }) {
                 <ScrollView>
 
                 <View style={styles.patientButton}>
-                    {patientDisplay}
+                    { patientList.length === 0 ? <Text style={styles.errorMessage}>Vous n'avez pas encore de patient relié à votre compte.</Text> : patientDisplay
+                                
+                    }
                 </View>
                 </ScrollView>
             </View>
@@ -67,6 +70,11 @@ const styles = StyleSheet.create({
         ...FONTS.Heading1,
     },
     patientButton: {
+    },
+    errorMessage : {
+        ...FONTS.Body,
+        marginTop : 32,
+        textAlign : 'center'
     }
 })
 
