@@ -155,8 +155,6 @@ export default function SignupPatient({ navigation }) {
 
 
 
-
-
     return (
 
         <>
