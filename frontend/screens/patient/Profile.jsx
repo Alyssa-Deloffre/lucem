@@ -178,7 +178,7 @@ export default function PatientProfileScreen({ navigation }) {
         </>
     );
 
-    const psys = patientInfos.therapist.length > 0 && patientInfos.therapist.map((therapist) => {
+    const psys = patientInfos.therapist.map((therapist) => {
         const image = avatarImages[therapist.avatar];
         const isShow = therapist.token === showTherapistInfos;
         return (
@@ -326,7 +326,7 @@ export default function PatientProfileScreen({ navigation }) {
                 {menuItem === 'psys' && (
                     <>
                         {!isAddPsyVisible && (<>
-                            {therapistsList.length > 0 && psys}
+                            {psys}
                             <Button
                                 label='Ajouter un psychologue'
                                 icon='plus-circle'

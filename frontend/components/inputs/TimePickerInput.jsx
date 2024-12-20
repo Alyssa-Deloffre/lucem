@@ -34,6 +34,7 @@ export default function TimePickerInput({
                                 onChange={onChange}
                                 locale='fr'
                                 minuteInterval={minuteInterval}
+                                themeVariant="light"
                             />
 
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>

@@ -32,10 +32,9 @@ export default function DatePickerInput({ value, onChange, label }) {
                 mode='date'
                 value={value}
                 display="spinner"
-                onChange={(event, selectedDate) => {
-                  if (selectedDate) onChange(event, selectedDate);
-                }}
+                onChange={onChange}
                 locale='fr'
+                themeVariant="light"
               />
               <View style={styles.buttonContainer}>
                 <ButtonRegular text='Retour' onPress={() => setIsModalVisible(false)} />

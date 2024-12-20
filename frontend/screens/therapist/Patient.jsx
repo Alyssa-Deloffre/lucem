@@ -204,6 +204,7 @@ export default function Patient({ navigation, route }) {
       {isCompleteMood && (
         <FullButton
           text='Voir le récap mood'
+          type='stroke'
           illustration={require('../../assets/icons/mood-star-icon.png')}
           onPress={() =>
             navigation.navigate('EventRecapTherapist', {

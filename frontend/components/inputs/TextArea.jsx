@@ -77,6 +77,7 @@ export default function TextArea({
                 multiline={true}
                 numberOfLines={numberOfLines}
                 maxLength={maxLength}
+                inputMode="text"
             />
             {error && <Text style={styles.errorMessage}>{errorMsg}</Text>}
         </View>
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     label: {
-        fontFamily : 'Quicksand-SemiBold',
+        fontFamily: 'Quicksand-SemiBold',
         fontSize: 16,
         color: COLOR_PURPLE[1000],
     },
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         width: "100%",
         padding: 12,
-        minHeight : 150
+        minHeight: 150
     },
     inputNotFocused: {
         borderColor: COLOR_PURPLE[1000],

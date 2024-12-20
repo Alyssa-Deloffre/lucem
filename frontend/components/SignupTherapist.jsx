@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux'
-import { Image, Text, StyleSheet, View } from 'react-native'
+import { Image, Text, StyleSheet, View, ActivityIndicator } from 'react-native'
 
 //Import des composants
 import ButtonRegular from "./buttons/ButtonRegular"
@@ -29,11 +29,12 @@ export default function SignupTherapist({ navigation }) {
 
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
-    const [phoneError, setPhoneError] = useState('')
     const [validationError, setValidationError] = useState('')
 
     const [imageIndex, setImageIndex] = useState(1)
     const [isSubmit, setIsSubmit] = useState(false)
+
+    const [isLoading, setIsLoading] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -94,7 +95,7 @@ export default function SignupTherapist({ navigation }) {
 
     //Fonction qui gère la validation de l'inscription et le POST en DB
     const validateSignUp = async () => {
-
+        setIsLoading(true)
         const newTherapist = {
             firstname: inputs.firstname,
             name: inputs.name,
@@ -111,6 +112,7 @@ export default function SignupTherapist({ navigation }) {
         })
         const data = await resp.json()
 
+        setIsLoading(false)
         if (data.result) {
             dispatch(addUserToken(data.token))
             navigation.navigate('TherapistTabNavigator')
@@ -186,7 +188,6 @@ export default function SignupTherapist({ navigation }) {
                     inputMode="tel"
                     value={phone}
                     onChangeText={(value) => setPhone(value)}
-                    forcedErrorMessage={phoneError}
                     require={false}
                     autoComplete="tel"
                 />
@@ -199,7 +200,6 @@ export default function SignupTherapist({ navigation }) {
             </>
             }
             {currentScreen === 3 && <>
-                <Text>Récapitulatif</Text>
                 <Image source={avatarImages[imageIndex]} style={{ height: 100, width: 100, marginHorizontal: 8 }} />
                 <View style={styles.input}>
                     <Text style={styles.inputText}>Nom : {inputs.name}</Text>
@@ -213,10 +213,16 @@ export default function SignupTherapist({ navigation }) {
                 <View style={styles.input}>
                     <Text style={styles.inputText}>Description : {description}</Text>
                 </View>
-                {validationError !== '' && validationError}
+                {validationError !== '' && <Text>validationError</Text>}
                 <ButtonRegular text='Confirmer inscription' onPress={() => validateSignUp()} />
                 <ButtonRegular text='Corriger les informations' onPress={() => handleReturn()} type='buttonLittleStroke' orientation="left" />
             </>}
+            {isLoading &&
+                <View style={styles.loadingBlock}>
+                    <ActivityIndicator size="large" color={COLOR_PURPLE[600]} />
+                    <Text style={styles.loadingBlock_text}>Votre compte est en cours de création.</Text>
+                </View>
+            }
         </>
     )
 }
@@ -240,5 +246,23 @@ const styles = StyleSheet.create({
     inputText: {
         fontSize: 16,
         color: COLOR_PURPLE[1000],
+    },
+    loadingBlock: {
+        position: "absolute",
+        zIndex: 1000,
+        top: 24,
+        left: 16,
+        backgroundColor: "white",
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 4,
+        width: "100%",
+        height: "100%",
+    },
+    loadingBlock_text: {
+        fontSize: 18,
+        fontWeight: 600,
+        textAlign: "center"
     },
 })
