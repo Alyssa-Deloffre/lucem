@@ -70,14 +70,14 @@ export default function MoodFormScreen({ navigation, route }) {
         const isChecked = moodInfos.emotions.some((item) => item.mood === mood.mood)
 
 
-            return <CheckButton
-                key={i}
-                value={mood.mood}
-                check={isChecked}
-                onPress={() => {
-                    addOrDeleteMood(mood, !isChecked)
-                }} />
-        
+        return <CheckButton
+            key={i}
+            value={mood.mood}
+            check={isChecked}
+            onPress={() => {
+                addOrDeleteMood(mood, !isChecked)
+            }} />
+
 
     })
 
@@ -113,7 +113,7 @@ export default function MoodFormScreen({ navigation, route }) {
         }
     }
 
-    const validateForm = async() => {
+    const validateForm = async () => {
         const resp = await fetch(`${URL}/events/addMoodGlobal`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -123,78 +123,79 @@ export default function MoodFormScreen({ navigation, route }) {
         })
         const data = await resp.json()
         if (data.result) {
-navigateToHome()
+            navigateToHome()
         } else {
-navigateToHome()        }
+            navigateToHome()
+        }
 
     }
 
     const navigateToHome = async () => {
-        return await navigation.navigate('PatientTabNavigator', {screen: 'Accueil',  params: {date: selectedDate}})
+        return await navigation.navigate('PatientTabNavigator', { screen: 'Accueil', params: { date: selectedDate } })
     }
 
 
     return (
 
         <MainContainer >
-                            <TouchableOpacity onPress={() => navigateToHome()} activeOpacity={2} style={{position : 'absolute', zIndex : 3, margin : 20, flexDirection : 'row', alignItems : 'center'}}>
-                            <FontAwesome name='chevron-circle-left' size={25} color={COLOR_PURPLE[700]} />
-                            <Text style={{paddingLeft : 6, fontFamily : 'Quicksand-SemiBold', color: COLOR_PURPLE[700]}}>Accueil</Text>
-                            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigateToHome()} activeOpacity={2} style={{ position: 'absolute', zIndex: 3, margin: 20, flexDirection: 'row', alignItems: 'center' }}>
+                <FontAwesome name='chevron-circle-left' size={25} color={COLOR_PURPLE[700]} />
+                <Text style={{ paddingLeft: 6, fontFamily: 'Quicksand-SemiBold', color: COLOR_PURPLE[700] }}>Accueil</Text>
+            </TouchableOpacity>
             <View style={styles.container}>
                 <ScrollView>
-                {currentScreen === 1 &&
-                    <View style={{rowGap : 6}}>
-                        <Card label='Humeur du jour'>
-                            <Text style={styles.body}>Comment était votre humeur aujourd'hui ?</Text>
-                            <CustomSlider data={moodQualityValues} value={moodInfos.quality} onValueChange={(newValue) => setMoodInfos(prev => ({ ...prev, quality: newValue }))} />
-                        </Card>
-                        <Card >
-                            <Text style={styles.body}>Quelles émotions avez-vous ressenties ?</Text>
-                                    {!showmore && <ButtonRegular text="Voir tout" type='buttonLittleRegular' orientation='plus-left' onPress={() => setShowMore(!showmore)} />}
-                                    {showmore && <ButtonRegular text="Voir moins d'émotions" type='buttonLittleRegular' orientation='minus-left' onPress={() => setShowMore(!showmore)} />}
-                            <ScrollView style={{ }}>
+                    {currentScreen === 1 &&
+                        <View style={{ rowGap: 16, paddingTop: 24 }}>
+                            <Card label='Humeur du jour'>
+                                <Text style={styles.body}>Comment était votre humeur aujourd'hui ?</Text>
+                                <CustomSlider data={moodQualityValues} value={moodInfos.quality} onValueChange={(newValue) => setMoodInfos(prev => ({ ...prev, quality: newValue }))} />
+                            </Card>
+                            <Card >
+                                <Text style={styles.body}>Quelles émotions avez-vous ressenties ?</Text>
+                                {!showmore && <ButtonRegular text="Voir tout" type='buttonLittleRegular' orientation='plus-left' onPress={() => setShowMore(!showmore)} />}
+                                {showmore && <ButtonRegular text="Voir moins d'émotions" type='buttonLittleRegular' orientation='minus-left' onPress={() => setShowMore(!showmore)} />}
+                                <ScrollView style={{}}>
 
-                                <View style={styles.flatlist}>
-                                {!showmore &&
-                                
-                                    moodsToDisplay
-                                }
-                                {showmore &&
-                                 allMoodsToDisplay
-                                }
+                                    <View style={styles.flatlist}>
+                                        {!showmore &&
 
-                                </View>
-                            </ScrollView>
+                                            moodsToDisplay
+                                        }
+                                        {showmore &&
+                                            allMoodsToDisplay
+                                        }
+
+                                    </View>
+                                </ScrollView>
 
 
 
-                        </Card>
+                            </Card>
 
-                    </View>
+                        </View>
 
-                }
+                    }
 
-                {currentScreen === 2 &&
-                    <>
-                    <Card label="Facteurs d'influence">
-                        <Text style={styles.body}>Quels sont les éléments qui influencent votre vie en ce moment ?</Text>
-                        <View style={styles.flatlist}>{influenceToDisplay}</View>
+                    {currentScreen === 2 &&
+                        <View style={{ paddingTop: 24 }}>
+                            <Card label="Facteurs d'influence">
+                                <Text style={styles.body}>Quels sont les éléments qui influencent votre vie en ce moment ?</Text>
+                                <View style={styles.flatlist}>{influenceToDisplay}</View>
 
-                    </Card>
+                            </Card>
 
-                    </>
-                }
+                        </View>
+                    }
 
-                {currentScreen === 3 &&
-                    <>
-                        <Card label='Détails'>
-                            <TextArea label='Avez-vous des détails à noter sur votre journée ?' onChangeText={(newValue) => setMoodInfos(prev => ({ ...prev, details: newValue }))} />
-                        </Card>
-                    </>
-                }
+                    {currentScreen === 3 &&
+                        <View style={{ paddingTop: 24 }}>
+                            <Card label='Détails'>
+                                <TextArea label='Avez-vous des détails à noter sur votre journée ?' onChangeText={(newValue) => setMoodInfos(prev => ({ ...prev, details: newValue }))} />
+                            </Card>
+                        </View>
+                    }
 
-</ScrollView>
+                </ScrollView>
                 <View>
                     {navigationButtons()}
                 </View>
@@ -208,19 +209,19 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "space-between",
-        marginTop : 25
+        marginTop: 25
     },
     flatlist: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         gap: 6,
     },
-    body : {
-        fontFamily : 'Quicksand-SemiBold',
-        fontSize : 16,
-        color : COLOR_PURPLE[1000]
-        
- 
+    body: {
+        fontFamily: 'Quicksand-SemiBold',
+        fontSize: 16,
+        color: COLOR_PURPLE[1000]
+
+
     }
 
 })

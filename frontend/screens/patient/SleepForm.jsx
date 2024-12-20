@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Modal, FlatList, ScrollView, TouchableOpacity } from "react-native"
+import { Text, View, StyleSheet, Modal, FlatList, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native"
 import { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
 
@@ -14,6 +14,7 @@ import { formatTime } from "../../modules/dateAndTimeFunctions"
 import { sleepQuality, wakeQuality } from "../../data/sleep"
 import { URL } from "../../data/globalVariables"
 import { COLOR_PURPLE, FONTS } from "../../data/styleGlobal"
+import MainContainerWithScroll from "../../components/MainContainerWithScroll"
 
 const setDefaultHour = (date, hours, minutes) => {
     date.setHours(hours + 1, minutes, 0, 0);
@@ -43,8 +44,12 @@ export default function SleepFormScreen({ navigation, route }) {
     const navigationButtons = () => {
         if (currentScreen === 1) {
             return <ButtonRegular text='Suivant' onPress={() => setCurrentScreen(currentScreen + 1)} />
-        }
-        else {
+        } else if (currentScreen === 2) {
+            return <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <ButtonRegular text='Retour' onPress={() => currentScreen > 1 && setCurrentScreen(currentScreen - 1)} orientation="left" type='buttonStroke' />
+                <ButtonRegular text='Suivant' onPress={() => setCurrentScreen(currentScreen + 1)} />
+            </View>
+        } else {
             return <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <ButtonRegular text='Retour' onPress={() => currentScreen > 1 && setCurrentScreen(currentScreen - 1)} orientation="left" type='buttonStroke' />
                 <ButtonRegular text='Valider' onPress={() => validateForm()} />
@@ -114,7 +119,7 @@ export default function SleepFormScreen({ navigation, route }) {
                     rowGap: 16,
                 }}>
                     {currentScreen === 1 &&
-                        <>
+                        <View style={{ rowGap: 16, paddingTop: 24 }}>
                             <Card label='Heure de coucher'>
                                 <TimePickerInput
                                     value={infos.sleepTime}
@@ -134,7 +139,7 @@ export default function SleepFormScreen({ navigation, route }) {
                                 <FlatList
                                     data={infos.nightWake}
                                     renderItem={displayNightWake}
-                                    keyExtractor={(item) => item.id}
+                                    keyExtractor={(item, index) => index}
                                     style={{ height: '40%' }}
                                 />
                             }
@@ -160,29 +165,27 @@ export default function SleepFormScreen({ navigation, route }) {
                                 </View>
 
                             </Modal>
-                        </>
+                        </View>
                     }
 
                     {currentScreen === 2 &&
-                        <>
-                            <ScrollView>
-                                <View style={{ rowGap: 6 }}>
-
-                                    <Card>
-                                        <Text style={styles.label}>Comment était votre sommeil cette nuit ?</Text>
-                                        <CustomSlider data={sleepQuality} value={infos.sleepQuality} onValueChange={(newValue) => setInfos(prev => ({ ...prev, sleepQuality: newValue }))} />
-                                    </Card>
-                                    <Card>
-                                        <Text style={styles.label}>Quel est votre niveau de forme ce matin ?</Text>
-                                        <CustomSlider data={wakeQuality} value={infos.wakeQuality} onValueChange={(newValue) => setInfos(prev => ({ ...prev, wakeQuality: newValue }))} />
-                                    </Card>
-                                    <Card>
-                                        <TextArea label='Avez-vous des détails à noter sur votre nuit ?' onChangeText={(newValue) => setInfos(prev => ({ ...prev, details: newValue }))} />
-                                    </Card>
-
-                                </View>
-                            </ScrollView>
-                        </>
+                        <View style={{ rowGap: 16, paddingTop: 24 }}>
+                            <Card>
+                                <Text style={styles.label}>Comment était votre sommeil cette nuit ?</Text>
+                                <CustomSlider data={sleepQuality} value={infos.sleepQuality} onValueChange={(newValue) => setInfos(prev => ({ ...prev, sleepQuality: newValue }))} />
+                            </Card>
+                            <Card>
+                                <Text style={styles.label}>Quel est votre niveau de forme ce matin ?</Text>
+                                <CustomSlider data={wakeQuality} value={infos.wakeQuality} onValueChange={(newValue) => setInfos(prev => ({ ...prev, wakeQuality: newValue }))} />
+                            </Card>
+                        </View>
+                    }
+                    {currentScreen === 3 &&
+                        <ScrollView style={{ height: "100%", paddingTop: 24 }}>
+                            <Card>
+                                <TextArea label='Avez-vous des détails à noter sur votre nuit ?' onChangeText={(newValue) => setInfos(prev => ({ ...prev, details: newValue }))} />
+                            </Card>
+                        </ScrollView>
                     }
                 </View>
 
