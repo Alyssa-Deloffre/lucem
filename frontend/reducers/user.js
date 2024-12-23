@@ -1,25 +1,26 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
+// Enregistrement du token et type d'utilisateur
 const initialState = {
-  token: null,
-  type: null,
+    token: null,
+    type: null,
 };
 
 export const userSlice = createSlice({
-  name: "user",
-  initialState,
-  reducers: {
-    addUserToken: (state, action) => {
-      state.token = action.payload;
+    name: 'user',
+    initialState,
+    reducers: {
+        addUserToken: (state, action) => {
+            state.token = action.payload;
+        },
+        addUserType: (state, action) => {
+            state.type = action.payload;
+        },
+        disconnectUser: (state, action) => {
+            state.token = null;
+            state.type = null;
+        },
     },
-    addUserType: (state, action) => {
-      state.type = action.payload;
-    },
-    disconnectUser: (state, action) => {
-      state.token = null;
-      state.type = null;
-    },
-  },
 });
 
 export const { addUserToken, addUserType, disconnectUser } = userSlice.actions;

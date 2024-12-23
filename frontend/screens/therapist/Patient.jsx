@@ -1,14 +1,6 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  Image,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
 import { useState, useEffect } from 'react';
-import { URL } from '../../data/globalVariables';
+import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+
 import { useIsFocused } from '@react-navigation/native';
 
 import ButtonRegular from '../../components/buttons/ButtonRegular';
@@ -16,20 +8,16 @@ import MainContainer from '../../components/MainContainer';
 import Card from '../../components/Card';
 import DateCheck from '../../components/DateCheck';
 import FullButton from '../../components/buttons/FullButton';
-
-import { LineChart } from 'react-native-chart-kit';
-
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-import { avatarImages } from '../../data/imageSource';
-import {
-  formatBirthdate,
-  getUserAge,
-} from '../../modules/dateAndTimeFunctions';
-import { COLOR_GREEN, COLOR_PURPLE, FONTS } from '../../data/styleGlobal';
-import { dateFormat } from '../../modules/dateAndTimeFunctions';
 import StatsGraph from '../../components/StatsGraphs';
 
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { URL } from '../../data/globalVariables';
+import { avatarImages } from '../../data/imageSource';
+import { COLOR_PURPLE, FONTS } from '../../data/styleGlobal';
+import { getUserAge } from '../../modules/dateAndTimeFunctions';
+import { dateFormat } from '../../modules/dateAndTimeFunctions';
+
+// Fonction - Check si deux dates sont égales en dehors des heures et minutes
 const isEqualDates = (date1, date2) => {
   return (
     date1.getDay() === date2.getDay() &&
@@ -38,34 +26,50 @@ const isEqualDates = (date1, date2) => {
   );
 };
 
+// Fonction - Récupérer les informations de la date courrantes dans le tableaux de dates
 const getCurrentInfos = (date, arr) => {
   const index = arr.findIndex((event) => isEqualDates(date, event.date));
   return arr[index];
 };
 
 export default function Patient({ navigation, route }) {
+  // State - Info du patient (useEffect)
   const [patientInfos, setPatientInfos] = useState({});
+  // State - Gestion des onglets
   const [menuItem, setMenuItem] = useState('Récap');
 
+  // -- Gestion des dates d'affichage
+  // State - Start date pour calculer les 5 dates à afficher (checks)
   const [startDate, setStartDate] = useState(new Date());
+  // State - Dae affichée
   const [selectedDate, setSelectedDate] = useState(startDate);
+  // State - Tableau des infos 5 dates
   const [arrDates, setArrDates] = useState([]);
-  const [currentInfos, setCurrentInfos] = useState([]);
+
+  // State - Gestion des boutons sleep et mood
   const [isCompleteMood, setIsCompleteMood] = useState(false);
   const [isCompleteSleep, setIsCompleteSleep] = useState(false);
   const [moodId, setMoodId] = useState(null);
   const [sleepId, setSleepId] = useState(null);
+
+  // State - Affichage du loading lors du fetch
   const [isLoading, setIsLoading] = useState(false);
 
+  // Permet de savoir quand le screen est affiché chez l'utilisateur
   const isFocused = useIsFocused();
+  // Récupération du token patient grâce à la navigation
   const token = route.params.data.token;
 
+  // Fonction - Récupération des informations pour les 5 dates souhaitées en fonction de l'utilisateur
   const getDates = async (date, token) => {
     const dates = [];
     let newDate = date;
+    // Boucle 5 fois
     for (let i = 0; i < 5; i++) {
       const newDay = new Date(newDate);
+      // Date - i
       newDay.setDate(newDate.getDate() - i);
+      // Récupération des informations correspondantes à la date
       const resp = await fetch(`${URL}/events/getPatientEventsByDate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -75,6 +79,7 @@ export default function Patient({ navigation, route }) {
         }),
       });
       const data = await resp.json();
+      // Ajout de la date et des informations récupérées au début du tableau de dates
       dates.unshift({
         formattedDate: dateFormat(newDay),
         date: newDay,
@@ -85,23 +90,33 @@ export default function Patient({ navigation, route }) {
     return dates;
   };
 
+  // Fonction - Récupération des informations du patient grâce au token (fetch)
   const getPatient = async (token) => {
     const resp = await fetch(`${URL}/patients/getPatient/${token}`);
     const infos = await resp.json();
     return infos.data;
   };
 
+  // useEffect - Au chargement, lors du changement de date (flêches)
   useEffect(() => {
     const fetchDates = async (userToken) => {
-      setIsLoading(true)
+      // Loading pendant que le fetch se fait
+      setIsLoading(true);
+      // Récupération des informations du patient
       const infos = await getPatient(userToken);
       setPatientInfos(infos);
+      // Récupération des informations par dates
       const dates = await getDates(startDate, userToken);
       setArrDates(dates);
-      setIsLoading(false)
+      // Fin du loading
+      setIsLoading(false);
     };
+
+    // Si la screen est visible
     if (isFocused) {
+      // Joue la fonction ci-dessus
       fetchDates(token);
+      // Sélection de la date de départ
       if (!route?.params?.data?.date) {
         setSelectedDate(startDate);
       } else {
@@ -110,18 +125,23 @@ export default function Patient({ navigation, route }) {
     }
   }, [startDate, isFocused]);
 
+  // useEffect - Affichage des informations correspondant à la date sélectionnée
   useEffect(() => {
+    // Si la screen est visible
     if (isFocused) {
       (async () => {
+        // Récupération des informations de la date actuel
         const infos = getCurrentInfos(selectedDate, arrDates);
-        setCurrentInfos(infos);
+        // S'il y a des informations
         if (infos?.events) {
-          const mood = infos.events.find((e) => e.type === 'mood');
+          // Affichage du sommeil
           const sleep = infos.events.find((e) => e.type === 'sleep');
-          setMoodId(mood?._id);
           setSleepId(sleep?._id);
-          setIsCompleteMood(mood ? true : false);
           setIsCompleteSleep(sleep ? true : false);
+          // Affichage de l'hummeur
+          const mood = infos.events.find((e) => e.type === 'mood');
+          setMoodId(mood?._id);
+          setIsCompleteMood(mood ? true : false);
         } else {
           setIsCompleteMood(false);
           setIsCompleteSleep(false);
@@ -130,6 +150,7 @@ export default function Patient({ navigation, route }) {
     }
   }, [selectedDate, arrDates, isFocused]);
 
+  // Affichage des dates et des "checks" correspondants
   const datesDisplay = arrDates.map((date, i) => {
     const isChecked = () => {
       if (date?.events?.length >= 2) {
@@ -156,10 +177,12 @@ export default function Patient({ navigation, route }) {
     );
   });
 
+  // Bouton de retour à l'accueil
   const returnToHome = () => {
     navigation.navigate('TherapistTabNavigator');
   };
 
+  // Style des boutons onglets
   const buttonStyle = (name) => {
     if (name === menuItem) {
       return 'buttonLittleRegular';
@@ -170,6 +193,7 @@ export default function Patient({ navigation, route }) {
 
   const getPatientAge = getUserAge(patientInfos.birthdate);
 
+  // Onlget contact patient
   const contact = (
     <>
       <View style={styles.infosBlock}>
@@ -199,6 +223,7 @@ export default function Patient({ navigation, route }) {
     </>
   );
 
+  // Onglet récap (boutons récap sommeil et hummeur)
   const recap = (
     <>
       {isCompleteMood && (
@@ -230,6 +255,7 @@ export default function Patient({ navigation, route }) {
     </>
   );
 
+  // Affichage des dates pour longlet récap
   const datesMenu = (
     <>
       <View style={styles.dateCheck}>
@@ -252,14 +278,19 @@ export default function Patient({ navigation, route }) {
           activeOpacity={1}
           onPress={() =>
             setStartDate(
-              new Date(
-                startDate.setDate(startDate.getDate() + 5)
-              )
+              new Date(startDate.setDate(startDate.getDate() + 5))
             )
           }
         >
           <FontAwesome
-            style={[styles.chevron, { opacity: isEqualDates(startDate, new Date()) ? 0 : 1 }]}
+            style={[
+              styles.chevron,
+              {
+                opacity: isEqualDates(startDate, new Date())
+                  ? 0
+                  : 1,
+              },
+            ]}
             name='chevron-right'
           />
         </TouchableOpacity>
@@ -267,6 +298,7 @@ export default function Patient({ navigation, route }) {
     </>
   );
 
+  // Onglet statistiques
   const stats = <StatsGraph patientToken={patientInfos.token} />;
 
   return (

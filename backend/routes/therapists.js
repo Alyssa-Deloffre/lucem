@@ -1,11 +1,13 @@
 var express = require('express');
 var router = express.Router();
+require('../models/connection');
+
 const uid2 = require('uid2');
 const bcrypt = require('bcrypt');
+
 const { checkBody } = require('../modules/checkBody');
-require('../models/connection');
+
 const Therapist = require('../models/therapist');
-const Patient = require('../models/patient');
 
 // ----- Get theratpist by email
 router.get('/getByEmail/:email', (req, res) => {
@@ -35,6 +37,7 @@ router.post('/signup', (req, res) => {
 
     Therapist.findOne({ name: req.body.name }).then((data) => {
         if (data === null) {
+            // Hashage du mot de passe
             const hash = bcrypt.hashSync(req.body.password, 10);
 
             const newTherapist = new Therapist({
@@ -77,7 +80,7 @@ router.post('/signin', (req, res) => {
     });
 });
 
-// ----- GET ALL PATIENTS
+// ----- Get all therapist patients
 router.post('/patients', (req, res) => {
     if (!checkBody(req.body, ['token'])) {
         res.json({ result: false, message: 'Missing therapist token' });

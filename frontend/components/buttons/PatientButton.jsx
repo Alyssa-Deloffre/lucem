@@ -1,18 +1,24 @@
-import React from "react";
+import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
-import { COLOR_GREEN, COLOR_PURPLE } from "../../data/styleGlobal";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-
+import { COLOR_PURPLE } from '../../data/styleGlobal';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default function PatientButton({ avatar, firstname, name, onPress }) {
-
     return (
-        <TouchableOpacity onPress={onPress} style={styles.patientButton}>
-            <Image style={styles.avatar} source={avatar} />
-            <Text style={styles.buttonTxt}>{firstname} {name}</Text>
+        <TouchableOpacity
+            onPress={onPress}
+            style={styles.patientButton}
+        >
+            <Image
+                style={styles.avatar}
+                source={avatar}
+            />
+            <Text style={styles.buttonTxt}>
+                {firstname} {name}
+            </Text>
             <FontAwesome name='chevron-right' />
         </TouchableOpacity>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -29,7 +35,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 5,
         backgroundColor: 'white',
-        marginVertical : 12
+        marginVertical: 12,
     },
     avatar: {
         width: 60,
@@ -40,4 +46,4 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 20,
     },
-})
+});

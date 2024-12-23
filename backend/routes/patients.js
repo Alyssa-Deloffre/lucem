@@ -7,11 +7,6 @@ require('../models/connection');
 const Patient = require('../models/patient');
 const Therapist = require('../models/therapist');
 
-// ---- GET users listing
-router.get('/', function (req, res, next) {
-    res.send('respond with a resource');
-});
-
 router.get('/getByEmail/:email', (req, res) => {
     Patient.findOne({ email: req.params.email }).then((patient) => {
         if (patient) {
@@ -30,8 +25,10 @@ router.post('/signup', (req, res) => {
     }
     Patient.findOne({ email: req.body.email }).then(async (data) => {
         if (data === null) {
+            // Hashage du mot de passe
             const hash = bcrypt.hashSync(req.body.password, 10);
 
+            // Récupération du therapist correspondant
             const therapist = await Therapist.findOne({
                 token: req.body.therapist,
             }).then((data) => data);
@@ -44,12 +41,12 @@ router.post('/signup', (req, res) => {
                 token: uid2(32),
                 phone: req.body.phone,
                 birthdate: req.body.birthdate,
-                therapist: therapist ? [therapist._id] : [],
+                therapist: therapist ? [therapist._id] : [], // Si un therapist a été trouvé on l'jaoute sinon tableau vide
                 avatar: req.body.avatar,
             });
 
             newPatient.save().then((newPatient) => {
-                // Ajouter le petient au therapist
+                // Ajouter le patient au therapist
                 Therapist.updateOne(
                     { token: req.body.therapist },
                     { $push: { patients: newPatient._id } }
@@ -81,7 +78,7 @@ router.post('/signin', (req, res) => {
     });
 });
 
-// ---- Add therapist
+// ---- Lier un therapist et un patient
 router.put('/addTherapist', async (req, res) => {
     if (!checkBody(req.body, ['tokenPatient', 'tokenTherapist'])) {
         res.json({ result: false, error: 'Missing or empty fields' });
@@ -90,7 +87,7 @@ router.put('/addTherapist', async (req, res) => {
 
     const { tokenPatient, tokenTherapist } = req.body;
 
-    // Get id patient et therapist
+    // Get id patient & therapist
     const patient = await Patient.findOne({
         token: tokenPatient,
     }).then((patient) => patient);
@@ -142,7 +139,7 @@ router.put('/addTherapist', async (req, res) => {
     });
 });
 
-// ---- Remove therapist
+// ---- Délier un therapist et un patient
 router.put('/removeTherapist', async (req, res) => {
     if (!checkBody(req.body, ['tokenPatient', 'tokenTherapist'])) {
         res.json({ result: false, error: 'Missing or empty fields' });
@@ -202,7 +199,7 @@ router.put('/removeTherapist', async (req, res) => {
     });
 });
 
-// ---- GET all therapists
+// ---- Récupére tous les therapist d'un patient
 router.get('/getalltherapists', (req, res) => {
     Therapist.find().then((data) => res.json({ result: true, data: data }));
 });

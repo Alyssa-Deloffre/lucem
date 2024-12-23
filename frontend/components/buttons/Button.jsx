@@ -10,20 +10,21 @@ export default function Button({
     size = 'm',
     icon = 'chevron-right',
     iconLocation = 'right',
-    iconSize = 12
+    iconSize = 12,
 }) {
+    // Listes des props autorisées
     const typeList = ['default', 'stroke', 'red', 'redStroke'];
     const sizeList = ['s', 'm', 'sFull', 'full'];
     const iconLocationList = ['right', 'left', 'none'];
-
-    if (label === "" || !label) {
+    // Check si le label est défini
+    if (label === '' || !label) {
         return (
             <Text style={{ fontSize: 20, color: 'red' }}>
                 Label must be defined.
             </Text>
-        )
+        );
     }
-
+    // Checks si les props sont autorisées
     if (
         !typeList.includes(type) ||
         !sizeList.includes(size) ||
@@ -36,7 +37,13 @@ export default function Button({
         );
     }
 
-    const textColor = type === "redStroke" ? "redText" : type === "red" ? "whiteText" : "blackText"
+    // Changement de la couleur du text en fonction du type de bouton
+    const textColor =
+        type === 'redStroke'
+            ? 'redText'
+            : type === 'red'
+                ? 'whiteText'
+                : 'blackText';
 
     return (
         <TouchableOpacity
@@ -49,15 +56,16 @@ export default function Button({
             ]}
         >
             <Text
-                style={
-                    [
-                        styles[size === "s" || size === "sFull" ? "sText" : "mText"],
-                        styles[textColor]
-                    ]
-                }>
+                style={[
+                    styles[
+                    size === 's' || size === 'sFull' ? 'sText' : 'mText'
+                    ],
+                    styles[textColor],
+                ]}
+            >
                 {label}
             </Text>
-            {iconLocation !== "none" && (
+            {iconLocation !== 'none' && (
                 <FontAwesome
                     name={icon}
                     style={styles[textColor]}
@@ -122,20 +130,20 @@ const styles = StyleSheet.create({
     },
     sText: {
         fontSize: 14,
-        fontFamily : 'Quicksand'
+        fontFamily: 'Quicksand',
     },
     mText: {
         fontSize: 16,
-        fontFamily : 'Quicksand-SemiBold'
+        fontFamily: 'Quicksand-SemiBold',
     },
     blackText: {
-        color: COLOR_PURPLE[1000]
+        color: COLOR_PURPLE[1000],
     },
     whiteText: {
-        color: "white"
+        color: 'white',
     },
     redText: {
-        color: COLOR_RED[600]
+        color: COLOR_RED[600],
     },
     right: {
         flexDirection: 'row',

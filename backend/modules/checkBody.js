@@ -1,6 +1,4 @@
-function checkBody(body, keyArr){
-    
-
+function checkBody(body, keyArr) {
     for (const key of keyArr) {
         if (!body[key] || body[key] === '') {
             return false;
@@ -9,4 +7,4 @@ function checkBody(body, keyArr){
     return true;
 }
 
-module.exports = {checkBody};
+module.exports = { checkBody };

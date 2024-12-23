@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import { Text, View, Platform, StyleSheet, Modal } from "react-native";
+import React, { useState } from 'react';
+import { View, Platform, StyleSheet, Modal } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import ButtonRegular from "../buttons/ButtonRegular";
-import InputField from "./InputField";
+import ButtonRegular from '../buttons/ButtonRegular';
+import InputField from './InputField';
 
 const formatDate = (date) => {
   let day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
-  return `${day < 10 ? "0" + day : day}/${month < 10 ? "0" + month : month}/${year}`;
+  return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month
+    }/${year}`;
 };
 
 export default function DatePickerInput({ value, onChange, label }) {
@@ -18,27 +19,36 @@ export default function DatePickerInput({ value, onChange, label }) {
     <>
       <InputField
         label={label}
-        inputMode="none"
+        inputMode='none'
         value={formatDate(value)}
         onFocus={() => setIsModalVisible(true)}
       />
 
       {/* Pour iOS */}
       {Platform.OS === 'ios' && (
-        <Modal visible={isModalVisible} transparent>
+        <Modal
+          visible={isModalVisible}
+          transparent
+        >
           <View style={styles.modalOverlay}>
             <View style={styles.pickerContainer}>
               <DateTimePicker
                 mode='date'
                 value={value}
-                display="spinner"
+                display='spinner'
                 onChange={onChange}
                 locale='fr'
-                themeVariant="light"
+                themeVariant='light'
               />
               <View style={styles.buttonContainer}>
-                <ButtonRegular text='Retour' onPress={() => setIsModalVisible(false)} />
-                <ButtonRegular text='Valider' onPress={() => setIsModalVisible(false)} />
+                <ButtonRegular
+                  text='Retour'
+                  onPress={() => setIsModalVisible(false)}
+                />
+                <ButtonRegular
+                  text='Valider'
+                  onPress={() => setIsModalVisible(false)}
+                />
               </View>
             </View>
           </View>
@@ -50,7 +60,7 @@ export default function DatePickerInput({ value, onChange, label }) {
         <DateTimePicker
           mode='date'
           value={value}
-          display="spinner"
+          display='spinner'
           onChange={(event, selectedDate) => {
             setIsModalVisible(false);
             if (selectedDate) onChange(event, selectedDate);
@@ -65,16 +75,16 @@ export default function DatePickerInput({ value, onChange, label }) {
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   pickerContainer: {
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF',
     borderRadius: 10,
     padding: 20,
-    width: "90%",
-    alignItems: "center",
+    width: '90%',
+    alignItems: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',

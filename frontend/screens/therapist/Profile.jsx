@@ -1,42 +1,36 @@
-import {
-    Text,
-    View,
-    StyleSheet,
-    Image,
-    Linking,
-    TouchableOpacity,
-    Alert,
-} from 'react-native';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { URL } from '../../data/globalVariables';
+import { Text, View, StyleSheet, Image } from 'react-native';
 
-import ButtonRegular from '../../components/buttons/ButtonRegular';
+import { useSelector } from 'react-redux';
+
+import MainContainerWithScroll from '../../components/MainContainerWithScroll';
+import DeconnectUserButton from '../../components/DeconnectUserButton';
 import Card from '../../components/Card';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import { URL } from '../../data/globalVariables';
 import { avatarImages } from '../../data/imageSource';
 import { COLOR_PURPLE, FONTS } from '../../data/styleGlobal';
-import MainContainerWithScroll from '../../components/MainContainerWithScroll';
-import UserAutocomplete from '../../components/inputs/UserAutocomplete';
-import DeconnectUserButton from '../../components/DeconnectUserButton';
-import Button from '../../components/buttons/Button';
 
+// Fonction get therapist information par Token
 const getTherapist = async (token) => {
     const resp = await fetch(`${URL}/therapists/getTherapist/${token}`);
     const json = await resp.json();
     if (json.result) {
         return json.therapist;
     }
-    return json
+    return json;
 };
 
-export default function TherapistProfileScreen({ navigation }) {
-    const [therapistInfos, setTherapistInfos] = useState({});
 
+export default function TherapistProfileScreen({ navigation }) {
+    // Récupération du token utilisateur dans le reducer
     const therapistToken = useSelector((state) => state.user.token);
 
+    // State - Enregistrement des informations du therapist
+    const [therapistInfos, setTherapistInfos] = useState({});
+
+    // Récupération des informations du thérapist (fonction ci-dessus appelée)
     useEffect(() => {
         (async () => {
             const infos = await getTherapist(therapistToken);
@@ -62,16 +56,22 @@ export default function TherapistProfileScreen({ navigation }) {
                 <Card>
                     {therapistInfos.description && (
                         <View style={styles.infosBlock}>
-                            <Text style={styles.infosBlock_label}>Description</Text>
+                            <Text style={styles.infosBlock_label}>
+                                Description
+                            </Text>
                             <View style={styles.infosBlock_infos}>
-                                <Text style={styles.infosBlock_infos_description}>
+                                <Text
+                                    style={styles.infosBlock_infos_description}
+                                >
                                     {therapistInfos.description}
                                 </Text>
                             </View>
                         </View>
                     )}
                     <View style={styles.infosBlock}>
-                        <Text style={styles.infosBlock_label}>Adresse e-mail</Text>
+                        <Text style={styles.infosBlock_label}>
+                            Adresse e-mail
+                        </Text>
                         <View style={styles.infosBlock_infos}>
                             <FontAwesome
                                 style={styles.infosBlock_infos_texts}
@@ -84,7 +84,9 @@ export default function TherapistProfileScreen({ navigation }) {
                     </View>
                     {therapistInfos.phone && (
                         <View style={styles.infosBlock}>
-                            <Text style={styles.infosBlock_label}>Téléphone</Text>
+                            <Text style={styles.infosBlock_label}>
+                                Téléphone
+                            </Text>
                             <View style={styles.infosBlock_infos}>
                                 <FontAwesome
                                     style={styles.infosBlock_infos_texts}
@@ -124,7 +126,7 @@ const styles = StyleSheet.create({
         gap: 2,
     },
     therapistName: {
-...FONTS.Heading2,
+        ...FONTS.Heading2,
         color: COLOR_PURPLE[1000],
     },
     infosBlock: {
@@ -136,15 +138,15 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     infosBlock_infos_texts: {
-...FONTS.Body,
+        ...FONTS.Body,
         color: COLOR_PURPLE[600],
     },
     infosBlock_infos_description: {
-...FONTS.Body
+        ...FONTS.Body,
     },
-    infosBlock_label : {
-        fontFamily : 'Quicksand-SemiBold',
-        fontSize : 16,
-        color : COLOR_PURPLE[1000]
-    }
+    infosBlock_label: {
+        fontFamily: 'Quicksand-SemiBold',
+        fontSize: 16,
+        color: COLOR_PURPLE[1000],
+    },
 });

@@ -31,7 +31,6 @@ import Signin from './screens/Signin';
 import Signup from './screens/Signup';
 // Patient screens
 import PatientHomeScreen from './screens/patient/Home';
-import PatientExchangesScreen from './screens/patient/Exchanges';
 import PatientProfileScreen from './screens/patient/Profile';
 import SleepFormScreen from './screens/patient/SleepForm';
 import MoodFormScreen from './screens/patient/MoodForm';
@@ -114,7 +113,6 @@ const PatientTabNavigator = () => {
                 <Tab.Screen
                     name='Accueil'
                     component={PatientHomeScreen}
-
                 />
                 <Tab.Screen
                     name='Profil'
@@ -190,6 +188,7 @@ const TherapistTabNavigator = () => {
 };
 
 export default function App() {
+    // Import des fonts personnalisées
     const [fontsLoaded] = useFonts({
         Montserrat: require('./assets/fonts/MontserratAlternates-Regular.ttf'),
         'Montserrat-Black': require('./assets/fonts/MontserratAlternates-Black.ttf'),
