@@ -14,7 +14,7 @@ import ButtonRegular from '../../components/buttons/ButtonRegular';
 import Card from '../../components/Card';
 import MainContainerWithScroll from '../../components/MainContainerWithScroll';
 import UserAutocomplete from '../../components/inputs/UserAutocomplete';
-import DeconnectUserButton from '../../components/DeconnectUserButton';
+import DeconnectUserButton from '../../components/buttons/DeconnectUserButton';
 import Button from '../../components/buttons/Button';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';

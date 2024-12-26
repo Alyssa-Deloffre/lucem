@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
-import { disconnectUser } from '../reducers/user';
-import Button from './buttons/Button';
+import { disconnectUser } from '../../reducers/user';
+import Button from './Button';
 
 export default function DeconnectUserButton({ navigation }) {
     const dispatch = useDispatch();

@@ -4,7 +4,7 @@ import { Text, View, StyleSheet, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import MainContainerWithScroll from '../../components/MainContainerWithScroll';
-import DeconnectUserButton from '../../components/DeconnectUserButton';
+import DeconnectUserButton from '../../components/buttons/DeconnectUserButton';
 import Card from '../../components/Card';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
