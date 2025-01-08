@@ -77,7 +77,7 @@ export default function SignupPatient({ navigation }) {
             }
 
             if (emailError === '' && passwordError === '' && !isUserExisting.result && inputs.password === inputs.passwordConfirmation) {
-
+                
                 setCurrentScreen(currentScreen + 1)
             }
         }
